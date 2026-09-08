@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 8618404465630410345}
   - component: {fileID: 1710980362398826159}
   - component: {fileID: 3207140676507017140}
+  - component: {fileID: 7083037263655228080}
+  - component: {fileID: 6933327396277420442}
   m_Layer: 0
   m_Name: Cig
   m_TagString: Untagged
@@ -352,3 +354,32 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7083037263655228080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8921937398385926257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a7669e5e9595149b30ce99df0b8e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6933327396277420442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8921937398385926257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  interactRange: 2
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 260
