@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 public class PlayerStateMachine
 {
@@ -21,6 +22,7 @@ public class PlayerStateMachine
 
     private CharacterController characterController;
     private Transform playerTransform;
+    private Transform cameraTransform;
     
     private float moveSpeed;
     private float verticalVelocity;
@@ -30,11 +32,19 @@ public class PlayerStateMachine
 
     private float gravity = -9.81f;
     private float runMuiltiplier = 2f;
-    public PlayerStateMachine(CharacterController characterController, Transform transform, float speed)
+
+    private Vector3 cameraStandLocalPos;
+    private Vector3 cameraCrouchLocalPos;
+    private float crouchLerpSpeed = 8f;
+    public PlayerStateMachine(CharacterController characterController, Transform transform, float speed, Transform cameraTransform)
     {
         this.characterController = characterController;
         this.playerTransform = transform;
         this.moveSpeed = speed;
+        this.cameraTransform = cameraTransform;
+
+        cameraStandLocalPos = cameraTransform.localPosition;
+        cameraCrouchLocalPos = cameraStandLocalPos - new Vector3(0f, cameraStandLocalPos.y * 0.5f, 0f);
 
         ChangeState(PlayerState.Idle);
     }
@@ -49,6 +59,7 @@ public class PlayerStateMachine
     {
         Debug.Log("Current State: " + CurrentState);
         ApplyGravity();
+        updateCrouchCamera();
 
         switch (CurrentState)
         {
@@ -189,6 +200,17 @@ public class PlayerStateMachine
     }
      private void DoCrouching()
     {
+        if (!crouch)
+        {
+            ChangeState(PlayerState.Idle);
+            return;
+        }
+
+        Vector3 move = new Vector3(moveDirection.x, 0, moveDirection.y);
+        Vector3 direction = playerTransform.TransformDirection(move);
+        Vector3 motion = direction.normalized * (moveSpeed * 0.5f) + Vector3.up * verticalVelocity;
+        characterController.Move(motion * Time.deltaTime);
+
         ChangeState(PlayerState.Idle);
     }
      private void DoSleeping()
@@ -223,6 +245,12 @@ public class PlayerStateMachine
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
+    }
+
+    private void updateCrouchCamera()
+    {
+        Vector3 target = crouch ? cameraCrouchLocalPos : cameraStandLocalPos;
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, target, Time.deltaTime * crouchLerpSpeed);
     }
 }
 

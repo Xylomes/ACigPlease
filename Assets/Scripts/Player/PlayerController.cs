@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     // Player parameters
     [SerializeField] private CharacterController player;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private Transform cameraTransform;
 
     private PlayerInput playerInput;        
     private InputAction moveAction;           
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        stateMachine = new PlayerStateMachine(player, transform, moveSpeed);
+        stateMachine = new PlayerStateMachine(player, transform, moveSpeed, cameraTransform);
 
         playerInput = GetComponent<PlayerInput>();
         grabSystem = GetComponent<GrabSystem>();
