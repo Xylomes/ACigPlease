@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class HidingSpot : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string interactionPrompt = "Ouvrir";
+    [SerializeField] private string openPrompt = "Ouvrir";
+    [SerializeField] private string closePrompt = "Fermer";
     [SerializeField] private Animator animator;
 
     [Header("Spawn Point")]
@@ -23,18 +24,16 @@ public class HidingSpot : MonoBehaviour, IInteractable
     private string targetFlag;
     private bool isFunctionalTarget;
     private bool isOpen;
+    public bool IsOpen => isOpen;
     private GameObject targetPrefab;
     private GameObject spawnedObject;
 
-    public string InteractionPrompt => interactionPrompt;
+    public string InteractionPrompt => isOpen ? closePrompt : openPrompt;
 
     public bool IsInteractable
     {
         get
         {
-            if (isOpen)
-                return false;
-
             if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.GameOver)
                 return false;
 
@@ -67,6 +66,13 @@ public class HidingSpot : MonoBehaviour, IInteractable
     {
         if (!IsInteractable)
             return;
+
+        // If already open, close it (player-initiated close preserves spawned items)
+        if (isOpen)
+        {
+            Close(destroySpawned: false);
+            return;
+        }
 
         Open();
 
@@ -142,7 +148,8 @@ public class HidingSpot : MonoBehaviour, IInteractable
     }
 
     /// <summary>Visually close and reset this hiding spot. Only toggles the door if it was actually open.</summary>
-    public void Close()
+    /// <param name="destroySpawned">If true, destroys the spawned object (used during phase transitions). Player-initiated close preserves items.</param>
+    public void Close(bool destroySpawned = true)
     {
         // Only toggle the door if it was open — avoids opening closed doors during setup
         if (isOpen)
@@ -159,7 +166,7 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
         isOpen = false;
 
-        if (spawnedObject != null)
+        if (destroySpawned && spawnedObject != null)
         {
             Destroy(spawnedObject);
             spawnedObject = null;

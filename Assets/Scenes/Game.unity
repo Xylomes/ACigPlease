@@ -3730,6 +3730,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Blocking
       objectReference: {fileID: 0}
+    - target: {fileID: 5712119906609524246, guid: 32a88c34046252046b06b6eb02158332, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8891792828147989070, guid: 32a88c34046252046b06b6eb02158332, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.61
@@ -15841,8 +15845,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fd80a69c79832334c961db33ab11fc36, type: 2}
+  m_sharedMaterial: {fileID: -7380802319517410189, guid: fd80a69c79832334c961db33ab11fc36, type: 2}
   m_fontSharedMaterials:
   - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
@@ -15867,7 +15871,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.7
+  m_fontSize: 54.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -47,6 +47,12 @@ public class PickupSystem : MonoBehaviour
         }
     }
 
+    /// <summary>Release the currently held object so the player can grab another item.</summary>
+    public void ReleaseHeldItem()
+    {
+        heldObject = null;
+    }
+
     public void SetGrabInfos(bool pressed) { }
 
     private void OnDestroy()
