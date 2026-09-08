@@ -74,10 +74,10 @@ public class HidingSpot : MonoBehaviour, IInteractable
         {
             SpawnObject();
 
-            if (!string.IsNullOrEmpty(targetFlag))
-            {
-                GameFlags.SetFlag(targetFlag);
-            }
+            //if (!string.IsNullOrEmpty(targetFlag))
+            //{
+            //    GameFlags.SetFlag(targetFlag);
+            //}
         }
         else
         {
@@ -116,6 +116,12 @@ public class HidingSpot : MonoBehaviour, IInteractable
         Quaternion rot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
 
         spawnedObject = Instantiate(targetPrefab, pos, rot);
+
+        TargetItem targetItem = spawnedObject.GetComponent<TargetItem>();
+        if (targetItem != null)
+        {
+            targetItem.Init(targetFlag);
+        }
     }
 
     /// <summary>Visually open this hiding spot. Triggers door animation if present.</summary>
