@@ -12,7 +12,7 @@ public class door_shelf : MonoBehaviour
     private Quaternion openRotation;
     private Coroutine currentCoroutine;
 
-    void Start()
+    void Awake()
     {
         closedRotation = transform.rotation;
         openRotation = closedRotation * Quaternion.Euler(0f, openAngle, 0f);

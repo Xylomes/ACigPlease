@@ -49,6 +49,5 @@ public static class GameFlags
     public static void ResetAllFlags()
     {
         flagsBoard.Clear();
-        OnFlagSet = null;
     }
 }

@@ -38,7 +38,7 @@ public class VignettePenalty : MonoBehaviour, IPenalty
     {
         if (postProcessVolume == null)
         {
-            postProcessVolume = FindObjectOfType<Volume>();
+            postProcessVolume = FindAnyObjectByType<Volume>();
         }
 
         if (postProcessVolume != null && postProcessVolume.profile != null)

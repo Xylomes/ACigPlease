@@ -34,7 +34,7 @@ public class TextSpamPenalty : MonoBehaviour, IPenalty
     {
         if (targetCanvas == null)
         {
-            targetCanvas = FindObjectOfType<Canvas>();
+            targetCanvas = FindAnyObjectByType<Canvas>();
         }
 
         if (textPrefab == null || targetCanvas == null)
