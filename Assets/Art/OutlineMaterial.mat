@@ -56,6 +56,6 @@ Material:
     - _outlineEnabled: 1
     - _outline_scale: 1.05
     m_Colors:
-    - _outline_color: {r: 1, g: 0, b: 0, a: 1}
+    - _outline_color: {r: 0.9851341, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

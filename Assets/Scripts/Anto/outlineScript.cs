@@ -10,6 +10,8 @@ public class OutlineOnHover : MonoBehaviour
     private Material[] baseMaterials;      // juste le/les material(s) d'origine
     private Material[] materialsWithOutline; // base + outline
 
+    private bool mouseEntered = false;
+
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactMask = ~0;
@@ -32,7 +34,14 @@ public class OutlineOnHover : MonoBehaviour
     {
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
         {
-            meshRenderer.materials = materialsWithOutline;
+            if (mouseEntered)
+            {
+                meshRenderer.materials = materialsWithOutline;
+            }
+            else
+            {
+                meshRenderer.materials = baseMaterials;
+            }
         }
         else
         {
@@ -42,14 +51,11 @@ public class OutlineOnHover : MonoBehaviour
 
     void OnMouseEnter()
     {
-        
+        mouseEntered = true;
     }
 
     void OnMouseExit()
     {
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
-        {
-            
-        }
+        mouseEntered = false;
     }
 }
