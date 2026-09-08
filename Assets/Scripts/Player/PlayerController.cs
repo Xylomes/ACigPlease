@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     public PlayerStateMachine stateMachine { get; private set; }
     public GrabSystem grabSystem { get; private set; }
 
+    /// <summary>When true, movement input is inverted (drunk mode penalty).</summary>
+    public static bool IsMovementInverted { get; set; } = false;
+
     // Player parameters
     [SerializeField] private CharacterController player;
     [SerializeField] private float moveSpeed;
@@ -49,6 +52,10 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Vector2 input = moveAction.ReadValue<Vector2>();
+        if (PlayerController.IsMovementInverted)
+        {
+            input = -input;
+        }
         bool crouchPressed = crouchAction.IsPressed();
         bool grabPressed = grabAction.IsPressed();
         stateMachine.SetInfos(input,crouchPressed);
