@@ -13,6 +13,10 @@ public class HidingSpot : MonoBehaviour, IInteractable
     [Tooltip("Si la cachette est une porte animée, glisser le door_shelf ici.")]
     [SerializeField] private door_shelf doorShelf;
 
+    [Header("Inner Voice (optional)")]
+    [Tooltip("Lignes de voix intérieure jouées quand la cachette est vide.")]
+    [SerializeField] private InnerVoiceData emptySpotVoice;
+
     private const string OPEN_ANIM_PARAM = "IsOpen";
 
     private bool containsTarget;
@@ -79,6 +83,26 @@ public class HidingSpot : MonoBehaviour, IInteractable
         {
             // Empty hiding spot: trigger a random penalty
             PenaltyManager.Instance?.TriggerRandomPenalty();
+
+            // Show inner voice line for empty spot
+            if (InnerVoiceManager.Instance != null)
+            {
+                if (emptySpotVoice != null)
+                {
+                    InnerVoiceManager.Instance.Show(emptySpotVoice);
+                }
+                else
+                {
+                    string[] defaultLines = {
+                        "<shake>Rien ici...</shake>",
+                        "<shake>Merde. Pas là non plus.</shake>",
+                        "<shake>Putain, où sont mes clopes ?</shake>",
+                        "<shake>Vide. Encore.</shake>",
+                        "<shake>Je sens que je perds la tête.</shake>"
+                    };
+                    InnerVoiceManager.Instance.Show(defaultLines[Random.Range(0, defaultLines.Length)]);
+                }
+            }
         }
     }
 
