@@ -164,6 +164,14 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
         spawnedObject = Instantiate(targetPrefab, pos, rot);
 
+        // Only parent to the spawn point for drawers so the item slides along with it.
+        // Doors and shelves don't move the spawn point, so leave the item in world space.
+        if (drawerSlide != null)
+        {
+            Transform parent = spawnPoint != null ? spawnPoint : transform;
+            spawnedObject.transform.SetParent(parent, true);
+        }
+
         TargetItem targetItem = spawnedObject.GetComponent<TargetItem>();
         if (targetItem != null)
         {

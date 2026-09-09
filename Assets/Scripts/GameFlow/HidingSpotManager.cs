@@ -78,18 +78,17 @@ public class HidingSpotManager : MonoBehaviour
 
         workingLighterIndex = Random.Range(0, NUMBER_OF_LIGHTERS);
 
-        for (int i = 0; i < lighterSpotIndices.Count; i++)
+        for (int i = 0; i < hidingSpots.Count; i++)
         {
-            HidingSpot spot = hidingSpots[i];
             int lighterListPosition = lighterSpotIndices.IndexOf(i);
             bool hasLighter = lighterListPosition != -1;
             bool isFunctional = hasLighter && lighterListPosition == workingLighterIndex;
 
-            spot.Setup(
-                containsTarget: true,
+            hidingSpots[i].Setup(
+                containsTarget: hasLighter,
                 targetFlag: isFunctional ? GameFlags.WORKING_LIGHTER_FOUND : null,
                 isFunctionalTarget: isFunctional,
-                prefabToSpawn: lighterPrefab
+                prefabToSpawn: hasLighter ? lighterPrefab : null
             );
         }
     }
