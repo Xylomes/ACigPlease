@@ -91,7 +91,7 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Close and reset every hiding spot.</summary>
+    /// <summary>Close and reset every hiding spot, including visual door state.</summary>
     public void CloseAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
@@ -99,6 +99,24 @@ public class HidingSpotManager : MonoBehaviour
             if (spot != null)
             {
                 spot.Close();
+            }
+        }
+    }
+
+    /// <summary>Force-close every spot and destroy any spawned objects, even if already closed.</summary>
+    public void ResetAllSpots()
+    {
+        foreach (HidingSpot spot in hidingSpots)
+        {
+            if (spot != null)
+            {
+                spot.Setup(
+                    containsTarget: false,
+                    targetFlag: null,
+                    isFunctionalTarget: false,
+                    prefabToSpawn: null
+                );
+                spot.gameObject.SetActive(true);
             }
         }
     }

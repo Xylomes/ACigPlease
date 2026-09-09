@@ -53,6 +53,16 @@ public class PickupSystem : MonoBehaviour
         heldObject = null;
     }
 
+    /// <summary>Destroy the currently held object and clear all grab state. Used during game reset.</summary>
+    public void ClearHeldItem()
+    {
+        if (heldObject != null)
+        {
+            Destroy(heldObject);
+            heldObject = null;
+        }
+    }
+
     public void SetGrabInfos(bool pressed) { }
 
     private void OnDestroy()

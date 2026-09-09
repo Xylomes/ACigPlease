@@ -41,20 +41,33 @@ public class HidingSpot : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Configure this spot for the current game phase. Does NOT animate doors.</summary>
+    /// <summary>Configure this spot for the current game phase. Closes the door if it was open.</summary>
     /// <param name="containsTarget">True if this spot holds the object the player is looking for.</param>
     /// <param name="targetFlag">The flag to set when the target is found (null for non-functional lighters).</param>
     /// <param name="isFunctionalTarget">True if this is the working lighter (no penalty on open).</param>
     /// <param name="prefabToSpawn">Prefab to instantiate at the spawn point when opened.</param>
     public void Setup(bool containsTarget, string targetFlag, bool isFunctionalTarget, GameObject prefabToSpawn)
     {
+        // Close the door visually if it was open before reconfiguring
+        if (isOpen)
+        {
+            if (doorShelf != null)
+            {
+                doorShelf.ToggleDoor();
+            }
+            if (animator != null)
+            {
+                animator.SetBool(OPEN_ANIM_PARAM, false);
+            }
+        }
+
         this.containsTarget = containsTarget;
         this.targetFlag = targetFlag;
         this.isFunctionalTarget = isFunctionalTarget;
         this.targetPrefab = prefabToSpawn;
         isOpen = false;
 
-        // Only destroy spawned object, do NOT toggle the door
+        // Destroy any previously spawned object (still in the spot or picked up)
         if (spawnedObject != null)
         {
             Destroy(spawnedObject);
@@ -112,11 +125,31 @@ public class HidingSpot : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Instantiate the target prefab at the spawn point.</summary>
+    /// <summary>Instantiate the target prefab at the spawn point if it hasn't been taken yet.</summary>
     private void SpawnObject()
     {
         if (targetPrefab == null)
             return;
+
+        // If an object was already spawned, check whether it was picked up
+        if (spawnedObject != null)
+        {
+            if (spawnedObject == null) // destroyed somehow
+            {
+                spawnedObject = null;
+            }
+            else if (!spawnedObject.transform.IsChildOf(transform))
+            {
+                // Item was picked up (reparented to the player) — don't respawn
+                spawnedObject = null;
+                return;
+            }
+            else
+            {
+                // Item is still at the spawn point — don't spawn a duplicate
+                return;
+            }
+        }
 
         Vector3 pos = spawnPoint != null ? spawnPoint.position : transform.position;
         Quaternion rot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;

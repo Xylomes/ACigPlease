@@ -123,4 +123,23 @@ public class GrabSystem : MonoBehaviour
         heldBagComponent = null;
         PlayerStateMachine.IsHoldingItem = false;
     }
+
+    /// <summary>Release the currently held bag without dropping it. Used during game reset.</summary>
+    public void ReleaseHeldItem()
+    {
+        if (heldBag != null)
+        {
+            if (heldBagComponent != null)
+            {
+                heldBagComponent.OnRelease();
+            }
+            if (heldBagRigidbody != null)
+            {
+                heldBagRigidbody.isKinematic = false;
+                heldBagRigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+            }
+            heldBag.gameObject.layer = DEFAULT_LAYER;
+        }
+        ResetGrabState();
+    }
 }

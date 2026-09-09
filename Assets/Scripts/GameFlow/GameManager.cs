@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Fully reset the game state without starting a new session.
-    /// Closes all hiding spots, resets flags, timer, penalties, and player modifiers.
+    /// Closes all hiding spots, resets flags, timer, penalties, clears held items, and player modifiers.
     /// Called when returning to the main menu after a game over or win.
     /// </summary>
     public void ResetGame()
@@ -94,16 +94,34 @@ public class GameManager : MonoBehaviour
         // Reset all flags
         GameFlags.ResetAllFlags();
 
-        // Close all hiding spots and destroy spawned items
+        // Force-reset all hiding spots: close doors, destroy spawned items
         if (HidingSpotManager.Instance != null)
         {
-            HidingSpotManager.Instance.CloseAllSpots();
+            HidingSpotManager.Instance.ResetAllSpots();
         }
 
         // Clear any active penalty
         if (PenaltyManager.Instance != null)
         {
             PenaltyManager.Instance.ClearCurrentPenalty();
+        }
+
+        // Destroy any item currently held by the player
+        PlayerController playerCtrl = PlayerController.Instance;
+        if (playerCtrl != null)
+        {
+            PickupSystem pickup = playerCtrl.GetComponent<PickupSystem>();
+            if (pickup != null)
+            {
+                pickup.ClearHeldItem();
+            }
+
+            GrabSystem grab = playerCtrl.GetComponent<GrabSystem>();
+            if (grab != null)
+            {
+                // Release any grabbed bag without dropping it — the scene reset will clean up
+                grab.ReleaseHeldItem();
+            }
         }
 
         // Reset player input modifiers
