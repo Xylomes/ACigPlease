@@ -11,8 +11,12 @@ public class HidingSpot : MonoBehaviour, IInteractable
     [SerializeField] private Transform spawnPoint;
 
     [Header("Door Animation (optional)")]
-    [Tooltip("Si la cachette est une porte animée, glisser le door_shelf ici.")]
+    [Tooltip("Si la cachette est une porte animée en rotation, glisser le door_shelf ici.")]
     [SerializeField] private door_shelf doorShelf;
+
+    [Header("Drawer Slide (optional)")]
+    [Tooltip("Si la cachette est un tiroir qui coulisse, glisser le drawer_slide ici.")]
+    [SerializeField] private drawer_slide drawerSlide;
 
     [Header("Inner Voice (optional)")]
     [Tooltip("Lignes de voix intérieure jouées quand la cachette est vide.")]
@@ -48,12 +52,16 @@ public class HidingSpot : MonoBehaviour, IInteractable
     /// <param name="prefabToSpawn">Prefab to instantiate at the spawn point when opened.</param>
     public void Setup(bool containsTarget, string targetFlag, bool isFunctionalTarget, GameObject prefabToSpawn)
     {
-        // Close the door visually if it was open before reconfiguring
+        // Close the door/drawer visually if it was open before reconfiguring
         if (isOpen)
         {
             if (doorShelf != null)
             {
                 doorShelf.ToggleDoor();
+            }
+            if (drawerSlide != null)
+            {
+                drawerSlide.ToggleDoor();
             }
             if (animator != null)
             {
@@ -178,6 +186,10 @@ public class HidingSpot : MonoBehaviour, IInteractable
         {
             doorShelf.ToggleDoor();
         }
+        if (drawerSlide != null)
+        {
+            drawerSlide.ToggleDoor();
+        }
     }
 
     /// <summary>Visually close and reset this hiding spot. Only toggles the door if it was actually open.</summary>
@@ -190,6 +202,10 @@ public class HidingSpot : MonoBehaviour, IInteractable
             if (doorShelf != null)
             {
                 doorShelf.ToggleDoor();
+            }
+            if (drawerSlide != null)
+            {
+                drawerSlide.ToggleDoor();
             }
             if (animator != null)
             {
