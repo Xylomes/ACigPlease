@@ -6,15 +6,15 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Timer")]
-    [SerializeField] private float timeRemaining = 30f;
-    [SerializeField] private float timeBonusOnFind = 30f;
+    [SerializeField] private float timeRemaining;
+    [SerializeField] private float timeBonusOnFind;
 
     [Header("Inner Voice")]
     [SerializeField] private InnerVoiceData gameStartVoice;
     [SerializeField] private InnerVoiceData lighterPhaseVoice;
     [SerializeField] private InnerVoiceData gameOverVoice;
 
-    private const float TIMER_START_VALUE = 30f;
+    private const float TIMER_START_VALUE = 60f;
 
     public GamePhase CurrentPhase { get; private set; } = GamePhase.Setup;
     public float TimeRemaining => timeRemaining;

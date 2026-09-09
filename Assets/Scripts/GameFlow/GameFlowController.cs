@@ -30,6 +30,7 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private GameObject optionsCanvas;
     [SerializeField] private GameObject winVideoCanvas;
     [SerializeField] private GameObject creditsCanvas;
+    [SerializeField] private GameObject hudCanvas;
 
     [Header("Win Video Placeholder")]
     [Tooltip("Duration of the win video placeholder before transitioning to credits.")]
@@ -194,6 +195,7 @@ public class GameFlowController : MonoBehaviour
         SetCanvasActive(optionsCanvas, newState == FlowState.Options);
         SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
         SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
+        SetCanvasActive(hudCanvas, newState == FlowState.Playing);
     }
 
     private static void SetCanvasActive(GameObject canvas, bool active)
