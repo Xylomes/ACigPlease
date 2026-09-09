@@ -17843,6 +17843,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287166288}
   m_CullTransparentMesh: 1
+--- !u!1 &1287267668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1287267669}
+  m_Layer: 0
+  m_Name: HoldPointLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1287267669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287267668}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.119, y: -0.072, z: 0.227}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1747078736}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1291396092
 GameObject:
   m_ObjectHideFlags: 0
@@ -20106,7 +20137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1472576087}
   m_Layer: 0
-  m_Name: HoldPoint
+  m_Name: HoldPointRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23772,6 +23803,7 @@ Transform:
   m_Children:
   - {fileID: 1733130129}
   - {fileID: 1472576087}
+  - {fileID: 1287267669}
   m_Father: {fileID: 1948060372}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1749162725
@@ -24944,6 +24976,8 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 260
+  holdPointRight: {fileID: 1472576087}
+  holdPointLeft: {fileID: 1287267669}
 --- !u!1 &1950201359 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6674388655723150981, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
