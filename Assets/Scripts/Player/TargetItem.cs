@@ -15,6 +15,7 @@ public class TargetItem : MonoBehaviour
     [Header("Animation de grab")]
     [SerializeField] private float grabMoveDuration = 0.3f;
 
+    [SerializeField] private ParticleSystem etincelle;
 
 
 
@@ -90,6 +91,11 @@ public class TargetItem : MonoBehaviour
 
         transform.localPosition = targetPos;
         transform.localRotation = targetRotation;
+
+        if (etincelle != null)
+        {
+            etincelle.Play();
+        }
     }
 
     /// <summary>Drop a non-functional item to the floor so the player can grab another one.</summary>

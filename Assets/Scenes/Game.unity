@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -8821,7 +8821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: 84f37a969d826aa4a8a469d20101b6ec, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -13928,7 +13928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -18008,7 +18008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -19775,7 +19775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: 84f37a969d826aa4a8a469d20101b6ec, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -24587,7 +24587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
@@ -25915,7 +25915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  outlineMaterial: {fileID: 2100000, guid: c699e0990ee1e314b9217e9b982cfa9c, type: 2}
   interactRange: 2
   playerMask:
     serializedVersion: 2
