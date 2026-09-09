@@ -10,6 +10,13 @@ public class TargetItem : MonoBehaviour
     private Rigidbody rb;
     private bool isGrabbed;
     private Collider itemCollider;
+    private Coroutine moveCoroutine;
+
+    [Header("Animation de grab")]
+    [SerializeField] private float grabMoveDuration = 0.3f;
+
+
+
 
     public void Init(string flagToSetOnPickup)
     {
@@ -49,13 +56,40 @@ public class TargetItem : MonoBehaviour
         }
 
         transform.SetParent(holdPoint);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+        //transform.localPosition = Vector3.zero;
+        //transform.localRotation = Quaternion.identity;
 
         if (itemCollider != null)
         {
             itemCollider.enabled = false;
         }
+
+        moveCoroutine = StartCoroutine(MoveToHand());
+    }
+
+    private IEnumerator MoveToHand()
+    {
+        Vector3 startPos = transform.localPosition;
+        Quaternion startRotation = transform.localRotation;
+
+        Vector3 targetPos = Vector3.zero;
+        Quaternion targetRotation = Quaternion.identity;
+
+        float elapsed = 0;
+
+        while (elapsed < grabMoveDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / grabMoveDuration;
+
+            transform.localPosition = Vector3.Lerp(startPos, targetPos, t);
+            transform.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
+
+            yield return null;
+        }
+
+        transform.localPosition = targetPos;
+        transform.localRotation = targetRotation;
     }
 
     /// <summary>Drop a non-functional item to the floor so the player can grab another one.</summary>

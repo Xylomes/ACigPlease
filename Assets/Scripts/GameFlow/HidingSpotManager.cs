@@ -70,18 +70,21 @@ public class HidingSpotManager : MonoBehaviour
         // Pick 3 random spot indices from the 8
         lighterSpotIndices = PickRandomIndices(hidingSpots.Count, NUMBER_OF_LIGHTERS);
 
-        // Enable only the 3 chosen spots, disable the rest
-        for (int i = 0; i < hidingSpots.Count; i++)
-        {
-            hidingSpots[i].gameObject.SetActive(lighterSpotIndices.Contains(i));
-        }
+        //// Enable only the 3 chosen spots, disable the rest
+        //for (int i = 0; i < hidingSpots.Count; i++)
+        //{
+        //    hidingSpots[i].gameObject.SetActive(lighterSpotIndices.Contains(i));
+        //}
 
         workingLighterIndex = Random.Range(0, NUMBER_OF_LIGHTERS);
 
         for (int i = 0; i < lighterSpotIndices.Count; i++)
         {
-            HidingSpot spot = hidingSpots[lighterSpotIndices[i]];
-            bool isFunctional = i == workingLighterIndex;
+            HidingSpot spot = hidingSpots[i];
+            int lighterListPosition = lighterSpotIndices.IndexOf(i);
+            bool hasLighter = lighterListPosition != -1;
+            bool isFunctional = hasLighter && lighterListPosition == workingLighterIndex;
+
             spot.Setup(
                 containsTarget: true,
                 targetFlag: isFunctional ? GameFlags.WORKING_LIGHTER_FOUND : null,
