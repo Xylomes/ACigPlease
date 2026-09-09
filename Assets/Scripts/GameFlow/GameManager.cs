@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartGame();
+        // Game is started by GameFlowController when the player clicks Play.
+        // Do not auto-start here.
     }
 
     /// <summary>Reset all flags and start a new game session.</summary>
@@ -77,6 +78,40 @@ public class GameManager : MonoBehaviour
         {
             InnerVoiceManager.Instance.Show(gameStartVoice);
         }
+    }
+
+    /// <summary>
+    /// Fully reset the game state without starting a new session.
+    /// Closes all hiding spots, resets flags, timer, penalties, and player modifiers.
+    /// Called when returning to the main menu after a game over or win.
+    /// </summary>
+    public void ResetGame()
+    {
+        IsTimerRunning = false;
+        timeRemaining = TIMER_START_VALUE;
+        ChangePhase(GamePhase.Setup);
+
+        // Reset all flags
+        GameFlags.ResetAllFlags();
+
+        // Close all hiding spots and destroy spawned items
+        if (HidingSpotManager.Instance != null)
+        {
+            HidingSpotManager.Instance.CloseAllSpots();
+        }
+
+        // Clear any active penalty
+        if (PenaltyManager.Instance != null)
+        {
+            PenaltyManager.Instance.ClearCurrentPenalty();
+        }
+
+        // Reset player input modifiers
+        PlayerController.IsMovementInverted = false;
+        PlayerRotation.IsInputInverted = false;
+
+        // Reset timer UI
+        OnTimerTick?.Invoke(TIMER_START_VALUE);
     }
 
     private void Update()

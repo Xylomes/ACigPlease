@@ -92,7 +92,7 @@ public class HidingSpotManager : MonoBehaviour
     }
 
     /// <summary>Close and reset every hiding spot.</summary>
-    private void CloseAllSpots()
+    public void CloseAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
         {
