@@ -43,6 +43,19 @@ public class door_shelf : MonoBehaviour
         currentCoroutine = StartCoroutine(RotateDoor(target));
     }
 
+    /// <summary>Force the door to its closed state regardless of current internal state.</summary>
+    public void ForceClose()
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+        isOpen = false;
+        isAnimating = false;
+        transform.rotation = closedRotation;
+    }
+
     private IEnumerator RotateDoor(Quaternion target)
     {
         isAnimating = true;

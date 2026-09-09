@@ -31,6 +31,7 @@ public class HidingSpot : MonoBehaviour, IInteractable
     public bool IsOpen => isOpen;
     private GameObject targetPrefab;
     private GameObject spawnedObject;
+    private bool itemWasTaken;
 
     public string InteractionPrompt => isOpen ? closePrompt : openPrompt;
 
@@ -74,6 +75,7 @@ public class HidingSpot : MonoBehaviour, IInteractable
         this.isFunctionalTarget = isFunctionalTarget;
         this.targetPrefab = prefabToSpawn;
         isOpen = false;
+        itemWasTaken = false;
 
         // Destroy any previously spawned object (still in the spot or picked up)
         if (spawnedObject != null)
@@ -97,16 +99,11 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
         Open();
 
-        if (containsTarget)
+        if (containsTarget && !itemWasTaken)
         {
             SpawnObject();
-
-            //if (!string.IsNullOrEmpty(targetFlag))
-            //{
-            //    GameFlags.SetFlag(targetFlag);
-            //}
         }
-        else
+        else if (!containsTarget && !itemWasTaken)
         {
             // Empty hiding spot: trigger a random penalty
             PenaltyManager.Instance?.TriggerRandomPenalty();
@@ -136,28 +133,12 @@ public class HidingSpot : MonoBehaviour, IInteractable
     /// <summary>Instantiate the target prefab at the spawn point if it hasn't been taken yet.</summary>
     private void SpawnObject()
     {
-        if (targetPrefab == null)
+        if (targetPrefab == null || itemWasTaken)
             return;
 
-        // If an object was already spawned, check whether it was picked up
+        // Don't spawn a duplicate if the item is still at the spawn point
         if (spawnedObject != null)
-        {
-            if (spawnedObject == null) // destroyed somehow
-            {
-                spawnedObject = null;
-            }
-            else if (!spawnedObject.transform.IsChildOf(transform))
-            {
-                // Item was picked up (reparented to the player) — don't respawn
-                spawnedObject = null;
-                return;
-            }
-            else
-            {
-                // Item is still at the spawn point — don't spawn a duplicate
-                return;
-            }
-        }
+            return;
 
         Vector3 pos = spawnPoint != null ? spawnPoint.position : transform.position;
         Quaternion rot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
@@ -183,6 +164,7 @@ public class HidingSpot : MonoBehaviour, IInteractable
     private void HandleItemPickedUp()
     {
         spawnedObject = null;
+        itemWasTaken = true;
     }
 
     /// <summary>Visually open this hiding spot. Triggers door animation if present.</summary>
@@ -230,6 +212,31 @@ public class HidingSpot : MonoBehaviour, IInteractable
         isOpen = false;
 
         if (destroySpawned && spawnedObject != null)
+        {
+            Destroy(spawnedObject);
+            spawnedObject = null;
+        }
+    }
+
+    /// <summary>Force-close the door/drawer to its closed state regardless of internal sync issues. Used during full game reset.</summary>
+    public void ForceClose()
+    {
+        if (doorShelf != null)
+        {
+            doorShelf.ForceClose();
+        }
+        if (drawerSlide != null)
+        {
+            drawerSlide.ForceClose();
+        }
+        if (animator != null)
+        {
+            animator.SetBool(OPEN_ANIM_PARAM, false);
+        }
+
+        isOpen = false;
+
+        if (spawnedObject != null)
         {
             Destroy(spawnedObject);
             spawnedObject = null;

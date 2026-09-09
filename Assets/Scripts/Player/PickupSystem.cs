@@ -82,11 +82,11 @@ public class PickupSystem : MonoBehaviour
             heldObjectRight = null;
         }
 
-        //if (heldObjectLeft != null)
-        //{
-        //    Destroy(heldObjectLeft);
-        //    heldObjectLeft = null;
-        //}
+        if (heldObjectLeft != null)
+        {
+            Destroy(heldObjectLeft);
+            heldObjectLeft = null;
+        }
     }
 
     public void SetGrabInfos(bool pressed) { }

@@ -53,6 +53,19 @@ public class drawer_slide : MonoBehaviour
         currentCoroutine = StartCoroutine(SlideDrawer(target));
     }
 
+    /// <summary>Force the drawer to its closed state regardless of current internal state.</summary>
+    public void ForceClose()
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+            currentCoroutine = null;
+        }
+        isOpen = false;
+        isAnimating = false;
+        transform.localPosition = closedPosition;
+    }
+
     private IEnumerator SlideDrawer(Vector3 target)
     {
         isAnimating = true;

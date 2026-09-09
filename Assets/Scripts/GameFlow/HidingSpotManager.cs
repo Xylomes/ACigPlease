@@ -112,6 +112,7 @@ public class HidingSpotManager : MonoBehaviour
         {
             if (spot != null)
             {
+                spot.ForceClose();
                 spot.Setup(
                     containsTarget: false,
                     targetFlag: null,
