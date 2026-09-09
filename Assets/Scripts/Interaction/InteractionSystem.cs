@@ -43,7 +43,7 @@ public class InteractionSystem : MonoBehaviour
 
             if (interactable != null)
             {
-                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter))
+                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter) && !(interactable is HidingSpot hs && hs.IsOpen))
                 {
                     InteractionUI.Instance.HidePrompt();
                     return;
@@ -82,7 +82,7 @@ public class InteractionSystem : MonoBehaviour
 
             if (interactable != null)
             {
-                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter))
+                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter) && !(interactable is HidingSpot hs && hs.IsOpen))
                 {
                     return;
                 }

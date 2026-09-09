@@ -29,6 +29,18 @@ public class HidingSpotManager : MonoBehaviour
         }
 
         Instance = this;
+
+        // Remove duplicate HidingSpot components that share the same GameObject.
+        // The interaction system always finds the first component, so any target
+        // assigned to a duplicate is unreachable and would show a false "empty" voice.
+        HashSet<GameObject> seen = new HashSet<GameObject>();
+        for (int i = hidingSpots.Count - 1; i >= 0; i--)
+        {
+            if (hidingSpots[i] == null || !seen.Add(hidingSpots[i].gameObject))
+            {
+                hidingSpots.RemoveAt(i);
+            }
+        }
     }
 
     /// <summary>Randomly place cigarettes in one of the hiding spots.</summary>
@@ -79,14 +91,32 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Close and reset every hiding spot.</summary>
-    private void CloseAllSpots()
+    /// <summary>Close and reset every hiding spot, including visual door state.</summary>
+    public void CloseAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
         {
             if (spot != null)
             {
                 spot.Close();
+            }
+        }
+    }
+
+    /// <summary>Force-close every spot and destroy any spawned objects, even if already closed.</summary>
+    public void ResetAllSpots()
+    {
+        foreach (HidingSpot spot in hidingSpots)
+        {
+            if (spot != null)
+            {
+                spot.Setup(
+                    containsTarget: false,
+                    targetFlag: null,
+                    isFunctionalTarget: false,
+                    prefabToSpawn: null
+                );
+                spot.gameObject.SetActive(true);
             }
         }
     }

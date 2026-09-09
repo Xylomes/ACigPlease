@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timeRemaining = 30f;
     [SerializeField] private float timeBonusOnFind = 30f;
 
+    [Header("Inner Voice")]
+    [SerializeField] private InnerVoiceData gameStartVoice;
+    [SerializeField] private InnerVoiceData lighterPhaseVoice;
+    [SerializeField] private InnerVoiceData gameOverVoice;
+
     private const float TIMER_START_VALUE = 30f;
 
     public GamePhase CurrentPhase { get; private set; } = GamePhase.Setup;
@@ -47,7 +52,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartGame();
+        // Game is started by GameFlowController when the player clicks Play.
+        // Do not auto-start here.
     }
 
     /// <summary>Reset all flags and start a new game session.</summary>
@@ -66,6 +72,64 @@ public class GameManager : MonoBehaviour
         GameFlags.SetFlag(GameFlags.GAME_SETUP_DONE);
         ChangePhase(GamePhase.SearchingCigarettes);
         IsTimerRunning = true;
+
+        // Show inner voice at game start
+        if (InnerVoiceManager.Instance != null && gameStartVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameStartVoice);
+        }
+    }
+
+    /// <summary>
+    /// Fully reset the game state without starting a new session.
+    /// Closes all hiding spots, resets flags, timer, penalties, clears held items, and player modifiers.
+    /// Called when returning to the main menu after a game over or win.
+    /// </summary>
+    public void ResetGame()
+    {
+        IsTimerRunning = false;
+        timeRemaining = TIMER_START_VALUE;
+        ChangePhase(GamePhase.Setup);
+
+        // Reset all flags
+        GameFlags.ResetAllFlags();
+
+        // Force-reset all hiding spots: close doors, destroy spawned items
+        if (HidingSpotManager.Instance != null)
+        {
+            HidingSpotManager.Instance.ResetAllSpots();
+        }
+
+        // Clear any active penalty
+        if (PenaltyManager.Instance != null)
+        {
+            PenaltyManager.Instance.ClearCurrentPenalty();
+        }
+
+        // Destroy any item currently held by the player
+        PlayerController playerCtrl = PlayerController.Instance;
+        if (playerCtrl != null)
+        {
+            PickupSystem pickup = playerCtrl.GetComponent<PickupSystem>();
+            if (pickup != null)
+            {
+                pickup.ClearHeldItem();
+            }
+
+            GrabSystem grab = playerCtrl.GetComponent<GrabSystem>();
+            if (grab != null)
+            {
+                // Release any grabbed bag without dropping it — the scene reset will clean up
+                grab.ReleaseHeldItem();
+            }
+        }
+
+        // Reset player input modifiers
+        PlayerController.IsMovementInverted = false;
+        PlayerRotation.IsInputInverted = false;
+
+        // Reset timer UI
+        OnTimerTick?.Invoke(TIMER_START_VALUE);
     }
 
     private void Update()
@@ -112,6 +176,12 @@ public class GameManager : MonoBehaviour
         }
 
         ChangePhase(GamePhase.SearchingLighter);
+
+        // Show inner voice when transitioning to lighter phase
+        if (InnerVoiceManager.Instance != null && lighterPhaseVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(lighterPhaseVoice);
+        }
     }
 
     private void HandleGameWon()
@@ -126,6 +196,11 @@ public class GameManager : MonoBehaviour
     {
         GameFlags.SetFlag(GameFlags.GAME_OVER);
         ChangePhase(GamePhase.GameOver);
+
+        if (InnerVoiceManager.Instance != null && gameOverVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameOverVoice);
+        }
     }
 
     /// <summary>Add bonus time to the timer (clamped to a max of 30s).</summary>

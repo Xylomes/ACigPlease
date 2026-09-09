@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 2902174704146351432}
   - component: {fileID: 3228193588228462928}
   - component: {fileID: 6958972906944928610}
+  - component: {fileID: 2248970695465561969}
+  - component: {fileID: 2266703388406259298}
   m_Layer: 0
   m_Name: Lighter
   m_TagString: Untagged
@@ -300,7 +302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c22777d6e868e4f2fb421913386b154e, type: 2}
+  - {fileID: 2100000, guid: f533c4deb9adb9842b1da79cfd3ba5d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -352,3 +354,32 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &2248970695465561969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859491628496787338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a7669e5e9595149b30ce99df0b8e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2266703388406259298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859491628496787338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d80bf6b6bdbeb344a9f6173404b9f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: 7cedb9d60b247f54586524865254c2a9, type: 2}
+  interactRange: 2
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 260

@@ -57,7 +57,7 @@ public class PlayerStateMachine
 
     public void Update()
     {
-        Debug.Log("Current State: " + CurrentState);
+        //Debug.Log("Current State: " + CurrentState);
         ApplyGravity();
         updateCrouchCamera();
 
