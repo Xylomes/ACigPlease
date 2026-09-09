@@ -3,7 +3,12 @@ guid: 6955dc9a87c53134b9a6b286433868b1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_PropsStela
+    second: {fileID: 2100000, guid: 7f8d07867c90d44469d185fde46cb75d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
