@@ -5,13 +5,15 @@ public class PickupSystem : MonoBehaviour
 {
     [Header("Références")]
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Transform holdPoint;
+    [SerializeField] private Transform holdPointRight;
+    [SerializeField] private Transform holdPointLeft;
 
     [Header("Paramètres")]
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask playerMask;
 
-    private GameObject heldObject;
+    private GameObject heldObjectRight;
+    private GameObject heldObjectLeft;
     private PlayerInput playerInput;
     private InputAction grabAction;
 
@@ -24,8 +26,8 @@ public class PickupSystem : MonoBehaviour
 
     private void OnGrabPerformed(InputAction.CallbackContext context)
     {
-        if (heldObject != null)
-            return;
+        //if (heldObjectRight != null)
+        //    return;
 
         // Empêche le grab si la partie est terminée
         if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.GameOver)
@@ -39,28 +41,52 @@ public class PickupSystem : MonoBehaviour
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
         {
             TargetItem targetItem = hit.collider.GetComponent<TargetItem>();
-            if (targetItem != null)
+            if (targetItem == null)
+                return;
+
+            if (targetItem.UseLeftHand)
             {
-                targetItem.OnGrabbed(holdPoint);
-                heldObject = hit.collider.gameObject;
+                if (heldObjectLeft != null)
+                    return; // main gauche déjà occupée
+
+                targetItem.OnGrabbed(holdPointLeft);
+                heldObjectLeft = hit.collider.gameObject;
+            }
+            else
+            {
+                if (heldObjectRight != null)
+                    return; // main droite déjà occupée
+
+                targetItem.OnGrabbed(holdPointRight);
+                heldObjectRight = hit.collider.gameObject;
             }
         }
     }
 
     /// <summary>Release the currently held object so the player can grab another item.</summary>
-    public void ReleaseHeldItem()
+    public void ReleaseHeldItemRight()
     {
-        heldObject = null;
+        heldObjectRight = null;
+    }
+    public void RealeaseHeldLeft()
+    {
+        heldObjectLeft = null;
     }
 
     /// <summary>Destroy the currently held object and clear all grab state. Used during game reset.</summary>
     public void ClearHeldItem()
     {
-        if (heldObject != null)
+        if (heldObjectRight != null)
         {
-            Destroy(heldObject);
-            heldObject = null;
+            Destroy(heldObjectRight);
+            heldObjectRight = null;
         }
+
+        //if (heldObjectLeft != null)
+        //{
+        //    Destroy(heldObjectLeft);
+        //    heldObjectLeft = null;
+        //}
     }
 
     public void SetGrabInfos(bool pressed) { }

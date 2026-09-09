@@ -139,3 +139,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabMoveDuration: 0.3
+  etincelle: {fileID: 0}
+  useLeftHand: 1

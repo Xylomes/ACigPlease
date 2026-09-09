@@ -20927,7 +20927,7 @@ Transform:
   m_GameObject: {fileID: 1514088756}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.0000005097389, z: -0.0000002942979, w: 0.8660254}
-  m_LocalPosition: {x: -0, y: 0.2039, z: -0.534}
+  m_LocalPosition: {x: -0.0005, y: 0.2041, z: -0.2611}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25369,7 +25369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 1733130129}
-  holdPoint: {fileID: 1472576087}
+  holdPointRight: {fileID: 1472576087}
+  holdPointLeft: {fileID: 1287267669}
   interactRange: 2
   playerMask:
     serializedVersion: 2

@@ -176,7 +176,13 @@ public class HidingSpot : MonoBehaviour, IInteractable
         if (targetItem != null)
         {
             targetItem.Init(targetFlag);
+            targetItem.OnPickedUp += HandleItemPickedUp;
         }
+    }
+
+    private void HandleItemPickedUp()
+    {
+        spawnedObject = null;
     }
 
     /// <summary>Visually open this hiding spot. Triggers door animation if present.</summary>

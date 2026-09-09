@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TargetItem : MonoBehaviour
@@ -17,6 +18,11 @@ public class TargetItem : MonoBehaviour
 
     [SerializeField] private ParticleSystem etincelle;
 
+    [Header("Main utilisé")]
+    [SerializeField] private bool useLeftHand = false;
+    public bool UseLeftHand => useLeftHand;
+
+    public event System.Action OnPickedUp;
 
 
     public void Init(string flagToSetOnPickup)
@@ -33,6 +39,8 @@ public class TargetItem : MonoBehaviour
             return;
 
         isGrabbed = true;
+
+        OnPickedUp?.Invoke();
 
         // Picking up a valid item clears any active penalty
         PenaltyManager.Instance?.ClearCurrentPenalty();
@@ -140,7 +148,7 @@ public class TargetItem : MonoBehaviour
         PickupSystem pickupSystem = holdPoint.GetComponentInParent<PickupSystem>();
         if (pickupSystem != null)
         {
-            pickupSystem.ReleaseHeldItem();
+            pickupSystem.ReleaseHeldItemRight();
         }
 
         // Allow this item to be picked up again
