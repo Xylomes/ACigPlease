@@ -639,6 +639,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &58346604
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4409,6 +4410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &232417775
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6222,6 +6224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &447268784
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6793,6 +6796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!114 &460733277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6901,6 +6905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!114 &481361415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8677,8 +8682,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f032f477022df44b53f5afbb2b81dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openAngle: -90
+  openAngle: 90
   duration: 0.5
+  rotationAxis: 0
 --- !u!114 &614221428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9170,6 +9176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!114 &648199289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12570,6 +12577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &862717096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13356,6 +13364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &941567055
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16420,6 +16429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &1193349282
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17739,6 +17749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 1
+  rotationAxis: 1
 --- !u!114 &1284665892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19466,8 +19477,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64f032f477022df44b53f5afbb2b81dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openAngle: 90
+  openAngle: -90
   duration: 0.5
+  rotationAxis: 0
 --- !u!114 &1393274725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21081,6 +21093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!114 &1660992434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24864,8 +24877,8 @@ MonoBehaviour:
   player: {fileID: 1948060373}
   cameraTransform: {fileID: 1747078736}
   rotationSpeed: 0.5
-  maxLookAngleUp: 38
-  maxLookAngleDown: -60
+  maxLookAngleUp: 70
+  maxLookAngleDown: -70
 --- !u!114 &1948060379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25666,6 +25679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: 90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &2045161219
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27203,6 +27217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openAngle: -90
   duration: 0.5
+  rotationAxis: 1
 --- !u!64 &2087187558
 MeshCollider:
   m_ObjectHideFlags: 0
