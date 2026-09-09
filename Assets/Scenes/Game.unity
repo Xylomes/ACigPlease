@@ -494,7 +494,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 420905133}
   doorShelf: {fileID: 58346603}
@@ -2861,7 +2862,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 1043094874}
   doorShelf: {fileID: 232417774}
@@ -3734,6 +3736,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8401171162151371905, guid: 32a88c34046252046b06b6eb02158332, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 8401171162151371905, guid: 32a88c34046252046b06b6eb02158332, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.03
+      objectReference: {fileID: 0}
     - target: {fileID: 8891792828147989070, guid: 32a88c34046252046b06b6eb02158332, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.61
@@ -3752,6 +3762,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1839428914070298527, guid: 32a88c34046252046b06b6eb02158332, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1606733171}
+    - targetCorrespondingSourceObject: {fileID: -1839428914070298527, guid: 32a88c34046252046b06b6eb02158332, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1606733175}
     - targetCorrespondingSourceObject: {fileID: 6310625417968074788, guid: 32a88c34046252046b06b6eb02158332, type: 3}
       insertIndex: -1
       addedObject: {fileID: 674156470}
@@ -4044,7 +4057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 1828445976}
   doorShelf: {fileID: 447268783}
@@ -8466,7 +8480,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 1694726604}
   doorShelf: {fileID: 862717095}
@@ -8937,7 +8952,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 765503520}
   doorShelf: {fileID: 941567054}
@@ -11489,7 +11505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 85445098}
   doorShelf: {fileID: 1193349281}
@@ -13533,6 +13550,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 803713076883799035, guid: 32a88c34046252046b06b6eb02158332, type: 3}
+--- !u!114 &1606733175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606733167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb6f8dd2ab580d4cb9cbd432d97a00c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 360
+  rotationAxis: {x: 0, y: 1, z: 0}
 --- !u!1 &1612671561
 GameObject:
   m_ObjectHideFlags: 0
@@ -16842,7 +16873,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 1542898854}
   doorShelf: {fileID: 2045161218}
@@ -17505,7 +17537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238dbad788448234bba02dbc67065247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: Ouvrir
+  openPrompt: Ouvrir
+  closePrompt: Fermer
   animator: {fileID: 0}
   spawnPoint: {fileID: 96493596}
   doorShelf: {fileID: 2087187557}
