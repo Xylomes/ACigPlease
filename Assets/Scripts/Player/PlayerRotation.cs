@@ -20,6 +20,16 @@ public class PlayerRotation : MonoBehaviour
     /// <summary>Multiplier applied to rotation speed (set by options menu). Defaults to 1.</summary>
     public float SensitivityMultiplier { get; set; } = 1f;
 
+    /// <summary>Reset the camera look angle to neutral (looking straight ahead).</summary>
+    public void ResetCameraAngle()
+    {
+        xRotation = 0f;
+        if (cameraTransform != null)
+        {
+            cameraTransform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+    }
+
     void Start()
     {
         PlayerInput playerInput = GetComponent<PlayerInput>();

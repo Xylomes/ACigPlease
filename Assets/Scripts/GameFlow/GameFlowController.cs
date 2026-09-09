@@ -196,6 +196,18 @@ public class GameFlowController : MonoBehaviour
         SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
         SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
         SetCanvasActive(hudCanvas, newState == FlowState.Playing);
+
+        // Reset head bob effect when leaving gameplay so the menu camera is still
+        if (newState != FlowState.Playing)
+        {
+            HeadMouvementEffect headEffect = playerController != null
+                ? playerController.GetComponentInChildren<HeadMouvementEffect>()
+                : null;
+            if (headEffect != null)
+            {
+                headEffect.ResetEffect();
+            }
+        }
     }
 
     private static void SetCanvasActive(GameObject canvas, bool active)
@@ -263,7 +275,7 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Teleports the player back to the starting position and rotation.</summary>
+    /// <summary>Teleports the player back to the starting position, rotation, and camera angle.</summary>
     private void ResetPlayerToStart()
     {
         if (playerController != null)
@@ -273,6 +285,12 @@ public class GameFlowController : MonoBehaviour
             playerController.transform.position = playerStartPosition;
             playerController.transform.rotation = playerStartRotation;
             if (cc != null) cc.enabled = true;
+        }
+
+        // Reset camera local rotation to neutral (looking straight ahead)
+        if (playerRotation != null)
+        {
+            playerRotation.ResetCameraAngle();
         }
     }
 }

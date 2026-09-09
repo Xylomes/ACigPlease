@@ -115,18 +115,16 @@ public class GameManager : MonoBehaviour
             {
                 pickup.ClearHeldItem();
             }
-
-            GrabSystem grab = playerCtrl.GetComponent<GrabSystem>();
-            if (grab != null)
-            {
-                // Release any grabbed bag without dropping it — the scene reset will clean up
-                grab.ReleaseHeldItem();
-            }
         }
 
         // Reset player input modifiers
         PlayerController.IsMovementInverted = false;
         PlayerRotation.IsInputInverted = false;
+
+        // Reset player state to Idle so the head bob effect stops
+        PlayerStateMachine.CurrentState = PlayerStateMachine.PlayerState.Idle;
+        PlayerStateMachine.CanInteract = false;
+        PlayerStateMachine.IsHoldingItem = false;
 
         // Reset timer UI
         OnTimerTick?.Invoke(TIMER_START_VALUE);
