@@ -3,7 +3,12 @@ guid: 65c0cc792dfdf304990a5109c2785066
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_StoveOven
+    second: {fileID: 2100000, guid: 0c32dc34eb34f4941bf56e2c95e5d9e5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

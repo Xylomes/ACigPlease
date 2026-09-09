@@ -3,7 +3,12 @@ guid: f781adb15b0213e40bed44f6d56f7901
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_ClockPlateLetter1
+    second: {fileID: 2100000, guid: c7f6c9d3ab631e44eb391d0b6e0de980, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
