@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class door_shelf : MonoBehaviour
 {
+    public enum RotationAxis { X, Y, Z }
+
     public float openAngle = 90f;
     public float duration = 1f;
+    [Tooltip("Axis around which the door rotates.")]
+    public RotationAxis rotationAxis = RotationAxis.Y;
 
     private bool isOpen = false;
     private bool isAnimating = false;
@@ -15,7 +19,14 @@ public class door_shelf : MonoBehaviour
     void Awake()
     {
         closedRotation = transform.rotation;
-        openRotation = closedRotation * Quaternion.Euler(0f, openAngle, 0f);
+        Vector3 euler = Vector3.zero;
+        switch (rotationAxis)
+        {
+            case RotationAxis.X: euler = new Vector3(openAngle, 0f, 0f); break;
+            case RotationAxis.Y: euler = new Vector3(0f, openAngle, 0f); break;
+            case RotationAxis.Z: euler = new Vector3(0f, 0f, openAngle); break;
+        }
+        openRotation = closedRotation * Quaternion.Euler(euler);
     }
 
     public void ToggleDoor()
