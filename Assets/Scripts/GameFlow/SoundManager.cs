@@ -15,12 +15,13 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip gameAmbiantMusic;
 
     [Header("SFX Clips")]
-    [SerializeField] private AudioClip jumpSound;
-    [SerializeField] private AudioClip dashSound;
-    [SerializeField] private AudioClip deathSound;
-    [SerializeField] private AudioClip checkpointSound;
-    [SerializeField] private AudioClip arrowLaunchSound;
-    [SerializeField] private AudioClip clicSound;
+    //[SerializeField] private AudioClip windSound;
+    [SerializeField] private AudioClip fanSound;
+    [SerializeField] private AudioClip fridgeSound;
+    [SerializeField] private AudioClip carSound;
+    [SerializeField] private AudioClip ratSound;
+    [SerializeField] private AudioClip peopleSound;
+    [SerializeField] private AudioClip playerBreathSound;
 
     [Header("Volume Settings")]
     [SerializeField] [Range(0f, 1f)] private float musicVolume = 0.7f;
@@ -41,13 +42,13 @@ public class SoundManager : MonoBehaviour
     {
         MenuMusic,
         GameMusic,
-        Jump,
-        Dash,
-        Death,
-        Checkpoint,
-        ArrowLaunch,
-        Clic,
-        AmiantMusic
+        Fridge,
+        Fan,
+        Car,
+        Rat,
+        People,
+        PlayerBreath,
+        AmbiantSound
     }
 
     private void Awake()
@@ -81,13 +82,13 @@ public class SoundManager : MonoBehaviour
         {
             { SoundType.MenuMusic, menuMusic },
             { SoundType.GameMusic, gameMusic },
-            { SoundType.Jump, jumpSound },
-            { SoundType.Dash, dashSound },
-            { SoundType.Death, deathSound },
-            { SoundType.Checkpoint, checkpointSound },
-            { SoundType.ArrowLaunch, arrowLaunchSound },
-            { SoundType.Clic, clicSound },
-            { SoundType.AmiantMusic, gameAmbiantMusic }
+            { SoundType.Fridge, fridgeSound },
+            { SoundType.Fan, fanSound },
+            { SoundType.Car, carSound },
+            { SoundType.Rat, ratSound },
+            { SoundType.People, peopleSound },
+            { SoundType.PlayerBreath, playerBreathSound },
+            { SoundType.AmbiantSound, gameAmbiantMusic }
         };
     }
 
@@ -197,6 +198,12 @@ public class SoundManager : MonoBehaviour
     public void MuteAll(bool mute)
     {
         AudioListener.volume = mute ? 0f : 1f;
+    }
+
+    public AudioClip GetClip(SoundType type)
+    {
+        soundDictionary.TryGetValue(type, out AudioClip clip);
+        return clip;
     }
 
     void OnDestroy()
