@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
 
     public static bool IsMovementInverted { get; set; } = false;
 
+    /// <summary>True while the player is holding the Interact key (regardless of Hold interaction timing).</summary>
+    public bool IsInteractHeld => interactAction != null && interactAction.IsPressed();
+
     [SerializeField] private CharacterController player;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Transform cameraTransform;

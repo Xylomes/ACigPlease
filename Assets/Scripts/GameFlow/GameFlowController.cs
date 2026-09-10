@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class GameFlowController : MonoBehaviour
@@ -66,6 +67,12 @@ public class GameFlowController : MonoBehaviour
         audioVolume = defaultAudioVolume;
         mouseSensitivity = defaultMouseSensitivity;
         AudioListener.volume = audioVolume;
+        if (playerRotation != null)
+        {
+            playerRotation.SensitivityMultiplier = mouseSensitivity;
+        }
+
+        SetupOptionSliders();
 
         if (playerController != null)
         {
@@ -82,6 +89,29 @@ public class GameFlowController : MonoBehaviour
         }
 
         SetState(FlowState.MainMenu);
+    }
+
+    private void SetupOptionSliders()
+    {
+        if (optionsCanvas == null)
+            return;
+
+        Slider[] lSliders = optionsCanvas.GetComponentsInChildren<Slider>(true);
+        foreach (Slider lSlider in lSliders)
+        {
+            if (lSlider.name == "AudioSlider")
+            {
+                lSlider.onValueChanged.RemoveAllListeners();
+                lSlider.onValueChanged.AddListener(OnAudioSliderChanged);
+                lSlider.value = audioVolume;
+            }
+            else if (lSlider.name == "SensitivitySlider")
+            {
+                lSlider.onValueChanged.RemoveAllListeners();
+                lSlider.onValueChanged.AddListener(OnSensitivitySliderChanged);
+                lSlider.value = mouseSensitivity;
+            }
+        }
     }
 
     private void OnDestroy()
@@ -101,6 +131,12 @@ public class GameFlowController : MonoBehaviour
         {
             SetState(FlowState.Playing);
             gameManager.StartGame();
+
+            ControlHintsFade lHints = hudCanvas != null ? hudCanvas.GetComponent<ControlHintsFade>() : null;
+            if (lHints != null)
+            {
+                lHints.ShowHints();
+            }
         });
     }
 

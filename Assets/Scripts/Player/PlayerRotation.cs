@@ -27,7 +27,7 @@ public class PlayerRotation : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         PlayerInput lPlayerInput = GetComponent<PlayerInput>();
         lookAction = lPlayerInput.actions[LOOKACTION];
