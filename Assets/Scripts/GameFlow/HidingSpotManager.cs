@@ -5,11 +5,8 @@ public class HidingSpotManager : MonoBehaviour
 {
     public static HidingSpotManager Instance { get; private set; }
 
-    [Header("Hiding Spots (8)")]
-    [Tooltip("Les 8 cachettes de la scène. Le paquet de clopes et les briquets y spawnent.")]
     [SerializeField] private List<HidingSpot> hidingSpots = new List<HidingSpot>();
 
-    [Header("Prefabs")]
     [SerializeField] private GameObject cigarettePrefab;
     [SerializeField] private GameObject lighterPrefab;
 
@@ -30,20 +27,16 @@ public class HidingSpotManager : MonoBehaviour
 
         Instance = this;
 
-        // Remove duplicate HidingSpot components that share the same GameObject.
-        // The interaction system always finds the first component, so any target
-        // assigned to a duplicate is unreachable and would show a false "empty" voice.
-        HashSet<GameObject> seen = new HashSet<GameObject>();
+        HashSet<GameObject> lSeen = new HashSet<GameObject>();
         for (int i = hidingSpots.Count - 1; i >= 0; i--)
         {
-            if (hidingSpots[i] == null || !seen.Add(hidingSpots[i].gameObject))
+            if (hidingSpots[i] == null || !lSeen.Add(hidingSpots[i].gameObject))
             {
                 hidingSpots.RemoveAt(i);
             }
         }
     }
 
-    /// <summary>Randomly place cigarettes in one of the hiding spots.</summary>
     public void SetupCigarettePhase()
     {
         EnableAllSpots();
@@ -52,103 +45,91 @@ public class HidingSpotManager : MonoBehaviour
 
         for (int i = 0; i < hidingSpots.Count; i++)
         {
-            HidingSpot spot = hidingSpots[i];
-            spot.Setup(
-                containsTarget: i == cigaretteSpotIndex,
-                targetFlag: GameFlags.CIGARETTES_FOUND,
-                isFunctionalTarget: true,
-                prefabToSpawn: i == cigaretteSpotIndex ? cigarettePrefab : null
+            HidingSpot lSpot = hidingSpots[i];
+            lSpot.Setup(
+                pContainsTarget: i == cigaretteSpotIndex,
+                pTargetFlag: GameFlags.CIGARETTES_FOUND,
+                pIsFunctionalTarget: true,
+                pPrefabToSpawn: i == cigaretteSpotIndex ? cigarettePrefab : null
             );
         }
     }
 
-    /// <summary>Close all spots, pick 3 random ones for lighters (1 functional).</summary>
     public void SetupLighterPhase()
     {
         CloseAllSpots();
 
-        // Pick 3 random spot indices from the 8
         lighterSpotIndices = PickRandomIndices(hidingSpots.Count, NUMBER_OF_LIGHTERS);
-
-        //// Enable only the 3 chosen spots, disable the rest
-        //for (int i = 0; i < hidingSpots.Count; i++)
-        //{
-        //    hidingSpots[i].gameObject.SetActive(lighterSpotIndices.Contains(i));
-        //}
 
         workingLighterIndex = Random.Range(0, NUMBER_OF_LIGHTERS);
 
         for (int i = 0; i < hidingSpots.Count; i++)
         {
-            int lighterListPosition = lighterSpotIndices.IndexOf(i);
-            bool hasLighter = lighterListPosition != -1;
-            bool isFunctional = hasLighter && lighterListPosition == workingLighterIndex;
+            int lLighterListPosition = lighterSpotIndices.IndexOf(i);
+            bool lHasLighter = lLighterListPosition != -1;
+            bool lIsFunctional = lHasLighter && lLighterListPosition == workingLighterIndex;
 
             hidingSpots[i].Setup(
-                containsTarget: hasLighter,
-                targetFlag: isFunctional ? GameFlags.WORKING_LIGHTER_FOUND : null,
-                isFunctionalTarget: isFunctional,
-                prefabToSpawn: hasLighter ? lighterPrefab : null
+                pContainsTarget: lHasLighter,
+                pTargetFlag: lIsFunctional ? GameFlags.WORKING_LIGHTER_FOUND : null,
+                pIsFunctionalTarget: lIsFunctional,
+                pPrefabToSpawn: lHasLighter ? lighterPrefab : null
             );
         }
     }
 
-    /// <summary>Close and reset every hiding spot, including visual door state.</summary>
     public void CloseAllSpots()
     {
-        foreach (HidingSpot spot in hidingSpots)
+        foreach (HidingSpot lSpot in hidingSpots)
         {
-            if (spot != null)
+            if (lSpot != null)
             {
-                spot.Close();
+                lSpot.Close();
             }
         }
     }
 
-    /// <summary>Force-close every spot and destroy any spawned objects, even if already closed.</summary>
     public void ResetAllSpots()
     {
-        foreach (HidingSpot spot in hidingSpots)
+        foreach (HidingSpot lSpot in hidingSpots)
         {
-            if (spot != null)
+            if (lSpot != null)
             {
-                spot.ForceClose();
-                spot.Setup(
-                    containsTarget: false,
-                    targetFlag: null,
-                    isFunctionalTarget: false,
-                    prefabToSpawn: null
+                lSpot.ForceClose();
+                lSpot.Setup(
+                    pContainsTarget: false,
+                    pTargetFlag: null,
+                    pIsFunctionalTarget: false,
+                    pPrefabToSpawn: null
                 );
-                spot.gameObject.SetActive(true);
+                lSpot.gameObject.SetActive(true);
             }
         }
     }
 
-    /// <summary>Make sure all spots are active (for cigarette phase).</summary>
     private void EnableAllSpots()
     {
-        foreach (HidingSpot spot in hidingSpots)
+        foreach (HidingSpot lSpot in hidingSpots)
         {
-            if (spot != null)
+            if (lSpot != null)
             {
-                spot.gameObject.SetActive(true);
+                lSpot.gameObject.SetActive(true);
             }
         }
     }
 
-    /// <summary>Pick count unique random indices from [0, max).</summary>
-    private List<int> PickRandomIndices(int max, int count)
+    private List<int> PickRandomIndices(int pMax, int pCount)
     {
-        List<int> pool = new List<int>();
-        for (int i = 0; i < max; i++) pool.Add(i);
+        List<int> lPool = new List<int>();
+        for (int i = 0; i < pMax; i++) lPool.Add(i);
 
-        List<int> result = new List<int>();
-        for (int i = 0; i < count && pool.Count > 0; i++)
+        List<int> lResult = new List<int>();
+        for (int i = 0; i < pCount && lPool.Count > 0; i++)
         {
-            int pickIndex = Random.Range(0, pool.Count);
-            result.Add(pool[pickIndex]);
-            pool.RemoveAt(pickIndex);
+            int lPickIndex = Random.Range(0, lPool.Count);
+            lResult.Add(lPool[lPickIndex]);
+            lPool.RemoveAt(lPickIndex);
         }
-        return result;
+        return lResult;
     }
 }

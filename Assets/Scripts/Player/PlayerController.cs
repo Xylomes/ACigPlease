@@ -7,10 +7,8 @@ public class PlayerController : MonoBehaviour
     public PlayerStateMachine stateMachine { get; private set; }
     public GrabSystem grabSystem { get; private set; }
 
-    /// <summary>When true, movement input is inverted (drunk mode penalty).</summary>
     public static bool IsMovementInverted { get; set; } = false;
 
-    // Player parameters
     [SerializeField] private CharacterController player;
     [SerializeField] private float moveSpeed;
     [SerializeField] private Transform cameraTransform;
@@ -52,19 +50,19 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Vector2 input = moveAction.ReadValue<Vector2>();
+        Vector2 lInput = moveAction.ReadValue<Vector2>();
         if (PlayerController.IsMovementInverted)
         {
-            input = -input;
+            lInput = -lInput;
         }
-        bool crouchPressed = crouchAction.IsPressed();
-        bool grabPressed = grabAction.IsPressed();
-        stateMachine.SetInfos(input,crouchPressed);
-        grabSystem.SetGrabInfos(grabPressed);
+        bool lCrouchPressed = crouchAction.IsPressed();
+        bool lGrabPressed = grabAction.IsPressed();
+        stateMachine.SetInfos(lInput, lCrouchPressed);
+        grabSystem.SetGrabInfos(lGrabPressed);
         stateMachine.Update();
     }
 
-    private void OnInteractPerformed(InputAction.CallbackContext context)
+    private void OnInteractPerformed(InputAction.CallbackContext pContext)
     {
         if(!DialogueManager.Instance.isInDialogue)
         {
@@ -73,7 +71,7 @@ public class PlayerController : MonoBehaviour
         else return;
         
     }
-    private void OnNextTextPressed(InputAction.CallbackContext context)
+    private void OnNextTextPressed(InputAction.CallbackContext pContext)
     {
         if (DialogueManager.Instance.isInDialogue)
         {

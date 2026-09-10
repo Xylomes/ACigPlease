@@ -3,11 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Controls the overall game flow: main menu, playing, options, game over, and credits.
-/// Uses the EyeBlinkTransition for smooth state changes between phases.
-/// The player keeps an FPS camera view at all times; only input and UI change.
-/// </summary>
 public class GameFlowController : MonoBehaviour
 {
     public static GameFlowController Instance { get; private set; }
@@ -16,6 +11,7 @@ public class GameFlowController : MonoBehaviour
     {
         MainMenu,
         Playing,
+        Choice,
         Options,
         Rules,
         GameOver,
@@ -23,49 +19,34 @@ public class GameFlowController : MonoBehaviour
         Credits
     }
 
-    [Header("Blink Transition")]
     [SerializeField] private EyeBlinkTransition eyeBlink;
 
-    [Header("UI Canvases")]
     [SerializeField] private GameObject mainMenuCanvas;
     [SerializeField] private GameObject optionsCanvas;
     [SerializeField] private GameObject rulesCanvas;
     [SerializeField] private GameObject winVideoCanvas;
     [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject hudCanvas;
+    [SerializeField] private GameObject choiceCanvas;
 
-    [Header("Win Video Placeholder")]
-    [Tooltip("Duration of the win video placeholder before transitioning to credits.")]
     [SerializeField] private float winVideoPlaceholderDuration = 3f;
-
-    [Header("Credits")]
-    [Tooltip("Duration the credits stay on screen before returning to menu.")]
     [SerializeField] private float creditsDuration = 6f;
-
-    [Header("Game Over")]
-    [Tooltip("Delay in seconds after a game over before the blink transition to the menu.")]
     [SerializeField] private float gameOverDelay = 3f;
 
-    [Header("Player References")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerRotation playerRotation;
     [SerializeField] private PlayerInput playerInput;
 
-    [Header("Game Manager")]
     [SerializeField] private GameManager gameManager;
 
-    [Header("Settings Defaults")]
     [SerializeField] private float defaultAudioVolume = 1f;
     [SerializeField] private float defaultMouseSensitivity = 1f;
 
-    /// <summary>Current flow state.</summary>
     public FlowState CurrentState { get; private set; } = FlowState.MainMenu;
 
-    // Stored settings
     private float audioVolume;
     private float mouseSensitivity;
 
-    // Player start transform (to reset on game over)
     private Vector3 playerStartPosition;
     private Quaternion playerStartRotation;
 
@@ -85,16 +66,19 @@ public class GameFlowController : MonoBehaviour
         mouseSensitivity = defaultMouseSensitivity;
         AudioListener.volume = audioVolume;
 
-        // Record the player's starting transform for reset on game over
         if (playerController != null)
         {
             playerStartPosition = playerController.transform.position;
             playerStartRotation = playerController.transform.rotation;
         }
 
-        // Subscribe to game manager events
         GameManager.OnTimerExpired += HandleGameOver;
         GameFlags.OnFlagSet += HandleFlagSet;
+
+        if (InnerVoiceManager.Instance != null)
+        {
+            InnerVoiceManager.Instance.OnAllLinesTyped += HandleVoiceComplete;
+        }
 
         SetState(FlowState.MainMenu);
     }
@@ -103,11 +87,13 @@ public class GameFlowController : MonoBehaviour
     {
         GameManager.OnTimerExpired -= HandleGameOver;
         GameFlags.OnFlagSet -= HandleFlagSet;
+
+        if (InnerVoiceManager.Instance != null)
+        {
+            InnerVoiceManager.Instance.OnAllLinesTyped -= HandleVoiceComplete;
+        }
     }
 
-    // ---- Button handlers (called from UI) ----
-
-    /// <summary>Called when the Play button is clicked.</summary>
     public void OnPlayClicked()
     {
         eyeBlink.Blink(() =>
@@ -117,7 +103,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Options button is clicked.</summary>
     public void OnOptionsClicked()
     {
         eyeBlink.Blink(() =>
@@ -126,7 +111,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Rules button is clicked.</summary>
     public void OnRulesClicked()
     {
         eyeBlink.Blink(() =>
@@ -135,7 +119,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Back button in Rules is clicked.</summary>
     public void OnRulesBackClicked()
     {
         eyeBlink.Blink(() =>
@@ -144,7 +127,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Quit button is clicked.</summary>
     public void OnQuitClicked()
     {
         eyeBlink.Blink(() =>
@@ -157,7 +139,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Back button in Options is clicked.</summary>
     public void OnOptionsBackClicked()
     {
         eyeBlink.Blink(() =>
@@ -166,40 +147,33 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the audio volume slider changes.</summary>
-    public void OnAudioSliderChanged(float value)
+    public void OnAudioSliderChanged(float pValue)
     {
-        audioVolume = value;
-        AudioListener.volume = value;
+        audioVolume = pValue;
+        AudioListener.volume = pValue;
     }
 
-    /// <summary>Called when the mouse sensitivity slider changes.</summary>
-    public void OnSensitivitySliderChanged(float value)
+    public void OnSensitivitySliderChanged(float pValue)
     {
-        mouseSensitivity = value;
+        mouseSensitivity = pValue;
         if (playerRotation != null)
-            playerRotation.SensitivityMultiplier = value;
+            playerRotation.SensitivityMultiplier = pValue;
     }
 
-    // ---- State management ----
-
-    private void SetState(FlowState newState)
+    private void SetState(FlowState pNewState)
     {
-        CurrentState = newState;
+        CurrentState = pNewState;
 
-        bool playerCanMove = newState == FlowState.Playing;
-        bool uiInteractable = !playerCanMove;
+        bool lPlayerCanMove = pNewState == FlowState.Playing;
 
-        // Enable/disable player controls
         if (playerController != null)
-            playerController.enabled = playerCanMove;
+            playerController.enabled = lPlayerCanMove;
         if (playerRotation != null)
-            playerRotation.enabled = playerCanMove;
+            playerRotation.enabled = lPlayerCanMove;
         if (playerInput != null)
-            playerInput.enabled = playerCanMove;
+            playerInput.enabled = lPlayerCanMove;
 
-        // Cursor
-        if (playerCanMove)
+        if (lPlayerCanMove)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -210,41 +184,37 @@ public class GameFlowController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        // Toggle UI canvases
-        SetCanvasActive(mainMenuCanvas, newState == FlowState.MainMenu);
-        SetCanvasActive(optionsCanvas, newState == FlowState.Options);
-        SetCanvasActive(rulesCanvas, newState == FlowState.Rules);
-        SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
-        SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
-        SetCanvasActive(hudCanvas, newState == FlowState.Playing);
+        SetCanvasActive(mainMenuCanvas, pNewState == FlowState.MainMenu);
+        SetCanvasActive(optionsCanvas, pNewState == FlowState.Options);
+        SetCanvasActive(rulesCanvas, pNewState == FlowState.Rules);
+        SetCanvasActive(winVideoCanvas, pNewState == FlowState.WinVideo);
+        SetCanvasActive(creditsCanvas, pNewState == FlowState.Credits);
+        SetCanvasActive(hudCanvas, pNewState == FlowState.Playing || pNewState == FlowState.Choice);
+        SetCanvasActive(choiceCanvas, pNewState == FlowState.Choice);
 
-        // Reset head bob effect when leaving gameplay so the menu camera is still
-        if (newState != FlowState.Playing)
+        if (pNewState != FlowState.Playing)
         {
-            HeadMouvementEffect headEffect = playerController != null
+            HeadMouvementEffect lHeadEffect = playerController != null
                 ? playerController.GetComponentInChildren<HeadMouvementEffect>()
                 : null;
-            if (headEffect != null)
+            if (lHeadEffect != null)
             {
-                headEffect.ResetEffect();
+                lHeadEffect.ResetEffect();
             }
         }
     }
 
-    private static void SetCanvasActive(GameObject canvas, bool active)
+    private static void SetCanvasActive(GameObject pCanvas, bool pActive)
     {
-        if (canvas != null)
-            canvas.SetActive(active);
+        if (pCanvas != null)
+            pCanvas.SetActive(pActive);
     }
-
-    // ---- Game over / win handling ----
 
     private void HandleGameOver()
     {
         StartCoroutine(GameOverAfterDelay());
     }
 
-    /// <summary>Wait gameOverDelay seconds, then blink and return to the main menu.</summary>
     private IEnumerator GameOverAfterDelay()
     {
         yield return new WaitForSeconds(gameOverDelay);
@@ -257,23 +227,16 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    private void HandleFlagSet(string flag)
+    private void HandleFlagSet(string pFlag)
     {
-        if (flag == GameFlags.GAME_WON)
+        if (pFlag == GameFlags.CHOICE_PROMPT)
         {
-            eyeBlink.Blink(() =>
-            {
-                SetState(FlowState.WinVideo);
-                StartCoroutine(WinVideoThenCredits());
-            });
+            SetState(FlowState.Choice);
         }
     }
 
-    /// <summary>After the win video placeholder plays, transition to credits.</summary>
     private IEnumerator WinVideoThenCredits()
     {
-        // Placeholder: wait for the configured duration.
-        // When the real video is ready, replace this with VideoPlayer playback logic.
         yield return new WaitForSeconds(winVideoPlaceholderDuration);
 
         eyeBlink.Blink(() =>
@@ -283,7 +246,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>After credits finish, return to main menu and reset the game.</summary>
     private IEnumerator CreditsThenMainMenu()
     {
         yield return new WaitForSeconds(creditsDuration);
@@ -296,19 +258,89 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Teleports the player back to the starting position, rotation, and camera angle.</summary>
+    private bool voiceComplete;
+
+    private void HandleVoiceComplete()
+    {
+        voiceComplete = true;
+    }
+
+    public void OnSmokeClicked()
+    {
+        SetCanvasActive(choiceCanvas, false);
+        gameManager.EndGame();
+
+        voiceComplete = false;
+        if (InnerVoiceManager.Instance != null && gameManager.SmokeVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameManager.SmokeVoice);
+            StartCoroutine(SmokeEndingRoutine());
+        }
+    }
+
+    public void OnThrowAwayClicked()
+    {
+        SetCanvasActive(choiceCanvas, false);
+
+        PlayerController lPlayerCtrl = PlayerController.Instance;
+        if (lPlayerCtrl != null)
+        {
+            PickupSystem lPickup = lPlayerCtrl.GetComponent<PickupSystem>();
+            if (lPickup != null)
+            {
+                lPickup.DropAllItemsToFloor();
+            }
+        }
+
+        gameManager.EndGame();
+
+        voiceComplete = false;
+        if (InnerVoiceManager.Instance != null && gameManager.ThrowAwayVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameManager.ThrowAwayVoice);
+            StartCoroutine(ThrowAwayEndingRoutine());
+        }
+    }
+
+    private IEnumerator SmokeEndingRoutine()
+    {
+        yield return new WaitUntil(() => voiceComplete);
+        yield return new WaitForSeconds(2f);
+
+        InnerVoiceManager.Instance?.Hide();
+
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.WinVideo);
+            StartCoroutine(WinVideoThenCredits());
+        });
+    }
+
+    private IEnumerator ThrowAwayEndingRoutine()
+    {
+        yield return new WaitUntil(() => voiceComplete);
+        yield return new WaitForSeconds(2f);
+
+        InnerVoiceManager.Instance?.Hide();
+
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.Credits);
+            StartCoroutine(CreditsThenMainMenu());
+        });
+    }
+
     private void ResetPlayerToStart()
     {
         if (playerController != null)
         {
-            CharacterController cc = playerController.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
+            CharacterController lCc = playerController.GetComponent<CharacterController>();
+            if (lCc != null) lCc.enabled = false;
             playerController.transform.position = playerStartPosition;
             playerController.transform.rotation = playerStartRotation;
-            if (cc != null) cc.enabled = true;
+            if (lCc != null) lCc.enabled = true;
         }
 
-        // Reset camera local rotation to neutral (looking straight ahead)
         if (playerRotation != null)
         {
             playerRotation.ResetCameraAngle();

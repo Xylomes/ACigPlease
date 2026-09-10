@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class DrunkModePenalty : MonoBehaviour, IPenalty
 {
-    [Header("Drunk Camera Wobble")]
     [SerializeField] private float wobbleSpeed = 2f;
     [SerializeField] private float wobbleAmplitude = 3f;
 
@@ -16,7 +15,6 @@ public class DrunkModePenalty : MonoBehaviour, IPenalty
 
     public void Activate()
     {
-        // Invert player movement and look inputs
         PlayerRotation.IsInputInverted = true;
         PlayerController.IsMovementInverted = true;
 
@@ -36,8 +34,8 @@ public class DrunkModePenalty : MonoBehaviour, IPenalty
         if (PlayerRotation.IsInputInverted && cameraTransform != null)
         {
             wobbleTimer += Time.deltaTime * wobbleSpeed;
-            float zTilt = Mathf.Sin(wobbleTimer) * wobbleAmplitude;
-            cameraTransform.localRotation = cameraTransform.localRotation * Quaternion.Euler(0, 0, zTilt);
+            float lZTilt = Mathf.Sin(wobbleTimer) * wobbleAmplitude;
+            cameraTransform.localRotation = cameraTransform.localRotation * Quaternion.Euler(0, 0, lZTilt);
         }
     }
 }

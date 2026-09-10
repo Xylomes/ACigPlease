@@ -13,27 +13,25 @@ public class TargetItem : MonoBehaviour
     private Collider itemCollider;
     private Coroutine moveCoroutine;
 
-    [Header("Animation de grab")]
     [SerializeField] private float grabMoveDuration = 0.3f;
 
     [SerializeField] private ParticleSystem etincelle;
 
-    [Header("Main utilisé")]
     [SerializeField] private bool useLeftHand = false;
     public bool UseLeftHand => useLeftHand;
 
     public event System.Action OnPickedUp;
 
 
-    public void Init(string flagToSetOnPickup)
+    public void Init(string pFlagToSetOnPickup)
     {
-        targetFlag = flagToSetOnPickup;
-        hasFlagToSet = !string.IsNullOrEmpty(flagToSetOnPickup);
+        targetFlag = pFlagToSetOnPickup;
+        hasFlagToSet = !string.IsNullOrEmpty(pFlagToSetOnPickup);
         rb = GetComponent<Rigidbody>();
         itemCollider = GetComponent<Collider>();
     }
 
-    public void OnGrabbed(Transform holdPoint)
+    public void OnGrabbed(Transform pHoldPoint)
     {
         if (isGrabbed)
             return;
@@ -42,7 +40,6 @@ public class TargetItem : MonoBehaviour
 
         OnPickedUp?.Invoke();
 
-        // Picking up a valid item clears any active penalty
         PenaltyManager.Instance?.ClearCurrentPenalty();
 
         if (hasFlagToSet)
@@ -51,12 +48,11 @@ public class TargetItem : MonoBehaviour
         }
         else
         {
-            // Non-functional item: warn the player and auto-drop after a delay
             if (InnerVoiceManager.Instance != null)
             {
                 InnerVoiceManager.Instance.Show("<shake>Ce briquet ne marche pas... Il me faut un autre.</shake>");
             }
-            StartCoroutine(AutoDropAfterDelay(holdPoint));
+            StartCoroutine(AutoDropAfterDelay(pHoldPoint));
         }
 
         if (rb != null)
@@ -64,9 +60,7 @@ public class TargetItem : MonoBehaviour
             rb.isKinematic = true;
         }
 
-        transform.SetParent(holdPoint);
-        //transform.localPosition = Vector3.zero;
-        //transform.localRotation = Quaternion.identity;
+        transform.SetParent(pHoldPoint);
 
         if (itemCollider != null)
         {
@@ -78,27 +72,27 @@ public class TargetItem : MonoBehaviour
 
     private IEnumerator MoveToHand()
     {
-        Vector3 startPos = transform.localPosition;
-        Quaternion startRotation = transform.localRotation;
+        Vector3 lStartPos = transform.localPosition;
+        Quaternion lStartRotation = transform.localRotation;
 
-        Vector3 targetPos = Vector3.zero;
-        Quaternion targetRotation = Quaternion.identity;
+        Vector3 lTargetPos = Vector3.zero;
+        Quaternion lTargetRotation = Quaternion.identity;
 
-        float elapsed = 0;
+        float lElapsed = 0;
 
-        while (elapsed < grabMoveDuration)
+        while (lElapsed < grabMoveDuration)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / grabMoveDuration;
+            lElapsed += Time.deltaTime;
+            float lT = lElapsed / grabMoveDuration;
 
-            transform.localPosition = Vector3.Lerp(startPos, targetPos, t);
-            transform.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
+            transform.localPosition = Vector3.Lerp(lStartPos, lTargetPos, lT);
+            transform.localRotation = Quaternion.Slerp(lStartRotation, lTargetRotation, lT);
 
             yield return null;
         }
 
-        transform.localPosition = targetPos;
-        transform.localRotation = targetRotation;
+        transform.localPosition = lTargetPos;
+        transform.localRotation = lTargetRotation;
 
         if (etincelle != null)
         {
@@ -106,34 +100,29 @@ public class TargetItem : MonoBehaviour
         }
     }
 
-    /// <summary>Drop a non-functional item to the floor so the player can grab another one.</summary>
-    private IEnumerator AutoDropAfterDelay(Transform holdPoint)
+    private IEnumerator AutoDropAfterDelay(Transform pHoldPoint)
     {
         yield return new WaitForSeconds(NON_FUNCTIONAL_DROP_DELAY);
 
-        // Detach from the player
         transform.SetParent(null);
 
-        // Place in front of the player at a reasonable drop height
-        Vector3 dropPos = holdPoint.position + holdPoint.forward * 0.5f;
-        dropPos.y = Mathf.Max(dropPos.y, 0.5f);
-        transform.position = dropPos;
+        Vector3 lDropPos = pHoldPoint.position + pHoldPoint.forward * 0.5f;
+        lDropPos.y = Mathf.Max(lDropPos.y, 0.5f);
+        transform.position = lDropPos;
         transform.rotation = Random.rotation;
 
-        // Enable physics so the item falls to the floor
         if (rb == null)
         {
             rb = gameObject.AddComponent<Rigidbody>();
         }
         rb.isKinematic = false;
         rb.useGravity = true;
-        rb.AddForce(holdPoint.forward * 2f, ForceMode.Impulse);
+        rb.AddForce(pHoldPoint.forward * 2f, ForceMode.Impulse);
 
-        // Non-convex MeshColliders are incompatible with non-kinematic Rigidbodies
-        MeshCollider meshCol = itemCollider as MeshCollider;
-        if (meshCol != null && !meshCol.convex)
+        MeshCollider lMeshCol = itemCollider as MeshCollider;
+        if (lMeshCol != null && !lMeshCol.convex)
         {
-            meshCol.convex = true;
+            lMeshCol.convex = true;
         }
 
         if (itemCollider != null)
@@ -141,17 +130,14 @@ public class TargetItem : MonoBehaviour
             itemCollider.enabled = true;
         }
 
-        // Hide the "doesn't work" inner voice now that the item is dropped
         InnerVoiceManager.Instance?.Hide();
 
-        // Let the player grab another item
-        PickupSystem pickupSystem = holdPoint.GetComponentInParent<PickupSystem>();
-        if (pickupSystem != null)
+        PickupSystem lPickupSystem = pHoldPoint.GetComponentInParent<PickupSystem>();
+        if (lPickupSystem != null)
         {
-            pickupSystem.ReleaseHeldItemRight();
+            lPickupSystem.ReleaseHeldItemRight();
         }
 
-        // Allow this item to be picked up again
         isGrabbed = false;
     }
 }

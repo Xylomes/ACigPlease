@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0df7fe0c4b679fb44a35c6ba60c75f00, type: 3}
-  m_Name: StartVoice
+  m_Name: EmptySpot4
   m_EditorClassIdentifier: 
   lines:
-  - "<shake>O\xF9 sont mes putain de clopes ?</shake>\r\nJe dois trouver mon paquet...
-    vite."
+  - '<shake>Ok ok ok... respire.</shake>\r\n<color=red>Mais y''a RIEN, bordel.</color>
+
+'

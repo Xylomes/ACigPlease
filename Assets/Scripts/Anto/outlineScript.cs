@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(MeshRenderer))]
 public class OutlineOnHover : MonoBehaviour
 {
-    [Header("Material d'outline ajouté au survol")]
     public Material outlineMaterial;
 
     private MeshRenderer meshRenderer;
@@ -37,7 +36,7 @@ public class OutlineOnHover : MonoBehaviour
         if (cameraTransform == null)
             return;
 
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit lHit, interactRange, ~playerMask))
         {
             meshRenderer.materials = mouseEntered ? materialsWithOutline : baseMaterials;
         }

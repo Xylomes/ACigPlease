@@ -5,7 +5,6 @@ using TMPro;
 
 public class TextSpamPenalty : MonoBehaviour, IPenalty
 {
-    [Header("Text Spam Settings")]
     [SerializeField] private Canvas targetCanvas;
     [SerializeField] private TMP_Text textPrefab;
     [SerializeField] private float spawnInterval = 0.3f;
@@ -51,11 +50,11 @@ public class TextSpamPenalty : MonoBehaviour, IPenalty
             spawnCoroutine = null;
         }
 
-        foreach (TMP_Text txt in activeTexts)
+        foreach (TMP_Text lTxt in activeTexts)
         {
-            if (txt != null)
+            if (lTxt != null)
             {
-                Destroy(txt.gameObject);
+                Destroy(lTxt.gameObject);
             }
         }
         activeTexts.Clear();
@@ -63,50 +62,50 @@ public class TextSpamPenalty : MonoBehaviour, IPenalty
 
     private IEnumerator SpawnTextsRoutine()
     {
-        WaitForSeconds wait = new WaitForSeconds(spawnInterval);
+        WaitForSeconds lWait = new WaitForSeconds(spawnInterval);
         while (true)
         {
             if (activeTexts.Count < MAX_TEXTS_ON_SCREEN)
             {
                 SpawnRandomText();
             }
-            yield return wait;
+            yield return lWait;
         }
     }
 
     private void SpawnRandomText()
     {
-        RectTransform canvasRect = targetCanvas.transform as RectTransform;
-        if (canvasRect == null)
+        RectTransform lCanvasRect = targetCanvas.transform as RectTransform;
+        if (lCanvasRect == null)
             return;
 
-        TMP_Text newText = Instantiate(textPrefab, targetCanvas.transform);
-        newText.text = SPAM_MESSAGES[Random.Range(0, SPAM_MESSAGES.Length)];
-        newText.fontSize = Random.Range(minFontSize, maxFontSize);
-        newText.color = new Color(
+        TMP_Text lNewText = Instantiate(textPrefab, targetCanvas.transform);
+        lNewText.text = SPAM_MESSAGES[Random.Range(0, SPAM_MESSAGES.Length)];
+        lNewText.fontSize = Random.Range(minFontSize, maxFontSize);
+        lNewText.color = new Color(
             Random.Range(0.5f, 1f),
             Random.Range(0f, 0.3f),
             Random.Range(0f, 0.3f),
             1f
         );
 
-        RectTransform rect = newText.rectTransform;
-        rect.anchoredPosition = new Vector2(
-            Random.Range(-canvasRect.rect.width * 0.4f, canvasRect.rect.width * 0.4f),
-            Random.Range(-canvasRect.rect.height * 0.4f, canvasRect.rect.height * 0.4f)
+        RectTransform lRect = lNewText.rectTransform;
+        lRect.anchoredPosition = new Vector2(
+            Random.Range(-lCanvasRect.rect.width * 0.4f, lCanvasRect.rect.width * 0.4f),
+            Random.Range(-lCanvasRect.rect.height * 0.4f, lCanvasRect.rect.height * 0.4f)
         );
 
-        activeTexts.Add(newText);
-        StartCoroutine(DestroyAfterDelay(newText, textLifetime));
+        activeTexts.Add(lNewText);
+        StartCoroutine(DestroyAfterDelay(lNewText, textLifetime));
     }
 
-    private IEnumerator DestroyAfterDelay(TMP_Text text, float delay)
+    private IEnumerator DestroyAfterDelay(TMP_Text pText, float pDelay)
     {
-        yield return new WaitForSeconds(delay);
-        if (text != null)
+        yield return new WaitForSeconds(pDelay);
+        if (pText != null)
         {
-            activeTexts.Remove(text);
-            Destroy(text.gameObject);
+            activeTexts.Remove(pText);
+            Destroy(pText.gameObject);
         }
     }
 }

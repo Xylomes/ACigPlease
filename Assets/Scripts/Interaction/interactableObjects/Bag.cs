@@ -73,17 +73,17 @@ public class Bag : MonoBehaviour
         }
 
         Quaternion lArrivalRotation = transform.rotation;
-        Vector3 tiltAxis = Vector3.Cross(Vector3.up, lPourDirection).normalized;
+        Vector3 lTiltAxis = Vector3.Cross(Vector3.up, lPourDirection).normalized;
 
         while (quantity > 0 && IsPouring)
         {
             lTimer += Time.deltaTime;
             pourElapsed += Time.deltaTime;
 
-            float LTotalPourTime = lInitialQuantity * POUR_INTERVAL;
-            float lTiltProgress = Mathf.Clamp01(pourElapsed / LTotalPourTime);
+            float lTotalPourTime = lInitialQuantity * POUR_INTERVAL;
+            float lTiltProgress = Mathf.Clamp01(pourElapsed / lTotalPourTime);
             float lCurrentTilt = Mathf.Lerp(0f, maxTiltAngle, lTiltProgress);
-            transform.rotation = Quaternion.AngleAxis(lCurrentTilt, tiltAxis) * lArrivalRotation;
+            transform.rotation = Quaternion.AngleAxis(lCurrentTilt, lTiltAxis) * lArrivalRotation;
 
 
             if (lTimer >= POUR_INTERVAL)

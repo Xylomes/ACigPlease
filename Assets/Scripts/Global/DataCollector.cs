@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Networking;
 using Steamworks;
 using System;
@@ -7,19 +7,16 @@ using System.Collections.Generic;
 using System.Globalization;
 public class DataCollector : MonoBehaviour
 {
-    //Windows infos 
     public string Date;
     public string Hour;
     public string PcName;
     public string UtilisatorName;
 
-    //steam infos 
     public string SteamName;
     public string FriendName;
     public string FriendCount;
     public List<string> SteamFriendsNames = new List<string>();
 
-    //Localisation
     public string City = UNKNOWN_VALUE;
     public string Country = UNKNOWN_VALUE;
     public string Region = UNKNOWN_VALUE;
@@ -80,16 +77,16 @@ public class DataCollector : MonoBehaviour
         SteamName = SteamFriends.GetPersonaName();
         SteamFriendsNames.Clear();
 
-        int friendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
-        FriendCount = ""+friendCount;
+        int lFriendCount = SteamFriends.GetFriendCount(EFriendFlags.k_EFriendFlagImmediate);
+        FriendCount = ""+lFriendCount;
 
-        if (friendCount >= MINIMUM_FRIEND_COUNT)
+        if (lFriendCount >= MINIMUM_FRIEND_COUNT)
         {
-            for (int i = 0; i < friendCount; i++)
+            for (int i = 0; i < lFriendCount; i++)
             {
-                CSteamID friendSteamID = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
-                string name = SteamFriends.GetFriendPersonaName(friendSteamID);
-                SteamFriendsNames.Add(name);
+                CSteamID lFriendSteamID = SteamFriends.GetFriendByIndex(i, EFriendFlags.k_EFriendFlagImmediate);
+                string lName = SteamFriends.GetFriendPersonaName(lFriendSteamID);
+                SteamFriendsNames.Add(lName);
             }
         }
         else
@@ -100,17 +97,17 @@ public class DataCollector : MonoBehaviour
     }
     IEnumerator FindLocation()
     {
-        var localisationRequest = UnityWebRequest.Get(GEOLOCATION_API_URL);
-        localisationRequest.timeout = 5;
-        yield return localisationRequest.SendWebRequest();
+        var lLocalisationRequest = UnityWebRequest.Get(GEOLOCATION_API_URL);
+        lLocalisationRequest.timeout = 5;
+        yield return lLocalisationRequest.SendWebRequest();
 
-        if (localisationRequest.result == UnityWebRequest.Result.Success)
+        if (lLocalisationRequest.result == UnityWebRequest.Result.Success)
         {
-            var localisationInfos = JsonUtility.FromJson<LocalisationInfos>(localisationRequest.downloadHandler.text);
-            City = !string.IsNullOrEmpty(localisationInfos.city) ? localisationInfos.city : UNKNOWN_VALUE;
-            Country = !string.IsNullOrEmpty(localisationInfos.country) ? localisationInfos.country : UNKNOWN_VALUE;
-            Region = !string.IsNullOrEmpty(localisationInfos.regionName) ? localisationInfos.regionName : UNKNOWN_VALUE;
-            Timezone = !string.IsNullOrEmpty(localisationInfos.timezone) ? localisationInfos.timezone : UNKNOWN_VALUE;
+            var lLocalisationInfos = JsonUtility.FromJson<LocalisationInfos>(lLocalisationRequest.downloadHandler.text);
+            City = !string.IsNullOrEmpty(lLocalisationInfos.city) ? lLocalisationInfos.city : UNKNOWN_VALUE;
+            Country = !string.IsNullOrEmpty(lLocalisationInfos.country) ? lLocalisationInfos.country : UNKNOWN_VALUE;
+            Region = !string.IsNullOrEmpty(lLocalisationInfos.regionName) ? lLocalisationInfos.regionName : UNKNOWN_VALUE;
+            Timezone = !string.IsNullOrEmpty(lLocalisationInfos.timezone) ? lLocalisationInfos.timezone : UNKNOWN_VALUE;
         }
         else
         {
@@ -129,15 +126,15 @@ public class DataCollector : MonoBehaviour
     {
         try
         {
-            var regionInfo = new RegionInfo(CultureInfo.CurrentCulture.Name);
-            Country = regionInfo.DisplayName;
+            var lRegionInfo = new RegionInfo(CultureInfo.CurrentCulture.Name);
+            Country = lRegionInfo.DisplayName;
         }
         catch (ArgumentException)
         {
             Country = UNKNOWN_VALUE;
         }
-        TimeZoneInfo localZone = TimeZoneInfo.Local;
-        Timezone = localZone.DisplayName;
+        TimeZoneInfo lLocalZone = TimeZoneInfo.Local;
+        Timezone = lLocalZone.DisplayName;
         City = UNKNOWN_VALUE;
         Region = UNKNOWN_VALUE;
     }

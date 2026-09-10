@@ -1,21 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Slides a drawer open/closed along a local axis by a configurable distance.
-/// Provides the same ToggleDoor() method as door_shelf so HidingSpot can use either.
-/// </summary>
 public class drawer_slide : MonoBehaviour
 {
     public enum SlideAxis { X, Y, Z }
 
-    [Tooltip("Distance to slide when opening, in local units.")]
     public float slideDistance = 0.5f;
 
-    [Tooltip("Axis along which the drawer slides.")]
     public SlideAxis slideAxis = SlideAxis.Z;
 
-    [Tooltip("Duration of the slide animation in seconds.")]
     public float duration = 1f;
 
     private bool isOpen = false;
@@ -28,32 +21,30 @@ public class drawer_slide : MonoBehaviour
     {
         closedPosition = transform.localPosition;
 
-        Vector3 offset = Vector3.zero;
+        Vector3 lOffset = Vector3.zero;
         switch (slideAxis)
         {
-            case SlideAxis.X: offset = new Vector3(slideDistance, 0f, 0f); break;
-            case SlideAxis.Y: offset = new Vector3(0f, slideDistance, 0f); break;
-            case SlideAxis.Z: offset = new Vector3(0f, 0f, slideDistance); break;
+            case SlideAxis.X: lOffset = new Vector3(slideDistance, 0f, 0f); break;
+            case SlideAxis.Y: lOffset = new Vector3(0f, slideDistance, 0f); break;
+            case SlideAxis.Z: lOffset = new Vector3(0f, 0f, slideDistance); break;
         }
-        openPosition = closedPosition + offset;
+        openPosition = closedPosition + lOffset;
     }
 
-    /// <summary>Toggle the drawer between open and closed.</summary>
     public void ToggleDoor()
     {
         if (isAnimating) return;
 
         isOpen = !isOpen;
-        Vector3 target = isOpen ? openPosition : closedPosition;
+        Vector3 lTarget = isOpen ? openPosition : closedPosition;
 
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(SlideDrawer(target));
+        currentCoroutine = StartCoroutine(SlideDrawer(lTarget));
     }
 
-    /// <summary>Force the drawer to its closed state regardless of current internal state.</summary>
     public void ForceClose()
     {
         if (currentCoroutine != null)
@@ -66,21 +57,21 @@ public class drawer_slide : MonoBehaviour
         transform.localPosition = closedPosition;
     }
 
-    private IEnumerator SlideDrawer(Vector3 target)
+    private IEnumerator SlideDrawer(Vector3 pTarget)
     {
         isAnimating = true;
-        Vector3 startPos = transform.localPosition;
-        float elapsed = 0f;
+        Vector3 lStartPos = transform.localPosition;
+        float lElapsed = 0f;
 
-        while (elapsed < duration)
+        while (lElapsed < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            transform.localPosition = Vector3.Lerp(startPos, target, t);
+            lElapsed += Time.deltaTime;
+            float lT = lElapsed / duration;
+            transform.localPosition = Vector3.Lerp(lStartPos, pTarget, lT);
             yield return null;
         }
 
-        transform.localPosition = target;
+        transform.localPosition = pTarget;
         isAnimating = false;
     }
 }

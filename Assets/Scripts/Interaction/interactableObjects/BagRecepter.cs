@@ -29,13 +29,13 @@ public class BagRecepter : MonoBehaviour, IInteractable
             return;
         }
 
-        Bag bag = pBag.GetComponent<Bag>();
+        Bag lBag = pBag.GetComponent<Bag>();
 
-        if (bag.IsHeld && !bag.IsPouring)
+        if (lBag.IsHeld && !lBag.IsPouring)
         {
-            bagInZone = bag;
+            bagInZone = lBag;
         }
-        else if (bag == bagInZone)
+        else if (lBag == bagInZone)
         {
             bagInZone = null;
         }
@@ -49,9 +49,9 @@ public class BagRecepter : MonoBehaviour, IInteractable
         }
     }
 
-    public void ReceiveContent(int amount)
+    public void ReceiveContent(int pAmount)
     {
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < pAmount; i++)
         {
             if (!stockageBarrel.TryAddProductIntoBarrel())
             {

@@ -19,16 +19,14 @@ public class TimerUI : MonoBehaviour
         GameManager.OnTimerExpired -= HandleTimerExpired;
     }
 
-    /// <summary>Update the timer text with the remaining seconds.</summary>
-    private void UpdateTimer(float remaining)
+    private void UpdateTimer(float pRemaining)
     {
         if (timerText != null)
         {
-            timerText.text = remaining.ToString(TIMER_FORMAT) + "s";
+            timerText.text = pRemaining.ToString(TIMER_FORMAT) + "s";
         }
     }
 
-    /// <summary>Called when the timer reaches zero.</summary>
     private void HandleTimerExpired()
     {
         if (timerText != null)

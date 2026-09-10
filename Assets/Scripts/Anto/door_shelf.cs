@@ -7,7 +7,6 @@ public class door_shelf : MonoBehaviour
 
     public float openAngle = 90f;
     public float duration = 1f;
-    [Tooltip("Axis around which the door rotates.")]
     public RotationAxis rotationAxis = RotationAxis.Y;
 
     private bool isOpen = false;
@@ -19,14 +18,14 @@ public class door_shelf : MonoBehaviour
     void Awake()
     {
         closedRotation = transform.rotation;
-        Vector3 euler = Vector3.zero;
+        Vector3 lEuler = Vector3.zero;
         switch (rotationAxis)
         {
-            case RotationAxis.X: euler = new Vector3(openAngle, 0f, 0f); break;
-            case RotationAxis.Y: euler = new Vector3(0f, openAngle, 0f); break;
-            case RotationAxis.Z: euler = new Vector3(0f, 0f, openAngle); break;
+            case RotationAxis.X: lEuler = new Vector3(openAngle, 0f, 0f); break;
+            case RotationAxis.Y: lEuler = new Vector3(0f, openAngle, 0f); break;
+            case RotationAxis.Z: lEuler = new Vector3(0f, 0f, openAngle); break;
         }
-        openRotation = closedRotation * Quaternion.Euler(euler);
+        openRotation = closedRotation * Quaternion.Euler(lEuler);
     }
 
     public void ToggleDoor()
@@ -34,16 +33,15 @@ public class door_shelf : MonoBehaviour
         if (isAnimating) return;
 
         isOpen = !isOpen;
-        Quaternion target = isOpen ? openRotation : closedRotation;
+        Quaternion lTarget = isOpen ? openRotation : closedRotation;
 
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
         }
-        currentCoroutine = StartCoroutine(RotateDoor(target));
+        currentCoroutine = StartCoroutine(RotateDoor(lTarget));
     }
 
-    /// <summary>Force the door to its closed state regardless of current internal state.</summary>
     public void ForceClose()
     {
         if (currentCoroutine != null)
@@ -56,22 +54,22 @@ public class door_shelf : MonoBehaviour
         transform.rotation = closedRotation;
     }
 
-    private IEnumerator RotateDoor(Quaternion target)
+    private IEnumerator RotateDoor(Quaternion pTarget)
     {
         isAnimating = true;
-        Quaternion startRotation = transform.rotation;
-        float elapsed = 0f;
+        Quaternion lStartRotation = transform.rotation;
+        float lElapsed = 0f;
 
-        while (elapsed < duration)
+        while (lElapsed < duration)
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-            transform.rotation = Quaternion.Slerp(startRotation, target, t);
+            lElapsed += Time.deltaTime;
+            float lT = lElapsed / duration;
+            transform.rotation = Quaternion.Slerp(lStartRotation, pTarget, lT);
             yield return null;
 
         }
 
-        transform.rotation = target;
+        transform.rotation = pTarget;
         isAnimating = false;
     }
 }

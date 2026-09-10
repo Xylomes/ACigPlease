@@ -8,22 +8,19 @@ public class InnerVoiceManager : MonoBehaviour
 {
     public static InnerVoiceManager Instance { get; private set; }
 
-    [Header("UI References")]
+    public event System.Action OnAllLinesTyped;
+
     [SerializeField] private GameObject voiceParent;
     [SerializeField] private TextMeshProUGUI voiceText;
 
-    [Header("Typing Settings")]
     [SerializeField] private float typingSpeed = 0.03f;
     [SerializeField] private float pauseOnPunctuation = 0.3f;
 
-    [Header("Auto-Hide")]
     [SerializeField] private float hideDelayAfterComplete = 5f;
 
-    [Header("Shake Effect")]
     [SerializeField] private float shakeIntensity = 1.2f;
     [SerializeField] private float shakeFrequency = 2f;
 
-    [Header("Default Style")]
     [SerializeField] private Color textColor = new Color(0.8f, 0.8f, 0.85f, 1f);
 
     private bool isInitialized;
@@ -49,8 +46,6 @@ public class InnerVoiceManager : MonoBehaviour
 
     private void Start()
     {
-        // Do NOT deactivate parent here — GameManager.Start() may run before this
-        // and call Show(), which would then be killed by our Start() deactivating the parent.
         if (voiceText != null)
         {
             voiceText.text = string.Empty;
@@ -69,38 +64,32 @@ public class InnerVoiceManager : MonoBehaviour
         Canvas.willRenderCanvases -= AnimateTextMesh;
     }
 
-    /// <summary>Show a single line of inner voice text with typewriter effect, then auto-hide.</summary>
-    public void Show(string text)
+    public void Show(string pText)
     {
-        Show(new[] { text });
+        Show(new[] { pText });
     }
 
-    /// <summary>Show multiple lines sequentially, then auto-hide after the last line completes.</summary>
-    public void Show(string[] lines)
+    public void Show(string[] pLines)
     {
         if (voiceParent == null || voiceText == null)
-        {
-            Debug.LogWarning("[InnerVoice] UI references not assigned.");
             return;
-        }
 
         StopAllCoroutines();
         shakeRanges.Clear();
         baseVertices = null;
 
-        StartCoroutine(ShowLinesRoutine(lines));
+        StartCoroutine(ShowLinesRoutine(pLines));
     }
 
-    /// <summary>Show lines from an InnerVoiceData ScriptableObject.</summary>
-    public void Show(InnerVoiceData data)
+    public void Show(InnerVoiceData pData)
     {
-        if (data != null && data.lines != null && data.lines.Length > 0)
+        if (pData != null && pData.lines != null && pData.lines.Length > 0)
         {
-            Show(data.lines);
+            Show(pData.lines);
         }
     }
 
-    private IEnumerator ShowLinesRoutine(string[] lines)
+    private IEnumerator ShowLinesRoutine(string[] pLines)
     {
         if (!isInitialized)
             yield return null;
@@ -109,98 +98,89 @@ public class InnerVoiceManager : MonoBehaviour
         voiceText.enabled = true;
         voiceText.color = textColor;
 
-        // Wait for TMP to initialize after activation
         yield return null;
         yield return null;
 
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < pLines.Length; i++)
         {
             shakeRanges.Clear();
             baseVertices = null;
 
-            string processedText = ParseAndStripShakeTags(lines[i]);
-            int visibleCharCount = CountVisibleCharacters(processedText);
+            string lProcessedText = ParseAndStripShakeTags(pLines[i]);
+            int lVisibleCharCount = CountVisibleCharacters(lProcessedText);
 
-            // Set text with ALL characters visible so TMP generates the full mesh
-            voiceText.text = processedText;
+            voiceText.text = lProcessedText;
             voiceText.maxVisibleCharacters = int.MaxValue;
 
-            // Wait for TMP's natural update cycle to generate the mesh
-            int meshCharCount = 0;
+            int lMeshCharCount = 0;
             for (int waitFrame = 0; waitFrame < 5; waitFrame++)
             {
                 yield return null;
-                meshCharCount = voiceText.textInfo.characterCount;
-                if (meshCharCount > 0)
+                lMeshCharCount = voiceText.textInfo.characterCount;
+                if (lMeshCharCount > 0)
                     break;
             }
 
-            // Cache vertices for shake effect
             CacheBaseVertices();
 
-            // Hide all characters to prepare for typewriter
             voiceText.maxVisibleCharacters = 0;
 
-            // Run typewriter
-            yield return TypeRoutine(processedText, visibleCharCount);
+            yield return TypeRoutine(lProcessedText, lVisibleCharCount);
 
-            if (i < lines.Length - 1)
+            if (i < pLines.Length - 1)
             {
                 yield return new WaitForSeconds(hideDelayAfterComplete);
             }
         }
 
+        OnAllLinesTyped?.Invoke();
+
         yield return new WaitForSeconds(hideDelayAfterComplete);
         Hide();
     }
 
-    /// <summary>Typewriter coroutine that uses string-based character counting instead of textInfo.</summary>
-    private IEnumerator TypeRoutine(string text, int totalVisibleChars)
+    private IEnumerator TypeRoutine(string pText, int pTotalVisibleChars)
     {
-        if (totalVisibleChars == 0)
+        if (pTotalVisibleChars == 0)
             yield break;
 
-        int visibleIndex = 0;
-        for (int i = 0; i < text.Length; i++)
+        int lVisibleIndex = 0;
+        for (int i = 0; i < pText.Length; i++)
         {
-            // Skip rich text tags
-            if (text[i] == '<')
+            if (pText[i] == '<')
             {
-                while (i < text.Length && text[i] != '>')
+                while (i < pText.Length && pText[i] != '>')
                     i++;
                 continue;
             }
 
-            visibleIndex++;
-            voiceText.maxVisibleCharacters = visibleIndex;
+            lVisibleIndex++;
+            voiceText.maxVisibleCharacters = lVisibleIndex;
 
-            char c = text[i];
-            float delay = c == '.' || c == '!' || c == '?'
+            char lC = pText[i];
+            float lDelay = lC == '.' || lC == '!' || lC == '?'
                 ? pauseOnPunctuation
                 : typingSpeed;
 
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(lDelay);
         }
 
-        // Ensure all characters are visible
         voiceText.maxVisibleCharacters = int.MaxValue;
     }
 
-    /// <summary>Count visible characters in text, excluding rich text tags.</summary>
-    private int CountVisibleCharacters(string text)
+    private int CountVisibleCharacters(string pText)
     {
-        int count = 0;
-        bool inTag = false;
-        for (int i = 0; i < text.Length; i++)
+        int lCount = 0;
+        bool lInTag = false;
+        for (int i = 0; i < pText.Length; i++)
         {
-            if (text[i] == '<') inTag = true;
-            else if (text[i] == '>') inTag = false;
-            else if (!inTag) count++;
+            if (pText[i] == '<') lInTag = true;
+            else if (pText[i] == '>') lInTag = false;
+            else if (!lInTag) lCount++;
         }
-        return count;
+        return lCount;
     }
 
-    /// <summary>Immediately hide the inner voice text.</summary>
     public void Hide()
     {
         StopAllCoroutines();
@@ -219,82 +199,82 @@ public class InnerVoiceManager : MonoBehaviour
 
     #region Shake Effect
 
-    private string ParseAndStripShakeTags(string rawText)
+    private string ParseAndStripShakeTags(string pRawText)
     {
         shakeRanges.Clear();
-        StringBuilder cleanText = new StringBuilder();
-        int visibleCharacterIndex = 0;
-        int shakeStartIndex = -1;
-        bool readingTag = false;
-        StringBuilder tag = new StringBuilder();
+        StringBuilder lCleanText = new StringBuilder();
+        int lVisibleCharacterIndex = 0;
+        int lShakeStartIndex = -1;
+        bool lReadingTag = false;
+        StringBuilder lTag = new StringBuilder();
 
-        for (int i = 0; i < rawText.Length; i++)
+        for (int i = 0; i < pRawText.Length; i++)
         {
-            char c = rawText[i];
+            char lC = pRawText[i];
 
-            if (c == '<' && !readingTag)
+            if (lC == '<' && !lReadingTag)
             {
-                readingTag = true;
-                tag.Clear();
-                tag.Append(c);
+                lReadingTag = true;
+                lTag.Clear();
+                lTag.Append(lC);
                 continue;
             }
 
-            if (readingTag)
+            if (lReadingTag)
             {
-                tag.Append(c);
-                if (c != '>') continue;
+                lTag.Append(lC);
+                if (lC != '>') continue;
 
-                readingTag = false;
-                string tagText = tag.ToString();
-                if (tagText == "<shake>")
+                lReadingTag = false;
+                string lTagText = lTag.ToString();
+                if (lTagText == "<shake>")
                 {
-                    shakeStartIndex = visibleCharacterIndex;
+                    lShakeStartIndex = lVisibleCharacterIndex;
                 }
-                else if (tagText == "</shake>" && shakeStartIndex >= 0)
+                else if (lTagText == "</shake>" && lShakeStartIndex >= 0)
                 {
                     shakeRanges.Add(new ShakeRange
                     {
-                        startIndex = shakeStartIndex,
-                        length = visibleCharacterIndex - shakeStartIndex
+                        startIndex = lShakeStartIndex,
+                        length = lVisibleCharacterIndex - lShakeStartIndex
                     });
-                    shakeStartIndex = -1;
+                    lShakeStartIndex = -1;
                 }
                 else
                 {
-                    cleanText.Append(tagText);
+                    lCleanText.Append(lTagText);
                 }
                 continue;
             }
 
-            cleanText.Append(c);
-            visibleCharacterIndex++;
+            lCleanText.Append(lC);
+            lVisibleCharacterIndex++;
         }
 
-        return cleanText.ToString();
+        return lCleanText.ToString();
     }
 
     private void CacheBaseVertices()
     {
         if (voiceText == null) return;
 
-        TMP_TextInfo textInfo = voiceText.textInfo;
-        if (textInfo == null || textInfo.materialCount == 0)
+        TMP_TextInfo lTextInfo = voiceText.textInfo;
+        if (lTextInfo == null || lTextInfo.materialCount == 0)
         {
             baseVertices = null;
             return;
         }
 
-        baseVertices = new Vector3[textInfo.materialCount][];
-        for (int i = 0; i < textInfo.materialCount; i++)
+        baseVertices = new Vector3[lTextInfo.materialCount][];
+        for (int i = 0; i < lTextInfo.materialCount; i++)
         {
-            Vector3[] verts = textInfo.meshInfo[i].vertices;
-            if (verts == null || verts.Length == 0)
+            Vector3[] lVerts = lTextInfo.meshInfo[i].vertices;
+            if (lVerts == null || lVerts.Length == 0)
             {
                 baseVertices[i] = new Vector3[0];
                 continue;
             }
-            baseVertices[i] = (Vector3[])verts.Clone();
+            baseVertices[i] = (Vector3[])lVerts.Clone();
         }
     }
 
@@ -305,71 +285,71 @@ public class InnerVoiceManager : MonoBehaviour
         if (lastAnimationFrame == Time.frameCount) return;
         if (shakeRanges.Count == 0) return;
 
-        TMP_TextInfo textInfo = voiceText.textInfo;
-        if (textInfo == null || textInfo.characterCount == 0) return;
+        TMP_TextInfo lTextInfo = voiceText.textInfo;
+        if (lTextInfo == null || lTextInfo.characterCount == 0) return;
 
-        if (baseVertices.Length != textInfo.materialCount) return;
-        for (int m = 0; m < textInfo.materialCount; m++)
+        if (baseVertices.Length != lTextInfo.materialCount) return;
+        for (int m = 0; m < lTextInfo.materialCount; m++)
         {
-            if (textInfo.meshInfo[m].vertices == null) return;
-            if (baseVertices[m].Length != textInfo.meshInfo[m].vertices.Length) return;
+            if (lTextInfo.meshInfo[m].vertices == null) return;
+            if (baseVertices[m].Length != lTextInfo.meshInfo[m].vertices.Length) return;
         }
 
         lastAnimationFrame = Time.frameCount;
 
-        int visibleCharacters = voiceText.maxVisibleCharacters;
-        if (visibleCharacters == 0) return;
+        int lVisibleCharacters = voiceText.maxVisibleCharacters;
+        if (lVisibleCharacters == 0) return;
 
-        bool hasShakeEffect = false;
-        foreach (ShakeRange range in shakeRanges)
+        bool lHasShakeEffect = false;
+        foreach (ShakeRange lRange in shakeRanges)
         {
-            int endIndex = Mathf.Min(range.startIndex + range.length, visibleCharacters);
-            for (int i = range.startIndex; i < endIndex; i++)
+            int lEndIndex = Mathf.Min(lRange.startIndex + lRange.length, lVisibleCharacters);
+            for (int i = lRange.startIndex; i < lEndIndex; i++)
             {
-                if (i >= textInfo.characterCount) break;
-                if (!textInfo.characterInfo[i].isVisible) continue;
+                if (i >= lTextInfo.characterCount) break;
+                if (!lTextInfo.characterInfo[i].isVisible) continue;
 
-                RestoreCharacterBase(textInfo, i);
-                ApplyShake(textInfo, i);
-                hasShakeEffect = true;
+                RestoreCharacterBase(lTextInfo, i);
+                ApplyShake(lTextInfo, i);
+                lHasShakeEffect = true;
             }
         }
 
-        if (hasShakeEffect)
+        if (lHasShakeEffect)
         {
             voiceText.UpdateVertexData(TMP_VertexDataUpdateFlags.Vertices);
         }
     }
 
-    private void RestoreCharacterBase(TMP_TextInfo textInfo, int charIndex)
+    private void RestoreCharacterBase(TMP_TextInfo pTextInfo, int pCharIndex)
     {
-        TMP_CharacterInfo charInfo = textInfo.characterInfo[charIndex];
-        int matIndex = charInfo.materialReferenceIndex;
-        int vertIndex = charInfo.vertexIndex;
+        TMP_CharacterInfo lCharInfo = pTextInfo.characterInfo[pCharIndex];
+        int lMatIndex = lCharInfo.materialReferenceIndex;
+        int lVertIndex = lCharInfo.vertexIndex;
 
-        Vector3[] targetVerts = textInfo.meshInfo[matIndex].vertices;
-        Vector3[] sourceVerts = baseVertices[matIndex];
+        Vector3[] lTargetVerts = pTextInfo.meshInfo[lMatIndex].vertices;
+        Vector3[] lSourceVerts = baseVertices[lMatIndex];
 
         for (int i = 0; i < 4; i++)
         {
-            targetVerts[vertIndex + i] = sourceVerts[vertIndex + i];
+            lTargetVerts[lVertIndex + i] = lSourceVerts[lVertIndex + i];
         }
     }
 
-    private void ApplyShake(TMP_TextInfo textInfo, int charIndex)
+    private void ApplyShake(TMP_TextInfo pTextInfo, int pCharIndex)
     {
-        TMP_CharacterInfo charInfo = textInfo.characterInfo[charIndex];
-        Vector3[] verts = textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
-        int vertIndex = charInfo.vertexIndex;
+        TMP_CharacterInfo lCharInfo = pTextInfo.characterInfo[pCharIndex];
+        Vector3[] lVerts = pTextInfo.meshInfo[lCharInfo.materialReferenceIndex].vertices;
+        int lVertIndex = lCharInfo.vertexIndex;
 
-        float time = Time.time * shakeFrequency;
-        float offsetX = (Mathf.PerlinNoise(time, charIndex) - 0.5f) * shakeIntensity * 2f;
-        float offsetY = (Mathf.PerlinNoise(charIndex, time) - 0.5f) * shakeIntensity * 2f;
-        Vector3 offset = new Vector3(offsetX, offsetY, 0f);
+        float lTime = Time.time * shakeFrequency;
+        float lOffsetX = (Mathf.PerlinNoise(lTime, pCharIndex) - 0.5f) * shakeIntensity * 2f;
+        float lOffsetY = (Mathf.PerlinNoise(pCharIndex, lTime) - 0.5f) * shakeIntensity * 2f;
+        Vector3 lOffset = new Vector3(lOffsetX, lOffsetY, 0f);
 
         for (int i = 0; i < 4; i++)
         {
-            verts[vertIndex + i] += offset;
+            lVerts[lVertIndex + i] += lOffset;
         }
     }
 
