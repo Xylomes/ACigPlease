@@ -29,24 +29,24 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(AddScene(MAIN_MENU_SCENE_NAME));
     }
 
-    public IEnumerator LoadScene(string sceneName)
+    public IEnumerator LoadScene(string pSceneName)
     {
-        AsyncOperation AsycOP = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-        loadedScenes.Add(sceneName);
-        yield return AsycOP;
+        AsyncOperation lAsycOP = SceneManager.LoadSceneAsync(pSceneName, LoadSceneMode.Single);
+        loadedScenes.Add(pSceneName);
+        yield return lAsycOP;
     }
-    public IEnumerator AddScene(string sceneName)
+    public IEnumerator AddScene(string pSceneName)
     {
-        AsyncOperation AsycOP = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        loadedScenes.Add(sceneName);
-        yield return AsycOP;
+        AsyncOperation lAsycOP = SceneManager.LoadSceneAsync(pSceneName, LoadSceneMode.Additive);
+        loadedScenes.Add(pSceneName);
+        yield return lAsycOP;
     }
 
-    public IEnumerator UnloadScene(string sceneName)
+    public IEnumerator UnloadScene(string pSceneName)
     {
-        AsyncOperation AsycOP = SceneManager.UnloadSceneAsync(sceneName);
-        loadedScenes.Remove(sceneName);
-        yield return AsycOP;
+        AsyncOperation lAsycOP = SceneManager.UnloadSceneAsync(pSceneName);
+        loadedScenes.Remove(pSceneName);
+        yield return lAsycOP;
     }
 
 }

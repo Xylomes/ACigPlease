@@ -18,7 +18,6 @@ public class HeadMouvementEffect : MonoBehaviour
     private float currentAmpY;
     private float currentAmpX;
 
-    /// <summary>Reset the head bob amplitudes and timer to their idle state.</summary>
     public void ResetEffect()
     {
         mouvementTimer = 0f;

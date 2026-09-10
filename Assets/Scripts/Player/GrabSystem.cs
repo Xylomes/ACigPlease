@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GrabSystem : MonoBehaviour
 {
@@ -31,9 +32,9 @@ public class GrabSystem : MonoBehaviour
         }
     }
 
-    public void SetGrabInfos(bool grabPressed)
+    public void SetGrabInfos(bool pGrabPressed)
     {
-        isTryingToGrab = grabPressed;
+        isTryingToGrab = pGrabPressed;
     }
 
     void Update()
@@ -48,11 +49,11 @@ public class GrabSystem : MonoBehaviour
         {
             if (heldBag == null || !isGrabing)
             {
-                if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, GRAB_RANGE, ~playerMask))
+                if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit lHit, GRAB_RANGE, ~playerMask))
                 {
-                    if (hit.transform.CompareTag(BAG_TAG))
+                    if (lHit.transform.CompareTag(BAG_TAG))
                     {
-                        Grab(hit.transform);
+                        Grab(lHit.transform);
                     }
                 }
             }
@@ -76,10 +77,10 @@ public class GrabSystem : MonoBehaviour
             heldBag.rotation = handPosition.transform.rotation;
         }
     }
-    private void Grab(Transform bagTransform)
+    private void Grab(Transform pBagTransform)
     {
         isGrabing = true;
-        heldBag = bagTransform;
+        heldBag = pBagTransform;
         heldBagRigidbody = heldBag.GetComponent<Rigidbody>();
         heldBagComponent = heldBag.GetComponent<Bag>();
 
@@ -124,7 +125,6 @@ public class GrabSystem : MonoBehaviour
         PlayerStateMachine.IsHoldingItem = false;
     }
 
-    /// <summary>Release the currently held bag without dropping it. Used during game reset.</summary>
     public void ReleaseHeldItem()
     {
         if (heldBag != null)

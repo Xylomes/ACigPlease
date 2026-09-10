@@ -2,17 +2,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-/// <summary>Smooth hover effect for UI buttons: shifts the button horizontally and whitens its TMP text.</summary>
 public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Movement")]
-    [Tooltip("Decalage en X vers la gauche quand le joueur over le bouton.")]
     [SerializeField] private float hoverShiftX = -170f;
-    [Tooltip("Vitesse de la transition (plus grand = plus rapide).")]
     [SerializeField] private float lerpSpeed = 12f;
 
-    [Header("Text Whitening")]
-    [Tooltip("Pourcentage de melange vers le blanc (0 = couleur d'origine, 1 = blanc complet).")]
     [SerializeField] [Range(0f, 1f)] private float whiteningAmount = 0.6f;
 
     private RectTransform rectTransform;
@@ -47,19 +41,19 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private void Update()
     {
-        Vector2 targetPos = isHovered
+        Vector2 lTargetPos = isHovered
             ? new Vector2(originalAnchoredPos.x + hoverShiftX, originalAnchoredPos.y)
             : originalAnchoredPos;
 
         rectTransform.anchoredPosition = Vector2.Lerp(
             rectTransform.anchoredPosition,
-            targetPos,
+            lTargetPos,
             Time.deltaTime * lerpSpeed);
 
         if (tmpText != null)
         {
-            Color targetColor = isHovered ? whitenedTextColor : originalTextColor;
-            tmpText.color = Color.Lerp(tmpText.color, targetColor, Time.deltaTime * lerpSpeed);
+            Color lTargetColor = isHovered ? whitenedTextColor : originalTextColor;
+            tmpText.color = Color.Lerp(tmpText.color, lTargetColor, Time.deltaTime * lerpSpeed);
         }
     }
 }

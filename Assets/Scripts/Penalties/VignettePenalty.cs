@@ -4,7 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class VignettePenalty : MonoBehaviour, IPenalty
 {
-    [Header("Vignette Settings")]
     [SerializeField] private Volume postProcessVolume;
     [SerializeField] private float targetIntensity = 0.85f;
     [SerializeField] private float targetSmoothness = 0.5f;

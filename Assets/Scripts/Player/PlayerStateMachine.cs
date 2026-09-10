@@ -36,28 +36,27 @@ public class PlayerStateMachine
     private Vector3 cameraStandLocalPos;
     private Vector3 cameraCrouchLocalPos;
     private float crouchLerpSpeed = 8f;
-    public PlayerStateMachine(CharacterController characterController, Transform transform, float speed, Transform cameraTransform)
+    public PlayerStateMachine(CharacterController pCharacterController, Transform pTransform, float pSpeed, Transform pCameraTransform)
     {
-        this.characterController = characterController;
-        this.playerTransform = transform;
-        this.moveSpeed = speed;
-        this.cameraTransform = cameraTransform;
+        this.characterController = pCharacterController;
+        this.playerTransform = pTransform;
+        this.moveSpeed = pSpeed;
+        this.cameraTransform = pCameraTransform;
 
-        cameraStandLocalPos = cameraTransform.localPosition;
+        cameraStandLocalPos = pCameraTransform.localPosition;
         cameraCrouchLocalPos = cameraStandLocalPos - new Vector3(0f, cameraStandLocalPos.y * 0.5f, 0f);
 
         ChangeState(PlayerState.Idle);
     }
 
-    public void SetInfos(Vector2 inputDirection,bool crouchPressed)
+    public void SetInfos(Vector2 pInputDirection, bool pCrouchPressed)
     {
-        moveDirection = inputDirection;
-        crouch = crouchPressed;
+        moveDirection = pInputDirection;
+        crouch = pCrouchPressed;
     }
 
     public void Update()
     {
-        //Debug.Log("Current State: " + CurrentState);
         ApplyGravity();
         updateCrouchCamera();
 
@@ -81,15 +80,15 @@ public class PlayerStateMachine
         }
     }
 
-    public void ChangeState(PlayerState newState)
+    public void ChangeState(PlayerState pNewState)
     {
         OnExit(CurrentState);
-        CurrentState = newState;
+        CurrentState = pNewState;
         OnEnter(CurrentState);
     }
-    private void OnEnter(PlayerState newState)
+    private void OnEnter(PlayerState pNewState)
     {
-        switch (newState)
+        switch (pNewState)
         {
             case PlayerState.Idle:
                 CanInteract = true;
@@ -109,9 +108,9 @@ public class PlayerStateMachine
 
         }
     }
-    private void OnExit(PlayerState newState)
+    private void OnExit(PlayerState pNewState)
     {
-        switch (newState)
+        switch (pNewState)
         {
             case PlayerState.Idle:
                 break;
@@ -144,13 +143,13 @@ public class PlayerStateMachine
         else
         {
             CanInteract = true;
-            Vector3 move = Vector3.up * verticalVelocity;
-            characterController.Move(move * Time.deltaTime);
+            Vector3 lMove = Vector3.up * verticalVelocity;
+            characterController.Move(lMove * Time.deltaTime);
         }
     }
     private void DoWalking()
     {
-        float speed = moveSpeed;
+        float lSpeed = moveSpeed;
 
         if (moveDirection.magnitude < 0.1f)
         {
@@ -169,16 +168,16 @@ public class PlayerStateMachine
             CanInteract = true;
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                speed = moveSpeed * runMuiltiplier; 
+                lSpeed = moveSpeed * runMuiltiplier; 
             }
             else
             {
-                speed = moveSpeed;
+                lSpeed = moveSpeed;
             }
-            Vector3 move = new Vector3(moveDirection.x, 0, moveDirection.y) ;
-            Vector3 direction = playerTransform.TransformDirection(move);
-            Vector3 motion = direction.normalized * speed + Vector3.up * verticalVelocity;
-            characterController.Move(motion * Time.deltaTime);
+            Vector3 lMove = new Vector3(moveDirection.x, 0, moveDirection.y) ;
+            Vector3 lDirection = playerTransform.TransformDirection(lMove);
+            Vector3 lMotion = lDirection.normalized * lSpeed + Vector3.up * verticalVelocity;
+            characterController.Move(lMotion * Time.deltaTime);
         }
     }   
     private void DoFalling()
@@ -194,8 +193,8 @@ public class PlayerStateMachine
         }
         else
         {
-            Vector3 move = new Vector3(0, verticalVelocity, 0);
-            characterController.Move(move * Time.deltaTime);
+            Vector3 lMove = new Vector3(0, verticalVelocity, 0);
+            characterController.Move(lMove * Time.deltaTime);
         }
     }
      private void DoCrouching()
@@ -206,10 +205,10 @@ public class PlayerStateMachine
             return;
         }
 
-        Vector3 move = new Vector3(moveDirection.x, 0, moveDirection.y);
-        Vector3 direction = playerTransform.TransformDirection(move);
-        Vector3 motion = direction.normalized * (moveSpeed * 0.5f) + Vector3.up * verticalVelocity;
-        characterController.Move(motion * Time.deltaTime);
+        Vector3 lMove = new Vector3(moveDirection.x, 0, moveDirection.y);
+        Vector3 lDirection = playerTransform.TransformDirection(lMove);
+        Vector3 lMotion = lDirection.normalized * (moveSpeed * 0.5f) + Vector3.up * verticalVelocity;
+        characterController.Move(lMotion * Time.deltaTime);
 
         ChangeState(PlayerState.Idle);
     }
@@ -220,8 +219,8 @@ public class PlayerStateMachine
     {
         if (characterController.isGrounded)
         {
-            Vector3 move = new Vector3(0, verticalVelocity, 0);
-            characterController.Move(move * Time.deltaTime);
+            Vector3 lMove = new Vector3(0, verticalVelocity, 0);
+            characterController.Move(lMove * Time.deltaTime);
         }
     }
 
@@ -249,8 +248,7 @@ public class PlayerStateMachine
 
     private void updateCrouchCamera()
     {
-        Vector3 target = crouch ? cameraCrouchLocalPos : cameraStandLocalPos;
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, target, Time.deltaTime * crouchLerpSpeed);
+        Vector3 lTarget = crouch ? cameraCrouchLocalPos : cameraStandLocalPos;
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, lTarget, Time.deltaTime * crouchLerpSpeed);
     }
 }
-

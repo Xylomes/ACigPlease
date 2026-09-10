@@ -6,15 +6,12 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
-    [Header("Audio Sources")]
     [SerializeField] private AudioSource sfxSource;
 
-    [Header("Music Clips")]
     [SerializeField] private AudioClip menuMusic;
     [SerializeField] private AudioClip gameMusic;
     [SerializeField] private AudioClip gameAmbiantMusic;
 
-    [Header("SFX Clips")]
     [SerializeField] private AudioClip fanSound;
     [SerializeField] private AudioClip fridgeSound;
     [SerializeField] private AudioClip carSound;
@@ -22,14 +19,11 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip peopleSound;
     [SerializeField] private AudioClip playerBreathSound;
 
-    [Header("Volume Settings")]
     [SerializeField] [Range(0f, 1f)] private float musicVolume = 0.7f;
     [SerializeField] [Range(0f, 1f)] private float sfxVolume = 1f;
 
-    [Header("Audio MixerGroup")]
     [SerializeField] private AudioMixerGroup musicMixerGroup;
 
-    [Header("Audio Mixer")]
     [SerializeField] private AudioMixerGroup musicMixer;
     [SerializeField] private AudioMixerGroup sfxMixer;
 
@@ -90,28 +84,28 @@ public class SoundManager : MonoBehaviour
         };
     }
 
-    public void PlaySFX(SoundType soundType)
+    public void PlaySFX(SoundType pSoundType)
     {
-        if (soundDictionary.TryGetValue(soundType, out AudioClip clip) && clip != null)
+        if (soundDictionary.TryGetValue(pSoundType, out AudioClip lClip) && lClip != null)
         {
-            sfxSource.PlayOneShot(clip, sfxVolume);
+            sfxSource.PlayOneShot(lClip, sfxVolume);
         }
     }
 
-    public AudioSource PlayMusic(SoundType musicType, bool loop = true)
+    public AudioSource PlayMusic(SoundType pMusicType, bool pLoop = true)
     {
-        if (soundDictionary.TryGetValue(musicType, out AudioClip clip) && clip != null)
+        if (soundDictionary.TryGetValue(pMusicType, out AudioClip lClip) && lClip != null)
         {
-            AudioSource newMusicSource = gameObject.AddComponent<AudioSource>();
-            newMusicSource.clip = clip;
-            newMusicSource.loop = loop;
-            newMusicSource.volume = musicVolume;
-            newMusicSource.playOnAwake = false;
-            newMusicSource.outputAudioMixerGroup = musicMixerGroup;
-            newMusicSource.Play();
+            AudioSource lNewMusicSource = gameObject.AddComponent<AudioSource>();
+            lNewMusicSource.clip = lClip;
+            lNewMusicSource.loop = pLoop;
+            lNewMusicSource.volume = musicVolume;
+            lNewMusicSource.playOnAwake = false;
+            lNewMusicSource.outputAudioMixerGroup = musicMixerGroup;
+            lNewMusicSource.Play();
 
-            activeMusicSources.Add(newMusicSource);
-            return newMusicSource;
+            activeMusicSources.Add(lNewMusicSource);
+            return lNewMusicSource;
         }
         else
         {
@@ -119,24 +113,24 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void StopMusic(AudioSource musicSource)
+    public void StopMusic(AudioSource pMusicSource)
     {
-        if (musicSource != null && activeMusicSources.Contains(musicSource))
+        if (pMusicSource != null && activeMusicSources.Contains(pMusicSource))
         {
-            musicSource.Stop();
-            activeMusicSources.Remove(musicSource);
-            Destroy(musicSource);
+            pMusicSource.Stop();
+            activeMusicSources.Remove(pMusicSource);
+            Destroy(pMusicSource);
         }
     }
 
     public void StopAllMusic()
     {
-        foreach (AudioSource source in activeMusicSources)
+        foreach (AudioSource lSource in activeMusicSources)
         {
-            if (source != null)
+            if (lSource != null)
             {
-                source.Stop();
-                Destroy(source);
+                lSource.Stop();
+                Destroy(lSource);
             }
         }
         activeMusicSources.Clear();
@@ -144,64 +138,52 @@ public class SoundManager : MonoBehaviour
 
     public void PauseAllMusic()
     {
-        foreach (AudioSource source in activeMusicSources)
+        foreach (AudioSource lSource in activeMusicSources)
         {
-            if (source != null)
+            if (lSource != null)
             {
-                source.Pause();
+                lSource.Pause();
             }
         }
     }
 
     public void ResumeAllMusic()
     {
-        foreach (AudioSource source in activeMusicSources)
+        foreach (AudioSource lSource in activeMusicSources)
         {
-            if (source != null)
+            if (lSource != null)
             {
-                source.UnPause();
+                lSource.UnPause();
             }
         }
     }
 
-    public void SetMusicVolume(float volume)
+    public void SetMusicVolume(float pVolume)
     {
-        musicVolume = Mathf.Clamp01(volume);
-        foreach (AudioSource source in activeMusicSources)
+        musicVolume = Mathf.Clamp01(pVolume);
+        foreach (AudioSource lSource in activeMusicSources)
         {
-            if (source != null)
+            if (lSource != null)
             {
-                source.volume = musicVolume;
-                Debug.Log($"Music volume is {source.volume}");
+                lSource.volume = musicVolume;
             }
         }
-
-
     }
 
-
-    //public void SetMusicVolume(AudioSource musicSource, float volume)
-    //{
-    //    if (musicSource != null)
-    //    {
-    //        musicSource.volume = Mathf.Clamp01(volume);
-    //    }
-    //}
-
-    public void SetSFXVolume(float volume)
+    public void SetSFXVolume(float pVolume)
     {
-        sfxVolume = Mathf.Clamp01(volume);
+        sfxVolume = Mathf.Clamp01(pVolume);
     }
 
-    public void MuteAll(bool mute)
+    public void MuteAll(bool pMute)
     {
-        AudioListener.volume = mute ? 0f : 1f;
+        AudioListener.volume = pMute ? 0f : 1f;
     }
 
-    public AudioClip GetClip(SoundType type)
+    public AudioClip GetClip(SoundType pType)
     {
-        soundDictionary.TryGetValue(type, out AudioClip clip);
-        return clip;
+        soundDictionary.TryGetValue(pType, out AudioClip lClip);
+        return lClip;
     }
 
     void OnDestroy()

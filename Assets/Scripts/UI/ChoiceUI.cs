@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>Auto-wires "Fumer" and "Jeter" buttons to the GameFlowController choice handlers.</summary>
 public class ChoiceUI : MonoBehaviour
 {
     private const string SMOKE_LABEL = "Fumer";
@@ -10,19 +9,19 @@ public class ChoiceUI : MonoBehaviour
 
     private void Start()
     {
-        Button[] buttons = GetComponentsInChildren<Button>(true);
-        foreach (Button btn in buttons)
+        Button[] lButtons = GetComponentsInChildren<Button>(true);
+        foreach (Button lBtn in lButtons)
         {
-            TMP_Text label = btn.GetComponentInChildren<TMP_Text>();
-            if (label == null) continue;
+            TMP_Text lLabel = lBtn.GetComponentInChildren<TMP_Text>();
+            if (lLabel == null) continue;
 
-            if (label.text == SMOKE_LABEL)
+            if (lLabel.text == SMOKE_LABEL)
             {
-                btn.onClick.AddListener(() => GameFlowController.Instance.OnSmokeClicked());
+                lBtn.onClick.AddListener(() => GameFlowController.Instance.OnSmokeClicked());
             }
-            else if (label.text == THROW_AWAY_LABEL)
+            else if (lLabel.text == THROW_AWAY_LABEL)
             {
-                btn.onClick.AddListener(() => GameFlowController.Instance.OnThrowAwayClicked());
+                lBtn.onClick.AddListener(() => GameFlowController.Instance.OnThrowAwayClicked());
             }
         }
     }

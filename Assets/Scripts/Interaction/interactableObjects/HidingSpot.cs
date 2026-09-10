@@ -6,20 +6,12 @@ public class HidingSpot : MonoBehaviour, IInteractable
     [SerializeField] private string closePrompt = "Fermer";
     [SerializeField] private Animator animator;
 
-    [Header("Spawn Point")]
-    [Tooltip("Transform enfant placé à l'intérieur du meuble. L'objet y apparaît quand on ouvre.")]
     [SerializeField] private Transform spawnPoint;
 
-    [Header("Door Animation (optional)")]
-    [Tooltip("Si la cachette est une porte animée en rotation, glisser le door_shelf ici.")]
     [SerializeField] private door_shelf doorShelf;
 
-    [Header("Drawer Slide (optional)")]
-    [Tooltip("Si la cachette est un tiroir qui coulisse, glisser le drawer_slide ici.")]
     [SerializeField] private drawer_slide drawerSlide;
 
-    [Header("Inner Voice (optional)")]
-    [Tooltip("Lignes de voix intérieure jouées quand la cachette est vide.")]
     [SerializeField] private InnerVoiceData emptySpotVoice;
 
     private const string OPEN_ANIM_PARAM = "IsOpen";
@@ -46,14 +38,8 @@ public class HidingSpot : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Configure this spot for the current game phase. Closes the door if it was open.</summary>
-    /// <param name="containsTarget">True if this spot holds the object the player is looking for.</param>
-    /// <param name="targetFlag">The flag to set when the target is found (null for non-functional lighters).</param>
-    /// <param name="isFunctionalTarget">True if this is the working lighter (no penalty on open).</param>
-    /// <param name="prefabToSpawn">Prefab to instantiate at the spawn point when opened.</param>
-    public void Setup(bool containsTarget, string targetFlag, bool isFunctionalTarget, GameObject prefabToSpawn)
+    public void Setup(bool pContainsTarget, string pTargetFlag, bool pIsFunctionalTarget, GameObject pPrefabToSpawn)
     {
-        // Close the door/drawer visually if it was open before reconfiguring
         if (isOpen)
         {
             if (doorShelf != null)
@@ -70,14 +56,13 @@ public class HidingSpot : MonoBehaviour, IInteractable
             }
         }
 
-        this.containsTarget = containsTarget;
-        this.targetFlag = targetFlag;
-        this.isFunctionalTarget = isFunctionalTarget;
-        this.targetPrefab = prefabToSpawn;
+        this.containsTarget = pContainsTarget;
+        this.targetFlag = pTargetFlag;
+        this.isFunctionalTarget = pIsFunctionalTarget;
+        this.targetPrefab = pPrefabToSpawn;
         isOpen = false;
         itemWasTaken = false;
 
-        // Destroy any previously spawned object (still in the spot or picked up)
         if (spawnedObject != null)
         {
             Destroy(spawnedObject);
@@ -90,10 +75,9 @@ public class HidingSpot : MonoBehaviour, IInteractable
         if (!IsInteractable)
             return;
 
-        // If already open, close it (player-initiated close preserves spawned items)
         if (isOpen)
         {
-            Close(destroySpawned: false);
+            Close(pDestroySpawned: false);
             return;
         }
 
@@ -105,10 +89,8 @@ public class HidingSpot : MonoBehaviour, IInteractable
         }
         else if (!containsTarget && !itemWasTaken)
         {
-            // Empty hiding spot: trigger a random penalty
             PenaltyManager.Instance?.TriggerRandomPenalty();
 
-            // Show inner voice line for empty spot
             if (InnerVoiceManager.Instance != null)
             {
                 if (emptySpotVoice != null)
@@ -117,47 +99,43 @@ public class HidingSpot : MonoBehaviour, IInteractable
                 }
                 else
                 {
-                    string[] defaultLines = {
+                    string[] lDefaultLines = {
                         "<shake>Rien ici...</shake>",
                         "<shake>Merde. Pas là non plus.</shake>",
                         "<shake>Putain, où sont mes clopes ?</shake>",
                         "<shake>Vide. Encore.</shake>",
                         "<shake>Je sens que je perds la tête.</shake>"
                     };
-                    InnerVoiceManager.Instance.Show(defaultLines[Random.Range(0, defaultLines.Length)]);
+                    InnerVoiceManager.Instance.Show(lDefaultLines[Random.Range(0, lDefaultLines.Length)]);
                 }
             }
         }
     }
 
-    /// <summary>Instantiate the target prefab at the spawn point if it hasn't been taken yet.</summary>
     private void SpawnObject()
     {
         if (targetPrefab == null || itemWasTaken)
             return;
 
-        // Don't spawn a duplicate if the item is still at the spawn point
         if (spawnedObject != null)
             return;
 
-        Vector3 pos = spawnPoint != null ? spawnPoint.position : transform.position;
-        Quaternion rot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
+        Vector3 lPos = spawnPoint != null ? spawnPoint.position : transform.position;
+        Quaternion lRot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
 
-        spawnedObject = Instantiate(targetPrefab, pos, rot);
+        spawnedObject = Instantiate(targetPrefab, lPos, lRot);
 
-        // Only parent to the spawn point for drawers so the item slides along with it.
-        // Doors and shelves don't move the spawn point, so leave the item in world space.
         if (drawerSlide != null)
         {
-            Transform parent = spawnPoint != null ? spawnPoint : transform;
-            spawnedObject.transform.SetParent(parent, true);
+            Transform lParent = spawnPoint != null ? spawnPoint : transform;
+            spawnedObject.transform.SetParent(lParent, true);
         }
 
-        TargetItem targetItem = spawnedObject.GetComponent<TargetItem>();
-        if (targetItem != null)
+        TargetItem lTargetItem = spawnedObject.GetComponent<TargetItem>();
+        if (lTargetItem != null)
         {
-            targetItem.Init(targetFlag);
-            targetItem.OnPickedUp += HandleItemPickedUp;
+            lTargetItem.Init(targetFlag);
+            lTargetItem.OnPickedUp += HandleItemPickedUp;
         }
     }
 
@@ -167,7 +145,6 @@ public class HidingSpot : MonoBehaviour, IInteractable
         itemWasTaken = true;
     }
 
-    /// <summary>Visually open this hiding spot. Triggers door animation if present.</summary>
     public void Open()
     {
         if (isOpen)
@@ -188,11 +165,8 @@ public class HidingSpot : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Visually close and reset this hiding spot. Only toggles the door if it was actually open.</summary>
-    /// <param name="destroySpawned">If true, destroys the spawned object (used during phase transitions). Player-initiated close preserves items.</param>
-    public void Close(bool destroySpawned = true)
+    public void Close(bool pDestroySpawned = true)
     {
-        // Only toggle the door if it was open — avoids opening closed doors during setup
         if (isOpen)
         {
             if (doorShelf != null)
@@ -211,14 +185,13 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
         isOpen = false;
 
-        if (destroySpawned && spawnedObject != null)
+        if (pDestroySpawned && spawnedObject != null)
         {
             Destroy(spawnedObject);
             spawnedObject = null;
         }
     }
 
-    /// <summary>Force-close the door/drawer to its closed state regardless of internal sync issues. Used during full game reset.</summary>
     public void ForceClose()
     {
         if (doorShelf != null)

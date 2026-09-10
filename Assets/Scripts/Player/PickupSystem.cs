@@ -3,12 +3,10 @@ using UnityEngine.InputSystem;
 
 public class PickupSystem : MonoBehaviour
 {
-    [Header("Références")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform holdPointRight;
     [SerializeField] private Transform holdPointLeft;
 
-    [Header("Paramètres")]
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask playerMask;
 
@@ -24,12 +22,8 @@ public class PickupSystem : MonoBehaviour
         grabAction.performed += OnGrabPerformed;
     }
 
-    private void OnGrabPerformed(InputAction.CallbackContext context)
+    private void OnGrabPerformed(InputAction.CallbackContext pContext)
     {
-        //if (heldObjectRight != null)
-        //    return;
-
-        // Empêche le grab si la partie est terminée
         if (GameManager.Instance != null && GameManager.Instance.CurrentPhase == GamePhase.GameOver)
             return;
 
@@ -38,32 +32,31 @@ public class PickupSystem : MonoBehaviour
 
     private void TryGrab()
     {
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit lHit, interactRange, ~playerMask))
         {
-            TargetItem targetItem = hit.collider.GetComponent<TargetItem>();
-            if (targetItem == null)
+            TargetItem lTargetItem = lHit.collider.GetComponent<TargetItem>();
+            if (lTargetItem == null)
                 return;
 
-            if (targetItem.UseLeftHand)
+            if (lTargetItem.UseLeftHand)
             {
                 if (heldObjectLeft != null)
-                    return; // main gauche déjà occupée
+                    return;
 
-                targetItem.OnGrabbed(holdPointLeft);
-                heldObjectLeft = hit.collider.gameObject;
+                lTargetItem.OnGrabbed(holdPointLeft);
+                heldObjectLeft = lHit.collider.gameObject;
             }
             else
             {
                 if (heldObjectRight != null)
-                    return; // main droite déjà occupée
+                    return;
 
-                targetItem.OnGrabbed(holdPointRight);
-                heldObjectRight = hit.collider.gameObject;
+                lTargetItem.OnGrabbed(holdPointRight);
+                heldObjectRight = lHit.collider.gameObject;
             }
         }
     }
 
-    /// <summary>Release the currently held object so the player can grab another item.</summary>
     public void ReleaseHeldItemRight()
     {
         heldObjectRight = null;
@@ -73,7 +66,6 @@ public class PickupSystem : MonoBehaviour
         heldObjectLeft = null;
     }
 
-    /// <summary>Destroy the currently held object and clear all grab state. Used during game reset.</summary>
     public void ClearHeldItem()
     {
         if (heldObjectRight != null)
@@ -89,7 +81,6 @@ public class PickupSystem : MonoBehaviour
         }
     }
 
-    /// <summary>Drop both held items to the floor with physics, like defective lighters. Used for the "throw away" choice.</summary>
     public void DropAllItemsToFloor()
     {
         if (heldObjectRight != null)
@@ -105,32 +96,32 @@ public class PickupSystem : MonoBehaviour
         }
     }
 
-    private void DropItemToFloor(GameObject heldObj, Transform holdPoint)
+    private void DropItemToFloor(GameObject pHeldObj, Transform pHoldPoint)
     {
-        if (heldObj == null || holdPoint == null) return;
+        if (pHeldObj == null || pHoldPoint == null) return;
 
-        heldObj.transform.SetParent(null);
+        pHeldObj.transform.SetParent(null);
 
-        Vector3 dropPos = holdPoint.position + holdPoint.forward * 0.5f;
-        dropPos.y = Mathf.Max(dropPos.y, 0.5f);
-        heldObj.transform.position = dropPos;
-        heldObj.transform.rotation = Random.rotation;
+        Vector3 lDropPos = pHoldPoint.position + pHoldPoint.forward * 0.5f;
+        lDropPos.y = Mathf.Max(lDropPos.y, 0.5f);
+        pHeldObj.transform.position = lDropPos;
+        pHeldObj.transform.rotation = Random.rotation;
 
-        Rigidbody rb = heldObj.GetComponent<Rigidbody>();
-        if (rb == null)
-            rb = heldObj.AddComponent<Rigidbody>();
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.AddForce(holdPoint.forward * 2f, ForceMode.Impulse);
+        Rigidbody lRb = pHeldObj.GetComponent<Rigidbody>();
+        if (lRb == null)
+            lRb = pHeldObj.AddComponent<Rigidbody>();
+        lRb.isKinematic = false;
+        lRb.useGravity = true;
+        lRb.AddForce(pHoldPoint.forward * 2f, ForceMode.Impulse);
 
-        Collider col = heldObj.GetComponent<Collider>();
-        if (col is MeshCollider meshCol && !meshCol.convex)
-            meshCol.convex = true;
-        if (col != null)
-            col.enabled = true;
+        Collider lCol = pHeldObj.GetComponent<Collider>();
+        if (lCol is MeshCollider lMeshCol && !lMeshCol.convex)
+            lMeshCol.convex = true;
+        if (lCol != null)
+            lCol.enabled = true;
     }
 
-    public void SetGrabInfos(bool pressed) { }
+    public void SetGrabInfos(bool pPressed) { }
 
     private void OnDestroy()
     {

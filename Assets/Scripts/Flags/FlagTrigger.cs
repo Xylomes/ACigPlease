@@ -55,7 +55,7 @@ public class FlagTrigger : MonoBehaviour, IInteractable
     {
         if (triggerType == FlagTriggerType.OnTriggerEnter)
         {
-            if(other.TryGetComponent<PlayerController>(out PlayerController player))
+            if(other.TryGetComponent<PlayerController>(out PlayerController lPlayer))
             {
                 Trigger();
             }

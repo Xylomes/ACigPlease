@@ -21,13 +21,13 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
-    private IInteractable GetInteractableFromHit(RaycastHit hit)
+    private IInteractable GetInteractableFromHit(RaycastHit pHit)
     {
-        IInteractable interactable = null;
-        hit.transform.TryGetComponent<IInteractable>(out interactable);
-        if (interactable == null) interactable = hit.transform.GetComponentInParent<IInteractable>();
-        if (interactable == null) interactable = hit.transform.GetComponentInChildren<IInteractable>();
-        return interactable;
+        IInteractable lInteractable = null;
+        pHit.transform.TryGetComponent<IInteractable>(out lInteractable);
+        if (lInteractable == null) lInteractable = pHit.transform.GetComponentInParent<IInteractable>();
+        if (lInteractable == null) lInteractable = pHit.transform.GetComponentInChildren<IInteractable>();
+        return lInteractable;
     }
 
     void Update()
@@ -37,21 +37,21 @@ public class InteractionSystem : MonoBehaviour
             return;
         }
 
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit lHit, interactRange, ~playerMask))
         {
-            IInteractable interactable = GetInteractableFromHit(hit);
+            IInteractable lInteractable = GetInteractableFromHit(lHit);
 
-            if (interactable != null)
+            if (lInteractable != null)
             {
-                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter) && !(interactable is HidingSpot hs && hs.IsOpen))
+                if (PlayerStateMachine.IsHoldingItem && !(lInteractable is BagRecepter) && !(lInteractable is HidingSpot lHs && lHs.IsOpen))
                 {
                     InteractionUI.Instance.HidePrompt();
                     return;
                 }
 
-                if (interactable.IsInteractable)
+                if (lInteractable.IsInteractable)
                 {
-                    InteractionUI.Instance.ShowPrompt(interactable.InteractionPrompt);
+                    InteractionUI.Instance.ShowPrompt(lInteractable.InteractionPrompt);
                 }
                 else
                 {
@@ -76,20 +76,20 @@ public class InteractionSystem : MonoBehaviour
             return;
         }
 
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactRange, ~playerMask))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit lHit, interactRange, ~playerMask))
         {
-            IInteractable interactable = GetInteractableFromHit(hit);
+            IInteractable lInteractable = GetInteractableFromHit(lHit);
 
-            if (interactable != null)
+            if (lInteractable != null)
             {
-                if (PlayerStateMachine.IsHoldingItem && !(interactable is BagRecepter) && !(interactable is HidingSpot hs && hs.IsOpen))
+                if (PlayerStateMachine.IsHoldingItem && !(lInteractable is BagRecepter) && !(lInteractable is HidingSpot lHs && lHs.IsOpen))
                 {
                     return;
                 }
 
-                if (interactable.IsInteractable)
+                if (lInteractable.IsInteractable)
                 {
-                    interactable.Interact();
+                    lInteractable.Interact();
                 }
             }
         }

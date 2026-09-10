@@ -19,10 +19,8 @@ public class GameFlowController : MonoBehaviour
         Credits
     }
 
-    [Header("Blink Transition")]
     [SerializeField] private EyeBlinkTransition eyeBlink;
 
-    [Header("UI Canvases")]
     [SerializeField] private GameObject mainMenuCanvas;
     [SerializeField] private GameObject optionsCanvas;
     [SerializeField] private GameObject rulesCanvas;
@@ -31,33 +29,21 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private GameObject hudCanvas;
     [SerializeField] private GameObject choiceCanvas;
 
-    [Header("Win Video Placeholder")]
-    [Tooltip("Duration of the win video placeholder before transitioning to credits.")]
     [SerializeField] private float winVideoPlaceholderDuration = 3f;
-
-    [Header("Credits")]
-    [Tooltip("Duration the credits stay on screen before returning to menu.")]
     [SerializeField] private float creditsDuration = 6f;
-
-    [Header("Game Over")]
-    [Tooltip("Delay in seconds after a game over before the blink transition to the menu.")]
     [SerializeField] private float gameOverDelay = 3f;
 
-    [Header("Player References")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerRotation playerRotation;
     [SerializeField] private PlayerInput playerInput;
 
-    [Header("Game Manager")]
     [SerializeField] private GameManager gameManager;
 
-    [Header("Settings Defaults")]
     [SerializeField] private float defaultAudioVolume = 1f;
     [SerializeField] private float defaultMouseSensitivity = 1f;
 
     public FlowState CurrentState { get; private set; } = FlowState.MainMenu;
 
-    // Stored settings
     private float audioVolume;
     private float mouseSensitivity;
 
@@ -107,8 +93,6 @@ public class GameFlowController : MonoBehaviour
             InnerVoiceManager.Instance.OnAllLinesTyped -= HandleVoiceComplete;
         }
     }
-
-    // ---- Button handlers (called from UI) ----
 
     public void OnPlayClicked()
     {
@@ -163,36 +147,33 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    public void OnAudioSliderChanged(float value)
+    public void OnAudioSliderChanged(float pValue)
     {
-        audioVolume = value;
-        AudioListener.volume = value;
+        audioVolume = pValue;
+        AudioListener.volume = pValue;
     }
 
-    public void OnSensitivitySliderChanged(float value)
+    public void OnSensitivitySliderChanged(float pValue)
     {
-        mouseSensitivity = value;
+        mouseSensitivity = pValue;
         if (playerRotation != null)
-            playerRotation.SensitivityMultiplier = value;
+            playerRotation.SensitivityMultiplier = pValue;
     }
 
-    // ---- State management ----
-
-    private void SetState(FlowState newState)
+    private void SetState(FlowState pNewState)
     {
-        CurrentState = newState;
+        CurrentState = pNewState;
 
-        bool playerCanMove = newState == FlowState.Playing;
-        bool uiInteractable = !playerCanMove;
+        bool lPlayerCanMove = pNewState == FlowState.Playing;
 
         if (playerController != null)
-            playerController.enabled = playerCanMove;
+            playerController.enabled = lPlayerCanMove;
         if (playerRotation != null)
-            playerRotation.enabled = playerCanMove;
+            playerRotation.enabled = lPlayerCanMove;
         if (playerInput != null)
-            playerInput.enabled = playerCanMove;
+            playerInput.enabled = lPlayerCanMove;
 
-        if (playerCanMove)
+        if (lPlayerCanMove)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -203,33 +184,31 @@ public class GameFlowController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        SetCanvasActive(mainMenuCanvas, newState == FlowState.MainMenu);
-        SetCanvasActive(optionsCanvas, newState == FlowState.Options);
-        SetCanvasActive(rulesCanvas, newState == FlowState.Rules);
-        SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
-        SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
-        SetCanvasActive(hudCanvas, newState == FlowState.Playing || newState == FlowState.Choice);
-        SetCanvasActive(choiceCanvas, newState == FlowState.Choice);
+        SetCanvasActive(mainMenuCanvas, pNewState == FlowState.MainMenu);
+        SetCanvasActive(optionsCanvas, pNewState == FlowState.Options);
+        SetCanvasActive(rulesCanvas, pNewState == FlowState.Rules);
+        SetCanvasActive(winVideoCanvas, pNewState == FlowState.WinVideo);
+        SetCanvasActive(creditsCanvas, pNewState == FlowState.Credits);
+        SetCanvasActive(hudCanvas, pNewState == FlowState.Playing || pNewState == FlowState.Choice);
+        SetCanvasActive(choiceCanvas, pNewState == FlowState.Choice);
 
-        if (newState != FlowState.Playing)
+        if (pNewState != FlowState.Playing)
         {
-            HeadMouvementEffect headEffect = playerController != null
+            HeadMouvementEffect lHeadEffect = playerController != null
                 ? playerController.GetComponentInChildren<HeadMouvementEffect>()
                 : null;
-            if (headEffect != null)
+            if (lHeadEffect != null)
             {
-                headEffect.ResetEffect();
+                lHeadEffect.ResetEffect();
             }
         }
     }
 
-    private static void SetCanvasActive(GameObject canvas, bool active)
+    private static void SetCanvasActive(GameObject pCanvas, bool pActive)
     {
-        if (canvas != null)
-            canvas.SetActive(active);
+        if (pCanvas != null)
+            pCanvas.SetActive(pActive);
     }
-
-    // ---- Game over / win handling ----
 
     private void HandleGameOver()
     {
@@ -248,9 +227,9 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    private void HandleFlagSet(string flag)
+    private void HandleFlagSet(string pFlag)
     {
-        if (flag == GameFlags.CHOICE_PROMPT)
+        if (pFlag == GameFlags.CHOICE_PROMPT)
         {
             SetState(FlowState.Choice);
         }
@@ -279,8 +258,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    // ---- Choice handlers (called from choice UI buttons) ----
-
     private bool voiceComplete;
 
     private void HandleVoiceComplete()
@@ -288,7 +265,6 @@ public class GameFlowController : MonoBehaviour
         voiceComplete = true;
     }
 
-    /// <summary>Called when the player clicks "Fumer". Plays the defeat inner voice, then the end video and credits.</summary>
     public void OnSmokeClicked()
     {
         SetCanvasActive(choiceCanvas, false);
@@ -302,18 +278,17 @@ public class GameFlowController : MonoBehaviour
         }
     }
 
-    /// <summary>Called when the player clicks "Jeter". Drops items to the floor, plays the inner voice, then credits and menu.</summary>
     public void OnThrowAwayClicked()
     {
         SetCanvasActive(choiceCanvas, false);
 
-        PlayerController playerCtrl = PlayerController.Instance;
-        if (playerCtrl != null)
+        PlayerController lPlayerCtrl = PlayerController.Instance;
+        if (lPlayerCtrl != null)
         {
-            PickupSystem pickup = playerCtrl.GetComponent<PickupSystem>();
-            if (pickup != null)
+            PickupSystem lPickup = lPlayerCtrl.GetComponent<PickupSystem>();
+            if (lPickup != null)
             {
-                pickup.DropAllItemsToFloor();
+                lPickup.DropAllItemsToFloor();
             }
         }
 
@@ -355,17 +330,15 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    // ---- Player reset ----
-
     private void ResetPlayerToStart()
     {
         if (playerController != null)
         {
-            CharacterController cc = playerController.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
+            CharacterController lCc = playerController.GetComponent<CharacterController>();
+            if (lCc != null) lCc.enabled = false;
             playerController.transform.position = playerStartPosition;
             playerController.transform.rotation = playerStartRotation;
-            if (cc != null) cc.enabled = true;
+            if (lCc != null) lCc.enabled = true;
         }
 
         if (playerRotation != null)

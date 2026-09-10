@@ -7,7 +7,6 @@ public class StockageBarrel : MonoBehaviour
     private int currentCountGrounded;
     private int currentCountNotGrounded;
 
-    // percent
     private int fillPercentGrounded;
     private int fillPercentNotGrounded;
     private int maxPercentage = 100;
@@ -43,12 +42,12 @@ public class StockageBarrel : MonoBehaviour
     {
         if (!IsFullyGround)
         {
-            return; // feedback needed
+            return;
         }
         else
         {
-            int quantitySent = currentCountGrounded;
-            OnGroundedStockSent?.Invoke(quantitySent);
+            int lQuantitySent = currentCountGrounded;
+            OnGroundedStockSent?.Invoke(lQuantitySent);
             ResetStockageBarrel();
         }
     }
@@ -65,7 +64,7 @@ public class StockageBarrel : MonoBehaviour
         }
         else
         {
-             return; // mettre un feedback d inutilite 
+             return;
         }
     }
 

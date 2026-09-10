@@ -6,18 +6,12 @@ public static class GameFlags
 {
     #region Flags
 
-    //MARA
     public const string MARAINTRO1INTERACTIOM = "mara_intro_1_interaction";
     public const string MARAINTRO2INTERACTIOM = "mara_intro_2_interaction";
     public const string MARAINTRO3INTERACTIOM = "mara_intro_3_interaction";
     public const string MARAINTRO4INTERACTIOM = "mara_intro_4_interaction";
     public const string MARAINTRO5INTERACTIOM = "mara_intro_5_interaction";
 
-    //DOOR
-    //LETTER
-    //ACT
-
-    // GAME FLOW
     public const string GAME_SETUP_DONE = "game_setup_done";
     public const string CIGARETTES_FOUND = "cigarettes_found";
     public const string WORKING_LIGHTER_FOUND = "working_lighter_found";

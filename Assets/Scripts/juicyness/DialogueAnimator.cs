@@ -12,11 +12,9 @@ public class DialogueAnimator : MonoBehaviour
 
     public bool IsTyping;
 
-    //Typing Effect
     [SerializeField] private float typingTime = 0.03f;
     [SerializeField] private float pauseTypingTime = 0.3f;
 
-    //Shake Effect
     [SerializeField] private float shakeIntensity = 1.2f;
     [SerializeField] private float shakeFrequency = 2f;
 

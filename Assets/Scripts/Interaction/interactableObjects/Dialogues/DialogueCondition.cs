@@ -3,8 +3,8 @@ using UnityEngine;
 [System.Serializable] public class DialogueCondition 
 {
 
-    public string[] requieredFlags; //AND Logic 
-    public string[] anyOfFlags; //OR Logic
+    public string[] requieredFlags;
+    public string[] anyOfFlags;
 
     public bool IsConditionMet()
     {

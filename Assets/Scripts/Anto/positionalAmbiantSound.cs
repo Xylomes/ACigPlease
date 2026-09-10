@@ -30,10 +30,10 @@ public class positionalAmbientSound : MonoBehaviour
 
     void Start()
     {
-        AudioClip clip = SoundManager.Instance.GetClip(soundType);
-        if (clip != null)
+        AudioClip lClip = SoundManager.Instance.GetClip(soundType);
+        if (lClip != null)
         {
-            audioSource.clip = clip;
+            audioSource.clip = lClip;
             audioSource.Play();
         }
     }

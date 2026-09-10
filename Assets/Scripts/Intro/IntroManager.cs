@@ -19,7 +19,6 @@ public class IntroManager : MonoBehaviour
     private InputAction skipIntro;
     private Coroutine skipFillCoroutine;
 
-    //text
     private float typingTime = 0.03f;
     private string introTextReplaced;
     private const string INTROTXT =
@@ -95,7 +94,6 @@ public class IntroManager : MonoBehaviour
 
     "Lancement de l'environnement de travail\u2026";
 
-    //scene
     private const string GAME_SCENE_NAME = "Game";
     private const string INTRO_SCENE_NAME = "Intro";
     void Start()
@@ -118,9 +116,9 @@ public class IntroManager : MonoBehaviour
         StartCoroutine(TypeText(introTextReplaced));
     }
 
-    private string injectData(string text)
+    private string injectData(string pText)
     {
-        introTextReplaced = text.Replace("{USERNAME}", DataCollector.Instance.UtilisatorName);
+        introTextReplaced = pText.Replace("{USERNAME}", DataCollector.Instance.UtilisatorName);
         introTextReplaced = introTextReplaced.Replace("{MACHINE}", DataCollector.Instance.PcName);
         introTextReplaced = introTextReplaced.Replace("{DATE}", DataCollector.Instance.Date); 
         introTextReplaced = introTextReplaced.Replace("{LOCAL_TIME}", DataCollector.Instance.Hour);
@@ -128,17 +126,17 @@ public class IntroManager : MonoBehaviour
         introTextReplaced = introTextReplaced.Replace("{FRIEND_COUNT}", DataCollector.Instance.FriendCount);
         return introTextReplaced;
     }
-    private IEnumerator TypeText(string textIntro)
+    private IEnumerator TypeText(string pTextIntro)
     {
         textObj.text = "";
-        textObj.text = textIntro;
+        textObj.text = pTextIntro;
         textObj.ForceMeshUpdate();
 
-        int characterAmount = textObj.textInfo.characterCount;
+        int lCharacterAmount = textObj.textInfo.characterCount;
 
-        for(int i = 20; i < characterAmount; i++)
+        for(int i = 20; i < lCharacterAmount; i++)
         {
-            textObj.text = textIntro.Substring(0, i + 1);
+            textObj.text = pTextIntro.Substring(0, i + 1);
             yield return new WaitForSeconds(typingTime);
         }
 
@@ -150,16 +148,16 @@ public class IntroManager : MonoBehaviour
         SceneLoader.Instance.StartCoroutine(SceneLoader.Instance.UnloadScene(INTRO_SCENE_NAME));
     }
 
-    private void OnSkipStarted(InputAction.CallbackContext context)
+    private void OnSkipStarted(InputAction.CallbackContext pContext)
     {
         skipCanvasGroup.gameObject.SetActive(true);
         skipFillCoroutine = StartCoroutine(FillSkipProgress());
     }
-    private void OnSkipPerformed(InputAction.CallbackContext context)
+    private void OnSkipPerformed(InputAction.CallbackContext pContext)
     {
         SkipIntroAsked();
     }
-    private void OnSkipCanceled(InputAction.CallbackContext context)
+    private void OnSkipCanceled(InputAction.CallbackContext pContext)
     {
         StopCoroutine(skipFillCoroutine);
         skipCanvasGroup.alpha = 0f;
@@ -167,12 +165,12 @@ public class IntroManager : MonoBehaviour
     }
     private IEnumerator FillSkipProgress()
     {
-        float timeElapsed = 0f;
+        float lTimeElapsed = 0f;
 
-        while (timeElapsed < skipDuration)
+        while (lTimeElapsed < skipDuration)
         {
-            timeElapsed += Time.deltaTime;
-            skipCanvasGroup.alpha = timeElapsed / skipDuration;
+            lTimeElapsed += Time.deltaTime;
+            skipCanvasGroup.alpha = lTimeElapsed / skipDuration;
             yield return null;
         }
     }
@@ -190,5 +188,3 @@ public class IntroManager : MonoBehaviour
         skipIntro.canceled -= OnSkipCanceled;
     }
 }
-
-

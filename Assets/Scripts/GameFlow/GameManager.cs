@@ -5,11 +5,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [Header("Timer")]
     [SerializeField] private float timeRemaining;
     [SerializeField] private float timeBonusOnFind;
 
-    [Header("Inner Voice")]
     [SerializeField] private InnerVoiceData gameStartVoice;
     [SerializeField] private InnerVoiceData lighterPhaseVoice;
     [SerializeField] private InnerVoiceData gameOverVoice;
@@ -56,10 +54,10 @@ public class GameManager : MonoBehaviour
         timeRemaining = TIMER_START_VALUE;
         ChangePhase(GamePhase.Setup);
 
-        HidingSpotManager spotManager = HidingSpotManager.Instance;
-        if (spotManager != null)
+        HidingSpotManager lSpotManager = HidingSpotManager.Instance;
+        if (lSpotManager != null)
         {
-            spotManager.SetupCigarettePhase();
+            lSpotManager.SetupCigarettePhase();
         }
 
         GameFlags.SetFlag(GameFlags.GAME_SETUP_DONE);
@@ -90,13 +88,13 @@ public class GameManager : MonoBehaviour
             PenaltyManager.Instance.ClearCurrentPenalty();
         }
 
-        PlayerController playerCtrl = PlayerController.Instance;
-        if (playerCtrl != null)
+        PlayerController lPlayerCtrl = PlayerController.Instance;
+        if (lPlayerCtrl != null)
         {
-            PickupSystem pickup = playerCtrl.GetComponent<PickupSystem>();
-            if (pickup != null)
+            PickupSystem lPickup = lPlayerCtrl.GetComponent<PickupSystem>();
+            if (lPickup != null)
             {
-                pickup.ClearHeldItem();
+                lPickup.ClearHeldItem();
             }
         }
 
@@ -128,9 +126,9 @@ public class GameManager : MonoBehaviour
         OnTimerTick?.Invoke(timeRemaining);
     }
 
-    private void HandleFlagSet(string flag)
+    private void HandleFlagSet(string pFlag)
     {
-        switch (flag)
+        switch (pFlag)
         {
             case GameFlags.CIGARETTES_FOUND:
                 AddTime(timeBonusOnFind);
@@ -145,10 +143,10 @@ public class GameManager : MonoBehaviour
     }
     private void TransitionToLighterPhase()
     {
-        HidingSpotManager spotManager = HidingSpotManager.Instance;
-        if (spotManager != null)
+        HidingSpotManager lSpotManager = HidingSpotManager.Instance;
+        if (lSpotManager != null)
         {
-            spotManager.SetupLighterPhase();
+            lSpotManager.SetupLighterPhase();
         }
 
         ChangePhase(GamePhase.SearchingLighter);
@@ -167,7 +165,6 @@ public class GameManager : MonoBehaviour
         ChangePhase(GamePhase.GameOver);
     }
 
-    /// <summary>Stop the timer and prompt the player with the smoke/throw choice.</summary>
     private void HandleChoicePrompt()
     {
         IsTimerRunning = false;
@@ -175,7 +172,6 @@ public class GameManager : MonoBehaviour
         GameFlags.SetFlag(GameFlags.CHOICE_PROMPT);
     }
 
-    /// <summary>Mark the game as over and prevent further interactions.</summary>
     public void EndGame()
     {
         IsTimerRunning = false;
@@ -194,15 +190,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddTime(float seconds)
+    public void AddTime(float pSeconds)
     {
-        timeRemaining = Mathf.Min(timeRemaining + seconds, TIMER_START_VALUE);
+        timeRemaining = Mathf.Min(timeRemaining + pSeconds, TIMER_START_VALUE);
     }
 
-    private void ChangePhase(GamePhase newPhase)
+    private void ChangePhase(GamePhase pNewPhase)
     {
-        GamePhase oldPhase = CurrentPhase;
-        CurrentPhase = newPhase;
-        OnPhaseChanged?.Invoke(oldPhase, newPhase);
+        GamePhase lOldPhase = CurrentPhase;
+        CurrentPhase = pNewPhase;
+        OnPhaseChanged?.Invoke(lOldPhase, pNewPhase);
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class DistortionPenalty : MonoBehaviour, IPenalty
 {
-    [Header("Distortion Settings")]
     [SerializeField] private Volume postProcessVolume;
     [SerializeField] private float targetLensDistortion = -0.6f;
     [SerializeField] private float targetChromaticAberration = 1f;
@@ -69,14 +68,13 @@ public class DistortionPenalty : MonoBehaviour, IPenalty
 
         pulseTimer += Time.deltaTime;
 
-        // Pulsing distortion for a dizzy effect
-        float pulse = Mathf.Sin(pulseTimer * 2f) * 0.15f;
-        float distortionTarget = targetLensDistortion + pulse;
+        float lPulse = Mathf.Sin(pulseTimer * 2f) * 0.15f;
+        float lDistortionTarget = targetLensDistortion + lPulse;
 
         if (lensDistortion != null)
         {
             lensDistortion.intensity.Override(
-                Mathf.MoveTowards(lensDistortion.intensity.value, distortionTarget, Time.deltaTime * lerpSpeed)
+                Mathf.MoveTowards(lensDistortion.intensity.value, lDistortionTarget, Time.deltaTime * lerpSpeed)
             );
             lensDistortion.scale.Override(DEFAULT_SCALE);
         }
