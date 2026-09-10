@@ -1,7 +1,8 @@
 public enum PenaltyType
 {
     None,
-    DrunkMode,
+    InvertedMouse,
+    InvertedControls,
     DistortionShader,
     TextSpam,
     Vignette

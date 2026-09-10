@@ -1,22 +1,20 @@
 using UnityEngine;
 
-public class DrunkModePenalty : MonoBehaviour, IPenalty
+public class InvertedControlsPenalty : MonoBehaviour, IPenalty
 {
     [SerializeField] private float wobbleSpeed = 2f;
     [SerializeField] private float wobbleAmplitude = 3f;
 
-    private const float DEFAULT_ROTATION_SPEED = 2f;
-    private const float INVERTED_MULTIPLIER = -1f;
-
-    public PenaltyType PenaltyType => PenaltyType.DrunkMode;
+    public PenaltyType PenaltyType => PenaltyType.InvertedControls;
 
     private Transform cameraTransform;
     private float wobbleTimer;
+    private bool isActive;
 
     public void Activate()
     {
-        PlayerRotation.IsInputInverted = true;
         PlayerController.IsMovementInverted = true;
+        isActive = true;
 
         cameraTransform = PlayerController.Instance != null
             ? PlayerController.Instance.transform.GetChild(0)
@@ -25,13 +23,13 @@ public class DrunkModePenalty : MonoBehaviour, IPenalty
 
     public void Deactivate()
     {
-        PlayerRotation.IsInputInverted = false;
         PlayerController.IsMovementInverted = false;
+        isActive = false;
     }
 
     private void LateUpdate()
     {
-        if (PlayerRotation.IsInputInverted && cameraTransform != null)
+        if (isActive && cameraTransform != null)
         {
             wobbleTimer += Time.deltaTime * wobbleSpeed;
             float lZTilt = Mathf.Sin(wobbleTimer) * wobbleAmplitude;
