@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Video;
 
 public class GameFlowController : MonoBehaviour
 {
@@ -237,7 +238,31 @@ public class GameFlowController : MonoBehaviour
 
     private IEnumerator WinVideoThenCredits()
     {
-        yield return new WaitForSeconds(winVideoPlaceholderDuration);
+        VideoPlayer lPlayer = winVideoCanvas != null
+            ? winVideoCanvas.GetComponentInChildren<VideoPlayer>()
+            : null;
+
+        if (lPlayer != null && lPlayer.clip != null)
+        {
+            lPlayer.time = 0;
+            lPlayer.Play();
+
+            while (!lPlayer.isPlaying)
+                yield return null;
+
+            bool lFinished = false;
+            VideoPlayer lCaptured = lPlayer;
+            lPlayer.loopPointReached += _ => lFinished = true;
+
+            while (!lFinished)
+                yield return null;
+
+            lCaptured.Stop();
+        }
+        else
+        {
+            yield return new WaitForSeconds(winVideoPlaceholderDuration);
+        }
 
         eyeBlink.Blink(() =>
         {
