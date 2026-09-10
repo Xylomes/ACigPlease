@@ -50,7 +50,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PXL_Res: 307.6
+    - _PXL_Res: 582.7
     - _QNT_Res: 256
     - _QueueControl: 0
     - _QueueOffset: 0

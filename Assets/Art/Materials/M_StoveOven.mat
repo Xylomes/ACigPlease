@@ -67,7 +67,7 @@ Material:
     - _QNT_Res: 256
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _VTX_Res: 83
+    - _VTX_Res: 130.4
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
