@@ -6,13 +6,7 @@ public class ClockController : MonoBehaviour
     [Header("Aiguilles")]
     [SerializeField] private Transform hourHand;
     [SerializeField] private Transform minuteHand;
-
-    [Header("Axe de rotation")]
-    [Tooltip("L'axe local autour duquel l'aiguille tourne (souvent Z pour un cadran face à la caméra)")]
     [SerializeField] private Vector3 rotationAxis = Vector3.forward;
-
-    [Header("Mise à jour")]
-    [Tooltip("À quelle fréquence (en secondes) l'horloge se recalcule. 1 = fluide, plus haut = économise des perfs")]
     [SerializeField] private float updateInterval = 1f;
 
     private float timeRemaining;

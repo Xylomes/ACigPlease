@@ -18,6 +18,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip ratSound;
     [SerializeField] private AudioClip peopleSound;
     [SerializeField] private AudioClip playerBreathSound;
+    [SerializeField] private AudioClip openCloset;
+
+    [SerializeField] private AudioClip closeCloset;
 
     [SerializeField] [Range(0f, 1f)] private float musicVolume = 0.7f;
     [SerializeField] [Range(0f, 1f)] private float sfxVolume = 1f;
@@ -40,6 +43,8 @@ public class SoundManager : MonoBehaviour
         Rat,
         People,
         PlayerBreath,
+        OpenCloset,
+        CloseCloset,
         AmbiantSound
     }
 
@@ -80,6 +85,8 @@ public class SoundManager : MonoBehaviour
             { SoundType.Rat, ratSound },
             { SoundType.People, peopleSound },
             { SoundType.PlayerBreath, playerBreathSound },
+            { SoundType.CloseCloset, closeCloset },
+            { SoundType.OpenCloset, openCloset },
             { SoundType.AmbiantSound, gameAmbiantMusic }
         };
     }

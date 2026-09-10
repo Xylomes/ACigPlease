@@ -30,6 +30,16 @@ public class door_shelf : MonoBehaviour
 
     public void ToggleDoor()
     {
+        if (isOpen)
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.CloseCloset);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.OpenCloset);
+        }
+
+
         if (isAnimating) return;
 
         isOpen = !isOpen;
