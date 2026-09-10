@@ -7,7 +7,6 @@ public class door_shelf : MonoBehaviour
 
     public float openAngle = 90f;
     public float duration = 1f;
-    [Tooltip("Axis around which the door rotates.")]
     public RotationAxis rotationAxis = RotationAxis.Y;
 
     private bool isOpen = false;
@@ -43,7 +42,6 @@ public class door_shelf : MonoBehaviour
         currentCoroutine = StartCoroutine(RotateDoor(target));
     }
 
-    /// <summary>Force the door to its closed state regardless of current internal state.</summary>
     public void ForceClose()
     {
         if (currentCoroutine != null)

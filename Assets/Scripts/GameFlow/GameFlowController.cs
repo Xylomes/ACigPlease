@@ -3,11 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Controls the overall game flow: main menu, playing, options, game over, and credits.
-/// Uses the EyeBlinkTransition for smooth state changes between phases.
-/// The player keeps an FPS camera view at all times; only input and UI change.
-/// </summary>
 public class GameFlowController : MonoBehaviour
 {
     public static GameFlowController Instance { get; private set; }
@@ -58,14 +53,12 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private float defaultAudioVolume = 1f;
     [SerializeField] private float defaultMouseSensitivity = 1f;
 
-    /// <summary>Current flow state.</summary>
     public FlowState CurrentState { get; private set; } = FlowState.MainMenu;
 
     // Stored settings
     private float audioVolume;
     private float mouseSensitivity;
 
-    // Player start transform (to reset on game over)
     private Vector3 playerStartPosition;
     private Quaternion playerStartRotation;
 
@@ -85,14 +78,12 @@ public class GameFlowController : MonoBehaviour
         mouseSensitivity = defaultMouseSensitivity;
         AudioListener.volume = audioVolume;
 
-        // Record the player's starting transform for reset on game over
         if (playerController != null)
         {
             playerStartPosition = playerController.transform.position;
             playerStartRotation = playerController.transform.rotation;
         }
 
-        // Subscribe to game manager events
         GameManager.OnTimerExpired += HandleGameOver;
         GameFlags.OnFlagSet += HandleFlagSet;
 
@@ -107,7 +98,6 @@ public class GameFlowController : MonoBehaviour
 
     // ---- Button handlers (called from UI) ----
 
-    /// <summary>Called when the Play button is clicked.</summary>
     public void OnPlayClicked()
     {
         eyeBlink.Blink(() =>
@@ -117,7 +107,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Options button is clicked.</summary>
     public void OnOptionsClicked()
     {
         eyeBlink.Blink(() =>
@@ -126,7 +115,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Rules button is clicked.</summary>
     public void OnRulesClicked()
     {
         eyeBlink.Blink(() =>
@@ -135,7 +123,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Back button in Rules is clicked.</summary>
     public void OnRulesBackClicked()
     {
         eyeBlink.Blink(() =>
@@ -144,7 +131,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Quit button is clicked.</summary>
     public void OnQuitClicked()
     {
         eyeBlink.Blink(() =>
@@ -157,7 +143,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the Back button in Options is clicked.</summary>
     public void OnOptionsBackClicked()
     {
         eyeBlink.Blink(() =>
@@ -166,14 +151,12 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Called when the audio volume slider changes.</summary>
     public void OnAudioSliderChanged(float value)
     {
         audioVolume = value;
         AudioListener.volume = value;
     }
 
-    /// <summary>Called when the mouse sensitivity slider changes.</summary>
     public void OnSensitivitySliderChanged(float value)
     {
         mouseSensitivity = value;
@@ -190,7 +173,6 @@ public class GameFlowController : MonoBehaviour
         bool playerCanMove = newState == FlowState.Playing;
         bool uiInteractable = !playerCanMove;
 
-        // Enable/disable player controls
         if (playerController != null)
             playerController.enabled = playerCanMove;
         if (playerRotation != null)
@@ -198,7 +180,6 @@ public class GameFlowController : MonoBehaviour
         if (playerInput != null)
             playerInput.enabled = playerCanMove;
 
-        // Cursor
         if (playerCanMove)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -210,7 +191,6 @@ public class GameFlowController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        // Toggle UI canvases
         SetCanvasActive(mainMenuCanvas, newState == FlowState.MainMenu);
         SetCanvasActive(optionsCanvas, newState == FlowState.Options);
         SetCanvasActive(rulesCanvas, newState == FlowState.Rules);
@@ -218,7 +198,6 @@ public class GameFlowController : MonoBehaviour
         SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
         SetCanvasActive(hudCanvas, newState == FlowState.Playing);
 
-        // Reset head bob effect when leaving gameplay so the menu camera is still
         if (newState != FlowState.Playing)
         {
             HeadMouvementEffect headEffect = playerController != null
@@ -244,7 +223,6 @@ public class GameFlowController : MonoBehaviour
         StartCoroutine(GameOverAfterDelay());
     }
 
-    /// <summary>Wait gameOverDelay seconds, then blink and return to the main menu.</summary>
     private IEnumerator GameOverAfterDelay()
     {
         yield return new WaitForSeconds(gameOverDelay);
@@ -269,11 +247,8 @@ public class GameFlowController : MonoBehaviour
         }
     }
 
-    /// <summary>After the win video placeholder plays, transition to credits.</summary>
     private IEnumerator WinVideoThenCredits()
     {
-        // Placeholder: wait for the configured duration.
-        // When the real video is ready, replace this with VideoPlayer playback logic.
         yield return new WaitForSeconds(winVideoPlaceholderDuration);
 
         eyeBlink.Blink(() =>
@@ -283,7 +258,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>After credits finish, return to main menu and reset the game.</summary>
     private IEnumerator CreditsThenMainMenu()
     {
         yield return new WaitForSeconds(creditsDuration);
@@ -296,7 +270,6 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
-    /// <summary>Teleports the player back to the starting position, rotation, and camera angle.</summary>
     private void ResetPlayerToStart()
     {
         if (playerController != null)
@@ -308,7 +281,6 @@ public class GameFlowController : MonoBehaviour
             if (cc != null) cc.enabled = true;
         }
 
-        // Reset camera local rotation to neutral (looking straight ahead)
         if (playerRotation != null)
         {
             playerRotation.ResetCameraAngle();

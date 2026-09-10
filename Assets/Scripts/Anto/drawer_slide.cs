@@ -1,10 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Slides a drawer open/closed along a local axis by a configurable distance.
-/// Provides the same ToggleDoor() method as door_shelf so HidingSpot can use either.
-/// </summary>
 public class drawer_slide : MonoBehaviour
 {
     public enum SlideAxis { X, Y, Z }
@@ -38,7 +34,6 @@ public class drawer_slide : MonoBehaviour
         openPosition = closedPosition + offset;
     }
 
-    /// <summary>Toggle the drawer between open and closed.</summary>
     public void ToggleDoor()
     {
         if (isAnimating) return;
@@ -53,7 +48,6 @@ public class drawer_slide : MonoBehaviour
         currentCoroutine = StartCoroutine(SlideDrawer(target));
     }
 
-    /// <summary>Force the drawer to its closed state regardless of current internal state.</summary>
     public void ForceClose()
     {
         if (currentCoroutine != null)

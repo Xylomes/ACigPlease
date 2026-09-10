@@ -6,7 +6,6 @@ public class door_handle : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // If a HidingSpot is present, let the interaction system handle it
         if (TryGetComponent<HidingSpot>(out _))
             return;
 

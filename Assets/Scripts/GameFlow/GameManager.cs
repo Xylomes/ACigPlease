@@ -19,14 +19,8 @@ public class GameManager : MonoBehaviour
     public GamePhase CurrentPhase { get; private set; } = GamePhase.Setup;
     public float TimeRemaining => timeRemaining;
     public bool IsTimerRunning { get; private set; }
-
-    /// <summary>Fired when the game phase changes. Passes old and new phase.</summary>
     public static event Action<GamePhase, GamePhase> OnPhaseChanged;
-
-    /// <summary>Fired every frame the timer is running. Passes remaining seconds.</summary>
     public static event Action<float> OnTimerTick;
-
-    /// <summary>Fired when the timer reaches zero.</summary>
     public static event Action OnTimerExpired;
 
     private void Awake()
@@ -50,13 +44,7 @@ public class GameManager : MonoBehaviour
         GameFlags.OnFlagSet -= HandleFlagSet;
     }
 
-    private void Start()
-    {
-        // Game is started by GameFlowController when the player clicks Play.
-        // Do not auto-start here.
-    }
 
-    /// <summary>Reset all flags and start a new game session.</summary>
     public void StartGame()
     {
         GameFlags.ResetAllFlags();
@@ -73,40 +61,30 @@ public class GameManager : MonoBehaviour
         ChangePhase(GamePhase.SearchingCigarettes);
         IsTimerRunning = true;
 
-        // Show inner voice at game start
         if (InnerVoiceManager.Instance != null && gameStartVoice != null)
         {
             InnerVoiceManager.Instance.Show(gameStartVoice);
         }
     }
 
-    /// <summary>
-    /// Fully reset the game state without starting a new session.
-    /// Closes all hiding spots, resets flags, timer, penalties, clears held items, and player modifiers.
-    /// Called when returning to the main menu after a game over or win.
-    /// </summary>
     public void ResetGame()
     {
         IsTimerRunning = false;
         timeRemaining = TIMER_START_VALUE;
         ChangePhase(GamePhase.Setup);
 
-        // Reset all flags
         GameFlags.ResetAllFlags();
 
-        // Force-reset all hiding spots: close doors, destroy spawned items
         if (HidingSpotManager.Instance != null)
         {
             HidingSpotManager.Instance.ResetAllSpots();
         }
 
-        // Clear any active penalty
         if (PenaltyManager.Instance != null)
         {
             PenaltyManager.Instance.ClearCurrentPenalty();
         }
 
-        // Destroy any item currently held by the player
         PlayerController playerCtrl = PlayerController.Instance;
         if (playerCtrl != null)
         {
@@ -117,16 +95,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Reset player input modifiers
         PlayerController.IsMovementInverted = false;
         PlayerRotation.IsInputInverted = false;
 
-        // Reset player state to Idle so the head bob effect stops
         PlayerStateMachine.CurrentState = PlayerStateMachine.PlayerState.Idle;
         PlayerStateMachine.CanInteract = false;
         PlayerStateMachine.IsHoldingItem = false;
 
-        // Reset timer UI
         OnTimerTick?.Invoke(TIMER_START_VALUE);
     }
 
@@ -163,8 +138,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    /// <summary>Transition from cigarette search to lighter search.</summary>
     private void TransitionToLighterPhase()
     {
         HidingSpotManager spotManager = HidingSpotManager.Instance;
@@ -175,7 +148,6 @@ public class GameManager : MonoBehaviour
 
         ChangePhase(GamePhase.SearchingLighter);
 
-        // Show inner voice when transitioning to lighter phase
         if (InnerVoiceManager.Instance != null && lighterPhaseVoice != null)
         {
             InnerVoiceManager.Instance.Show(lighterPhaseVoice);
@@ -201,7 +173,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>Add bonus time to the timer (clamped to a max of 30s).</summary>
     public void AddTime(float seconds)
     {
         timeRemaining = Mathf.Min(timeRemaining + seconds, TIMER_START_VALUE);
