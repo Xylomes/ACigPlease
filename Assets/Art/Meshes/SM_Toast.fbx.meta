@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_ToastToaster
-    second: {fileID: 2100000, guid: ea9f6dbaa0cb3274a888945c7c585a25, type: 2}
+    second: {fileID: 2100000, guid: a2139529b607ef140972ff3b20e27362, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

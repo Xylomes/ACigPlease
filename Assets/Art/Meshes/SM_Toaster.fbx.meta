@@ -3,7 +3,12 @@ guid: a3cb036ff82274242853e41fffc16dd1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_ToastToaster
+    second: {fileID: 2100000, guid: a2139529b607ef140972ff3b20e27362, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
