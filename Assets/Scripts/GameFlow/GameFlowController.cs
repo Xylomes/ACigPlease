@@ -17,6 +17,7 @@ public class GameFlowController : MonoBehaviour
         MainMenu,
         Playing,
         Options,
+        Rules,
         GameOver,
         WinVideo,
         Credits
@@ -28,6 +29,7 @@ public class GameFlowController : MonoBehaviour
     [Header("UI Canvases")]
     [SerializeField] private GameObject mainMenuCanvas;
     [SerializeField] private GameObject optionsCanvas;
+    [SerializeField] private GameObject rulesCanvas;
     [SerializeField] private GameObject winVideoCanvas;
     [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject hudCanvas;
@@ -124,6 +126,24 @@ public class GameFlowController : MonoBehaviour
         });
     }
 
+    /// <summary>Called when the Rules button is clicked.</summary>
+    public void OnRulesClicked()
+    {
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.Rules);
+        });
+    }
+
+    /// <summary>Called when the Back button in Rules is clicked.</summary>
+    public void OnRulesBackClicked()
+    {
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.MainMenu);
+        });
+    }
+
     /// <summary>Called when the Quit button is clicked.</summary>
     public void OnQuitClicked()
     {
@@ -193,6 +213,7 @@ public class GameFlowController : MonoBehaviour
         // Toggle UI canvases
         SetCanvasActive(mainMenuCanvas, newState == FlowState.MainMenu);
         SetCanvasActive(optionsCanvas, newState == FlowState.Options);
+        SetCanvasActive(rulesCanvas, newState == FlowState.Rules);
         SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
         SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
         SetCanvasActive(hudCanvas, newState == FlowState.Playing);
