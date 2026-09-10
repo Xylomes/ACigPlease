@@ -89,6 +89,47 @@ public class PickupSystem : MonoBehaviour
         }
     }
 
+    /// <summary>Drop both held items to the floor with physics, like defective lighters. Used for the "throw away" choice.</summary>
+    public void DropAllItemsToFloor()
+    {
+        if (heldObjectRight != null)
+        {
+            DropItemToFloor(heldObjectRight, holdPointRight);
+            heldObjectRight = null;
+        }
+
+        if (heldObjectLeft != null)
+        {
+            DropItemToFloor(heldObjectLeft, holdPointLeft);
+            heldObjectLeft = null;
+        }
+    }
+
+    private void DropItemToFloor(GameObject heldObj, Transform holdPoint)
+    {
+        if (heldObj == null || holdPoint == null) return;
+
+        heldObj.transform.SetParent(null);
+
+        Vector3 dropPos = holdPoint.position + holdPoint.forward * 0.5f;
+        dropPos.y = Mathf.Max(dropPos.y, 0.5f);
+        heldObj.transform.position = dropPos;
+        heldObj.transform.rotation = Random.rotation;
+
+        Rigidbody rb = heldObj.GetComponent<Rigidbody>();
+        if (rb == null)
+            rb = heldObj.AddComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.useGravity = true;
+        rb.AddForce(holdPoint.forward * 2f, ForceMode.Impulse);
+
+        Collider col = heldObj.GetComponent<Collider>();
+        if (col is MeshCollider meshCol && !meshCol.convex)
+            meshCol.convex = true;
+        if (col != null)
+            col.enabled = true;
+    }
+
     public void SetGrabInfos(bool pressed) { }
 
     private void OnDestroy()

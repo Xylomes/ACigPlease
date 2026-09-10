@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InnerVoiceData gameStartVoice;
     [SerializeField] private InnerVoiceData lighterPhaseVoice;
     [SerializeField] private InnerVoiceData gameOverVoice;
+    [SerializeField] private InnerVoiceData smokeVoice;
+    [SerializeField] private InnerVoiceData throwAwayVoice;
+
+    public InnerVoiceData SmokeVoice => smokeVoice;
+    public InnerVoiceData ThrowAwayVoice => throwAwayVoice;
 
     private const float TIMER_START_VALUE = 60f;
 
@@ -134,7 +139,7 @@ public class GameManager : MonoBehaviour
 
             case GameFlags.WORKING_LIGHTER_FOUND:
                 AddTime(timeBonusOnFind);
-                HandleGameWon();
+                HandleChoicePrompt();
                 break;
         }
     }
@@ -160,6 +165,22 @@ public class GameManager : MonoBehaviour
         GameFlags.SetFlag(GameFlags.GAME_WON);
         GameFlags.SetFlag(GameFlags.GAME_OVER);
         ChangePhase(GamePhase.GameOver);
+    }
+
+    /// <summary>Stop the timer and prompt the player with the smoke/throw choice.</summary>
+    private void HandleChoicePrompt()
+    {
+        IsTimerRunning = false;
+        ChangePhase(GamePhase.Choice);
+        GameFlags.SetFlag(GameFlags.CHOICE_PROMPT);
+    }
+
+    /// <summary>Mark the game as over and prevent further interactions.</summary>
+    public void EndGame()
+    {
+        IsTimerRunning = false;
+        ChangePhase(GamePhase.GameOver);
+        GameFlags.SetFlag(GameFlags.GAME_OVER);
     }
 
     private void HandleTimerExpired()

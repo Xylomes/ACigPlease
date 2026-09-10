@@ -23,6 +23,9 @@ public static class GameFlags
     public const string WORKING_LIGHTER_FOUND = "working_lighter_found";
     public const string GAME_OVER = "game_over";
     public const string GAME_WON = "game_won";
+    public const string CHOICE_PROMPT = "choice_prompt";
+    public const string SMOKE_CHOSEN = "smoke_chosen";
+    public const string THROW_AWAY_CHOSEN = "throw_away_chosen";
 
     #endregion Flags
 

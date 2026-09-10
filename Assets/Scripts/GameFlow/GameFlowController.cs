@@ -11,6 +11,7 @@ public class GameFlowController : MonoBehaviour
     {
         MainMenu,
         Playing,
+        Choice,
         Options,
         Rules,
         GameOver,
@@ -28,6 +29,7 @@ public class GameFlowController : MonoBehaviour
     [SerializeField] private GameObject winVideoCanvas;
     [SerializeField] private GameObject creditsCanvas;
     [SerializeField] private GameObject hudCanvas;
+    [SerializeField] private GameObject choiceCanvas;
 
     [Header("Win Video Placeholder")]
     [Tooltip("Duration of the win video placeholder before transitioning to credits.")]
@@ -87,6 +89,11 @@ public class GameFlowController : MonoBehaviour
         GameManager.OnTimerExpired += HandleGameOver;
         GameFlags.OnFlagSet += HandleFlagSet;
 
+        if (InnerVoiceManager.Instance != null)
+        {
+            InnerVoiceManager.Instance.OnAllLinesTyped += HandleVoiceComplete;
+        }
+
         SetState(FlowState.MainMenu);
     }
 
@@ -94,6 +101,11 @@ public class GameFlowController : MonoBehaviour
     {
         GameManager.OnTimerExpired -= HandleGameOver;
         GameFlags.OnFlagSet -= HandleFlagSet;
+
+        if (InnerVoiceManager.Instance != null)
+        {
+            InnerVoiceManager.Instance.OnAllLinesTyped -= HandleVoiceComplete;
+        }
     }
 
     // ---- Button handlers (called from UI) ----
@@ -196,7 +208,8 @@ public class GameFlowController : MonoBehaviour
         SetCanvasActive(rulesCanvas, newState == FlowState.Rules);
         SetCanvasActive(winVideoCanvas, newState == FlowState.WinVideo);
         SetCanvasActive(creditsCanvas, newState == FlowState.Credits);
-        SetCanvasActive(hudCanvas, newState == FlowState.Playing);
+        SetCanvasActive(hudCanvas, newState == FlowState.Playing || newState == FlowState.Choice);
+        SetCanvasActive(choiceCanvas, newState == FlowState.Choice);
 
         if (newState != FlowState.Playing)
         {
@@ -237,13 +250,9 @@ public class GameFlowController : MonoBehaviour
 
     private void HandleFlagSet(string flag)
     {
-        if (flag == GameFlags.GAME_WON)
+        if (flag == GameFlags.CHOICE_PROMPT)
         {
-            eyeBlink.Blink(() =>
-            {
-                SetState(FlowState.WinVideo);
-                StartCoroutine(WinVideoThenCredits());
-            });
+            SetState(FlowState.Choice);
         }
     }
 
@@ -269,6 +278,84 @@ public class GameFlowController : MonoBehaviour
             SetState(FlowState.MainMenu);
         });
     }
+
+    // ---- Choice handlers (called from choice UI buttons) ----
+
+    private bool voiceComplete;
+
+    private void HandleVoiceComplete()
+    {
+        voiceComplete = true;
+    }
+
+    /// <summary>Called when the player clicks "Fumer". Plays the defeat inner voice, then the end video and credits.</summary>
+    public void OnSmokeClicked()
+    {
+        SetCanvasActive(choiceCanvas, false);
+        gameManager.EndGame();
+
+        voiceComplete = false;
+        if (InnerVoiceManager.Instance != null && gameManager.SmokeVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameManager.SmokeVoice);
+            StartCoroutine(SmokeEndingRoutine());
+        }
+    }
+
+    /// <summary>Called when the player clicks "Jeter". Drops items to the floor, plays the inner voice, then credits and menu.</summary>
+    public void OnThrowAwayClicked()
+    {
+        SetCanvasActive(choiceCanvas, false);
+
+        PlayerController playerCtrl = PlayerController.Instance;
+        if (playerCtrl != null)
+        {
+            PickupSystem pickup = playerCtrl.GetComponent<PickupSystem>();
+            if (pickup != null)
+            {
+                pickup.DropAllItemsToFloor();
+            }
+        }
+
+        gameManager.EndGame();
+
+        voiceComplete = false;
+        if (InnerVoiceManager.Instance != null && gameManager.ThrowAwayVoice != null)
+        {
+            InnerVoiceManager.Instance.Show(gameManager.ThrowAwayVoice);
+            StartCoroutine(ThrowAwayEndingRoutine());
+        }
+    }
+
+    private IEnumerator SmokeEndingRoutine()
+    {
+        yield return new WaitUntil(() => voiceComplete);
+        yield return new WaitForSeconds(2f);
+
+        InnerVoiceManager.Instance?.Hide();
+
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.WinVideo);
+            StartCoroutine(WinVideoThenCredits());
+        });
+    }
+
+    private IEnumerator ThrowAwayEndingRoutine()
+    {
+        yield return new WaitUntil(() => voiceComplete);
+        yield return new WaitForSeconds(2f);
+
+        InnerVoiceManager.Instance?.Hide();
+
+        eyeBlink.Blink(() =>
+        {
+            SetState(FlowState.Credits);
+            StartCoroutine(CreditsThenMainMenu());
+        });
+    }
+
+    // ---- Player reset ----
 
     private void ResetPlayerToStart()
     {

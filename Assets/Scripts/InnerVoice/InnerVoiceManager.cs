@@ -8,6 +8,9 @@ public class InnerVoiceManager : MonoBehaviour
 {
     public static InnerVoiceManager Instance { get; private set; }
 
+    /// <summary>Fired after the last line's typewriter effect completes, before the auto-hide delay.</summary>
+    public event System.Action OnAllLinesTyped;
+
     [Header("UI References")]
     [SerializeField] private GameObject voiceParent;
     [SerializeField] private TextMeshProUGUI voiceText;
@@ -149,6 +152,8 @@ public class InnerVoiceManager : MonoBehaviour
                 yield return new WaitForSeconds(hideDelayAfterComplete);
             }
         }
+
+        OnAllLinesTyped?.Invoke();
 
         yield return new WaitForSeconds(hideDelayAfterComplete);
         Hide();
