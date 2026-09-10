@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a3cb036ff82274242853e41fffc16dd1
+guid: 04b1b691a9d24824e8bf1ec52b26a073
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_ToastToaster
+      name: standardSurface1
     second: {fileID: 2100000, guid: a2139529b607ef140972ff3b20e27362, type: 2}
   materials:
     materialImportMode: 2
