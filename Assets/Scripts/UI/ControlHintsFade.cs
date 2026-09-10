@@ -7,12 +7,29 @@ public class ControlHintsFade : MonoBehaviour
     private const float VISIBLE_DURATION = 10f;
     private const float FADE_DURATION = 5f;
 
+    private const string HINT_OBJECT_ZQSD = "Zqsd";
+    private const string HINT_OBJECT_X = "x";
+    private const string HINT_OBJECT_E = "e";
+
     private TextMeshProUGUI[] hintTexts;
     private Coroutine fadeCoroutine;
 
     private void Awake()
     {
-        hintTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        TextMeshProUGUI lZqsd = FindHint(HINT_OBJECT_ZQSD);
+        TextMeshProUGUI lX = FindHint(HINT_OBJECT_X);
+        TextMeshProUGUI lE = FindHint(HINT_OBJECT_E);
+        hintTexts = new[] { lZqsd, lX, lE };
+    }
+
+    private TextMeshProUGUI FindHint(string pName)
+    {
+        Transform lChild = transform.Find(pName);
+        if (lChild != null)
+        {
+            return lChild.GetComponent<TextMeshProUGUI>();
+        }
+        return null;
     }
 
     public void ShowHints()
