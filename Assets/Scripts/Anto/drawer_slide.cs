@@ -5,13 +5,10 @@ public class drawer_slide : MonoBehaviour
 {
     public enum SlideAxis { X, Y, Z }
 
-    [Tooltip("Distance to slide when opening, in local units.")]
     public float slideDistance = 0.5f;
 
-    [Tooltip("Axis along which the drawer slides.")]
     public SlideAxis slideAxis = SlideAxis.Z;
 
-    [Tooltip("Duration of the slide animation in seconds.")]
     public float duration = 1f;
 
     private bool isOpen = false;

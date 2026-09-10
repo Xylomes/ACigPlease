@@ -30,9 +30,6 @@ public class HidingSpotManager : MonoBehaviour
 
         Instance = this;
 
-        // Remove duplicate HidingSpot components that share the same GameObject.
-        // The interaction system always finds the first component, so any target
-        // assigned to a duplicate is unreachable and would show a false "empty" voice.
         HashSet<GameObject> seen = new HashSet<GameObject>();
         for (int i = hidingSpots.Count - 1; i >= 0; i--)
         {
@@ -43,7 +40,6 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Randomly place cigarettes in one of the hiding spots.</summary>
     public void SetupCigarettePhase()
     {
         EnableAllSpots();
@@ -62,19 +58,11 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Close all spots, pick 3 random ones for lighters (1 functional).</summary>
     public void SetupLighterPhase()
     {
         CloseAllSpots();
 
-        // Pick 3 random spot indices from the 8
         lighterSpotIndices = PickRandomIndices(hidingSpots.Count, NUMBER_OF_LIGHTERS);
-
-        //// Enable only the 3 chosen spots, disable the rest
-        //for (int i = 0; i < hidingSpots.Count; i++)
-        //{
-        //    hidingSpots[i].gameObject.SetActive(lighterSpotIndices.Contains(i));
-        //}
 
         workingLighterIndex = Random.Range(0, NUMBER_OF_LIGHTERS);
 
@@ -93,7 +81,6 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Close and reset every hiding spot, including visual door state.</summary>
     public void CloseAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
@@ -105,7 +92,6 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Force-close every spot and destroy any spawned objects, even if already closed.</summary>
     public void ResetAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
@@ -124,7 +110,6 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Make sure all spots are active (for cigarette phase).</summary>
     private void EnableAllSpots()
     {
         foreach (HidingSpot spot in hidingSpots)
@@ -136,7 +121,6 @@ public class HidingSpotManager : MonoBehaviour
         }
     }
 
-    /// <summary>Pick count unique random indices from [0, max).</summary>
     private List<int> PickRandomIndices(int max, int count)
     {
         List<int> pool = new List<int>();

@@ -7,7 +7,6 @@ public class positionalAmbientSound : MonoBehaviour
     [SerializeField] private SoundManager.SoundType soundType;
     [SerializeField] private AudioMixerGroup mixerGroup;
 
-    [Header("Spatialisation 3D")]
     [SerializeField] private float minDistance = 1f;
     [SerializeField] private float maxDistance = 8f;
     [SerializeField][Range(0f, 1f)] private float volume = 0.5f;
@@ -17,7 +16,7 @@ public class positionalAmbientSound : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.spatialBlend = 1f; // 100% 3D (0 = 2D, 1 = 3D)
+        audioSource.spatialBlend = 1f;
         audioSource.loop = true;
         audioSource.playOnAwake = false;
         audioSource.volume = volume;

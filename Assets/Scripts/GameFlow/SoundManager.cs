@@ -15,7 +15,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip gameAmbiantMusic;
 
     [Header("SFX Clips")]
-    //[SerializeField] private AudioClip windSound;
     [SerializeField] private AudioClip fanSound;
     [SerializeField] private AudioClip fridgeSound;
     [SerializeField] private AudioClip carSound;
@@ -31,7 +30,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup musicMixerGroup;
 
     [Header("Audio Mixer")]
-    //[SerializeField] private AudioMixer masterMixer;
     [SerializeField] private AudioMixerGroup musicMixer;
     [SerializeField] private AudioMixerGroup sfxMixer;
 

@@ -28,7 +28,6 @@ public static class GameFlags
 
     private static Dictionary<string, bool> flagsBoard = new Dictionary<string, bool>();
 
-    /// <summary>Fired whenever a flag is set to true. Passes the flag name.</summary>
     public static event Action<string> OnFlagSet;
 
     public static void SetFlag(string pFlag)
@@ -45,7 +44,6 @@ public static class GameFlags
         return flagsBoard.ContainsKey(pFlag) && flagsBoard[pFlag];
     }
 
-    /// <summary>Clears every flag. Call this before starting a new game session.</summary>
     public static void ResetAllFlags()
     {
         flagsBoard.Clear();
