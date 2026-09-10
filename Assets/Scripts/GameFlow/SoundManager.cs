@@ -22,6 +22,9 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioClip closeCloset;
 
+    [SerializeField] private AudioClip OpenDrawer;
+    [SerializeField] private AudioClip CloseDrawer;
+
     [SerializeField] [Range(0f, 1f)] private float musicVolume = 0.7f;
     [SerializeField] [Range(0f, 1f)] private float sfxVolume = 1f;
 
@@ -45,6 +48,8 @@ public class SoundManager : MonoBehaviour
         PlayerBreath,
         OpenCloset,
         CloseCloset,
+        OpenDrawer,
+        CloseDrawer,
         AmbiantSound
     }
 
@@ -87,6 +92,8 @@ public class SoundManager : MonoBehaviour
             { SoundType.PlayerBreath, playerBreathSound },
             { SoundType.CloseCloset, closeCloset },
             { SoundType.OpenCloset, openCloset },
+            { SoundType.OpenDrawer, OpenDrawer },
+            { SoundType.CloseDrawer, CloseDrawer },
             { SoundType.AmbiantSound, gameAmbiantMusic }
         };
     }

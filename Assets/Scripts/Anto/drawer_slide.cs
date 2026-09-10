@@ -33,6 +33,16 @@ public class drawer_slide : MonoBehaviour
 
     public void ToggleDoor()
     {
+
+        if (isOpen)
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.CloseDrawer);
+        }
+        else
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.OpenDrawer);
+        }
+
         if (isAnimating) return;
 
         isOpen = !isOpen;

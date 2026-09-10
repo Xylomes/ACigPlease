@@ -18418,8 +18418,10 @@ MonoBehaviour:
   ratSound: {fileID: 0}
   peopleSound: {fileID: 0}
   playerBreathSound: {fileID: 0}
-  openCloset: {fileID: 8300000, guid: 9a11994e66f6ddc4b921049b14ce069c, type: 3}
+  openCloset: {fileID: 8300000, guid: 84090da74043f4647bc40e2cc9ed40fc, type: 3}
   closeCloset: {fileID: 8300000, guid: ed123560817c52646b66f4cd216a736b, type: 3}
+  OpenDrawer: {fileID: 8300000, guid: 0a2f13b8c31eb6a46acb0c85536189a1, type: 3}
+  CloseDrawer: {fileID: 8300000, guid: f02e82b79d95a38489bc5886c993ad02, type: 3}
   musicVolume: 0.7
   sfxVolume: 1
   musicMixerGroup: {fileID: -5078319760758576689, guid: 4cae636cb235ed54c88e30eb7ec28a69, type: 2}
@@ -19738,7 +19740,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1571132082}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 2935542861842837248, guid: 4cae636cb235ed54c88e30eb7ec28a69, type: 2}
   m_audioClip: {fileID: 0}
