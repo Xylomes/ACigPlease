@@ -6621,7 +6621,7 @@ GameObject:
   - component: {fileID: 2454350146550822452}
   - component: {fileID: 6152578238072075364}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: DOor aura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
