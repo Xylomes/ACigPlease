@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GameOverVoice
   m_EditorClassIdentifier: 
   lines:
-  - <color=red><shake>game over</shake></color>  t es mort <color=red>enflure</color>
+  - <color=red><shake>game over</shake></color>  t'es mort <color=red>enflure</color>
