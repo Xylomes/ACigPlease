@@ -126,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabMoveDuration: 0.3
   etincelle: {fileID: 6694669261588387514}
+  useLeftHand: 0
 --- !u!114 &2266703388406259298
 MonoBehaviour:
   m_ObjectHideFlags: 0

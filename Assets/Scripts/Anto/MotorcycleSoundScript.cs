@@ -3,17 +3,18 @@ using UnityEngine;
 public class MotorcycleSoundScript : MonoBehaviour
 {
     [SerializeField] private AudioClip motorcycleClip;
-    [SerializeField] private float triggerTime = 40f;
+    [SerializeField] private float[] triggerTimes = new float[] { 40f };
 
     [SerializeField] private AudioSource audioSource;
 
     [SerializeField] private GamePhase targetPhase = GamePhase.SearchingCigarettes;
 
-    private bool hasTriggered;
+    private bool[] hasTriggered;
 
     void Awake()
     {
         audioSource.playOnAwake = false;
+        hasTriggered = new bool[triggerTimes.Length];
     }
 
     void OnEnable()
@@ -30,22 +31,30 @@ public class MotorcycleSoundScript : MonoBehaviour
     {
         if (newPhase == GamePhase.Setup)
         {
-            hasTriggered = false;
+            for (int i = 0; i < hasTriggered.Length; i++)
+            {
+                hasTriggered[i] = false;
+            }
         }
     }
 
     void Update()
     {
-        if (hasTriggered || GameManager.Instance == null || !GameManager.Instance.IsTimerRunning)
+        if (GameManager.Instance == null || !GameManager.Instance.IsTimerRunning)
             return;
 
         if (GameManager.Instance.CurrentPhase != targetPhase)
             return;
 
-        if (GameManager.Instance.TimeRemaining <= triggerTime)
+        float lTimeRemaining = GameManager.Instance.TimeRemaining;
+
+        for (int i = 0; i < triggerTimes.Length; i++)
         {
-            hasTriggered = true;
-            PlaySound();
+            if (!hasTriggered[i] && lTimeRemaining <= triggerTimes[i])
+            {
+                hasTriggered[i] = true;
+                PlaySound();
+            }
         }
     }
 

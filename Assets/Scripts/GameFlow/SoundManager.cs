@@ -207,4 +207,16 @@ public class SoundManager : MonoBehaviour
             Instance = null;
         }
     }
+
+    public void PlayRandomSFXWithChance(AudioClip[] clips, float chance)
+    {
+        if (clips == null || clips.Length == 0)
+            return;
+
+        if (Random.value > chance)
+            return;
+
+        AudioClip chosenClip = clips[Random.Range(0, clips.Length)];
+        sfxSource.PlayOneShot(chosenClip, sfxVolume);
+    }
 }

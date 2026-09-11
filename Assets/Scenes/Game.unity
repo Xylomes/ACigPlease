@@ -149,7 +149,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: cc83ba64e60d479448a943fadd67ed24, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -157,8 +157,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 0.23555553
+  MaxDistance: 3.3832548
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -193,7 +193,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -275,6 +275,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8215342202362879873, guid: f781adb15b0213e40bed44f6d56f7901, type: 3}
+--- !u!4 &13446986 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2081735314014146579, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+  m_PrefabInstance: {fileID: 171286755}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &21937306
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +377,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: 62644195e1a516b43b2b03b0fe21faaa, type: 3}
-  triggerTime: 50
+  triggerTimes:
+  - 40
   audioSource: {fileID: 32651116}
   targetPhase: 1
 --- !u!82 &32651116
@@ -485,7 +491,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: 4c1ea6ca436587b4d8945cecfd422552, type: 3}
-  triggerTime: 50
+  triggerTimes:
+  - 40
   audioSource: {fileID: 32651116}
   targetPhase: 2
 --- !u!43 &33811202
@@ -872,6 +879,13 @@ MonoBehaviour:
   doorShelf: {fileID: 0}
   drawerSlide: {fileID: 50592240}
   emptySpotVoice: {fileID: 11400000, guid: 8ac43e7eac5d0114fa2f46080978b4d6, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &52047226 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3346388865841142557, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
@@ -1093,6 +1107,8 @@ MonoBehaviour:
   doorShelf: {fileID: 58346603}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &58346603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1692,6 +1708,13 @@ MonoBehaviour:
   doorShelf: {fileID: 0}
   drawerSlide: {fileID: 81144771}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &85445097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3426,6 +3449,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 145347199}
     m_Modifications:
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.8438
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.425
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.2478
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.28981233
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -8.731149e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9570835
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1.7462298e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 847902956579818184, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -146.307
+      objectReference: {fileID: 0}
     - target: {fileID: 2202798054970912929, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3668,6 +3723,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9076973232279003885, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 585129770}
+    - targetCorrespondingSourceObject: {fileID: 2948052060438823401, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1487938234}
     - targetCorrespondingSourceObject: {fileID: 7571865249626440691, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1514088757}
@@ -4050,6 +4108,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2567690699879275347, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 360216665}
+    - targetCorrespondingSourceObject: {fileID: 2567690699879275347, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 360216667}
     - targetCorrespondingSourceObject: {fileID: 6652726223376567855, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 665000935}
@@ -5971,6 +6032,8 @@ MonoBehaviour:
   doorShelf: {fileID: 232417774}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &232417783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7240,6 +7303,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!4 &360216666 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2948052060438823401, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+  m_PrefabInstance: {fileID: 171286755}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &360216667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360216662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebaba1af016741f4b8247b5a62e10acb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hourHand: {fileID: 1632282290}
+  minuteHand: {fileID: 13446986}
+  rotationAxis: {x: 0, y: 0, z: 1}
+  updateInterval: 1
 --- !u!4 &394360894 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2202798054970912929, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
@@ -7522,6 +7606,8 @@ MonoBehaviour:
   doorShelf: {fileID: 447268783}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &447268783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8128,6 +8214,13 @@ MonoBehaviour:
   doorShelf: {fileID: 460733276}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &465405710 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1713263329213927071, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
@@ -8238,6 +8331,13 @@ MonoBehaviour:
   doorShelf: {fileID: 481361414}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: fc904737556af7d41b5a378738b43b57, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!64 &481361416
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9944,7 +10044,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: 8009d23bb40f67b40a5bb53315e3944f, type: 3}
-  triggerTime: 45
+  triggerTimes:
+  - 40
   audioSource: {fileID: 609058989}
   targetPhase: 1
 --- !u!82 &609058989
@@ -10149,6 +10250,13 @@ MonoBehaviour:
   doorShelf: {fileID: 614221427}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 8ac43e7eac5d0114fa2f46080978b4d6, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &614992958 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7740413863460658393, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
@@ -10757,6 +10865,13 @@ MonoBehaviour:
   doorShelf: {fileID: 648199288}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 3c1e1fe9812423742b611db91b3ab3ef, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &663397796
 GameObject:
   m_ObjectHideFlags: 0
@@ -12737,6 +12852,8 @@ MonoBehaviour:
   doorShelf: {fileID: 862717095}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &862717095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13542,6 +13659,8 @@ MonoBehaviour:
   doorShelf: {fileID: 941567054}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &941567054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13983,6 +14102,13 @@ MonoBehaviour:
   doorShelf: {fileID: 0}
   drawerSlide: {fileID: 959482165}
   emptySpotVoice: {fileID: 11400000, guid: fc904737556af7d41b5a378738b43b57, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &966651651
 GameObject:
   m_ObjectHideFlags: 0
@@ -15933,6 +16059,8 @@ MonoBehaviour:
   doorShelf: {fileID: 1193349281}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &1193349290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16994,6 +17122,13 @@ MonoBehaviour:
   doorShelf: {fileID: 1284665891}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 3c1e1fe9812423742b611db91b3ab3ef, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &1287166288
 GameObject:
   m_ObjectHideFlags: 0
@@ -18778,6 +18913,13 @@ MonoBehaviour:
   doorShelf: {fileID: 1393274724}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!64 &1393274726
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19222,13 +19364,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxSource: {fileID: 1411046631}
-  menuMusic: {fileID: 0}
-  gameMusic: {fileID: 0}
+  menuMusic: {fileID: 8300000, guid: ae28ea5f99f60fb4c9a8fb087e6752d7, type: 3}
+  gameMusic: {fileID: 8300000, guid: 7efc3faf00682f04e94b3eadb2a7f10a, type: 3}
   gameAmbiantMusic: {fileID: 0}
   fanSound: {fileID: 0}
   fridgeSound: {fileID: 8300000, guid: 6acdacedd2596f2498ad1e03b728ebff, type: 3}
   carSound: {fileID: 8300000, guid: f16451d66139b144894978c4f559043a, type: 3}
-  ratSound: {fileID: 0}
+  ratSound: {fileID: 8300000, guid: 411038ab44c120c45885f3212d5a0cde, type: 3}
   peopleSound: {fileID: 0}
   playerBreathSound: {fileID: 0}
   openCloset: {fileID: 8300000, guid: 84090da74043f4647bc40e2cc9ed40fc, type: 3}
@@ -19712,6 +19854,135 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3769207618104728761, guid: d99e9a74ec2221941adfeb9983a5713b, type: 3}
+--- !u!1 &1487938233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1487938234}
+  - component: {fileID: 1487938235}
+  m_Layer: 0
+  m_Name: ClockSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1487938234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487938233}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.357, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 360216666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1487938235
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487938233}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 2935542861842837248, guid: 4cae636cb235ed54c88e30eb7ec28a69, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 6bfde4cd92c53cc43b0d675f5698dce4, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.05
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 0.2719922
+  MaxDistance: 2.5584555
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1491083481
 GameObject:
   m_ObjectHideFlags: 0
@@ -20412,6 +20683,7 @@ GameObject:
   - component: {fileID: 1571132083}
   - component: {fileID: 1571132085}
   - component: {fileID: 1571132086}
+  - component: {fileID: 1571132087}
   m_Layer: 0
   m_Name: windSound
   m_TagString: Untagged
@@ -20544,9 +20816,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: f16451d66139b144894978c4f559043a, type: 3}
-  triggerTime: 40
+  triggerTimes:
+  - 40
+  - 20
   audioSource: {fileID: 1571132085}
   targetPhase: 1
+--- !u!114 &1571132087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571132082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e71c7b450b7c7b4488f1994438fb06f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motorcycleClip: {fileID: 8300000, guid: f16451d66139b144894978c4f559043a, type: 3}
+  triggerTimes:
+  - 50
+  - 30
+  audioSource: {fileID: 1571132085}
+  targetPhase: 2
 --- !u!1 &1580983282
 GameObject:
   m_ObjectHideFlags: 0
@@ -20829,6 +21121,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4049135763707742919, guid: f781adb15b0213e40bed44f6d56f7901, type: 3}
+--- !u!4 &1632282290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3718464314938681404, guid: 1848db5eede087348ad1ca8726811fc5, type: 3}
+  m_PrefabInstance: {fileID: 171286755}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1632708351
 GameObject:
   m_ObjectHideFlags: 0
@@ -21300,6 +21597,13 @@ MonoBehaviour:
   doorShelf: {fileID: 1660992433}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 3c10fd3f7316dea49b9b6fed53f4c652, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &1661966244
 GameObject:
   m_ObjectHideFlags: 0
@@ -23347,6 +23651,13 @@ MonoBehaviour:
   doorShelf: {fileID: 0}
   drawerSlide: {fileID: 1813536820}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!114 &1813536820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24162,6 +24473,7 @@ GameObject:
   - component: {fileID: 1948060379}
   - component: {fileID: 1948060380}
   - component: {fileID: 1948060381}
+  - component: {fileID: 1948060382}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -24384,6 +24696,19 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 260
+--- !u!114 &1948060382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948060371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aefd009b38df4b34183d0ac8854298dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerTime: 8
 --- !u!1 &1950138418
 GameObject:
   m_ObjectHideFlags: 0
@@ -24941,6 +25266,13 @@ MonoBehaviour:
   doorShelf: {fileID: 0}
   drawerSlide: {fileID: 2006454828}
   emptySpotVoice: {fileID: 11400000, guid: fc904737556af7d41b5a378738b43b57, type: 2}
+  emptySpotSounds:
+  - {fileID: 8300000, guid: 34ebff4aae35e6842a1d3e4995841bcf, type: 3}
+  - {fileID: 8300000, guid: e09a51206933b2e42a8856710974c31e, type: 3}
+  - {fileID: 8300000, guid: 5be3df328d8734240b808218b697f591, type: 3}
+  - {fileID: 8300000, guid: cf516cf8769cee04fb1cdf81ecdbc935, type: 3}
+  - {fileID: 8300000, guid: c299a351264daa34d93a8a29fed39fb5, type: 3}
+  emptySpotSoundChance: 0.3
 --- !u!1 &2014884424
 GameObject:
   m_ObjectHideFlags: 0
@@ -25165,6 +25497,8 @@ MonoBehaviour:
   doorShelf: {fileID: 2045161218}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &2045161218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26828,6 +27162,8 @@ MonoBehaviour:
   doorShelf: {fileID: 2087187557}
   drawerSlide: {fileID: 0}
   emptySpotVoice: {fileID: 11400000, guid: 03bb4a884dfffcf428d95f2809d9739f, type: 2}
+  emptySpotSounds: []
+  emptySpotSoundChance: 0.3
 --- !u!114 &2087187557
 MonoBehaviour:
   m_ObjectHideFlags: 0

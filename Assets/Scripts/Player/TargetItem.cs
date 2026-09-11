@@ -97,6 +97,7 @@ public class TargetItem : MonoBehaviour
         if (etincelle != null)
         {
             etincelle.Play();
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.Rat);
         }
     }
 
