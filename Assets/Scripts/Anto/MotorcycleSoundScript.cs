@@ -5,12 +5,14 @@ public class MotorcycleSoundScript : MonoBehaviour
     [SerializeField] private AudioClip motorcycleClip;
     [SerializeField] private float triggerTime = 40f;
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private GamePhase targetPhase = GamePhase.SearchingCigarettes;
+
     private bool hasTriggered;
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         audioSource.playOnAwake = false;
     }
 
@@ -35,6 +37,9 @@ public class MotorcycleSoundScript : MonoBehaviour
     void Update()
     {
         if (hasTriggered || GameManager.Instance == null || !GameManager.Instance.IsTimerRunning)
+            return;
+
+        if (GameManager.Instance.CurrentPhase != targetPhase)
             return;
 
         if (GameManager.Instance.TimeRemaining <= triggerTime)
