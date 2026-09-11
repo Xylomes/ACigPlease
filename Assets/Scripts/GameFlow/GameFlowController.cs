@@ -249,6 +249,7 @@ public class GameFlowController : MonoBehaviour
 
     private void HandleGameOver()
     {
+        RadioInteractable.Instance?.Pause();
         StartCoroutine(GameOverAfterDelay());
     }
 
@@ -330,6 +331,8 @@ public class GameFlowController : MonoBehaviour
     {
         SetCanvasActive(choiceCanvas, false);
         gameManager.EndGame();
+
+        RadioInteractable.Instance?.Pause();
 
         voiceComplete = false;
         if (InnerVoiceManager.Instance != null && gameManager.SmokeVoice != null)
