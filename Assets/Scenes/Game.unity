@@ -378,7 +378,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: 62644195e1a516b43b2b03b0fe21faaa, type: 3}
   triggerTimes:
-  - 40
+  - 45
   audioSource: {fileID: 32651116}
   targetPhase: 1
 --- !u!82 &32651116
@@ -492,7 +492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motorcycleClip: {fileID: 8300000, guid: 4c1ea6ca436587b4d8945cecfd422552, type: 3}
   triggerTimes:
-  - 40
+  - 35
   audioSource: {fileID: 32651116}
   targetPhase: 2
 --- !u!43 &33811202
@@ -19371,7 +19371,7 @@ MonoBehaviour:
   fridgeSound: {fileID: 8300000, guid: 6acdacedd2596f2498ad1e03b728ebff, type: 3}
   carSound: {fileID: 8300000, guid: f16451d66139b144894978c4f559043a, type: 3}
   ratSound: {fileID: 8300000, guid: 411038ab44c120c45885f3212d5a0cde, type: 3}
-  peopleSound: {fileID: 0}
+  peopleSound: {fileID: 8300000, guid: 254b9e8791b0d2c4f8a5bd7c217d711c, type: 3}
   playerBreathSound: {fileID: 0}
   openCloset: {fileID: 8300000, guid: 84090da74043f4647bc40e2cc9ed40fc, type: 3}
   closeCloset: {fileID: 8300000, guid: ed123560817c52646b66f4cd216a736b, type: 3}

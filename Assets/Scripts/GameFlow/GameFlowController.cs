@@ -129,6 +129,7 @@ public class GameFlowController : MonoBehaviour
     {
         eyeBlink.Blink(() =>
         {
+            SoundManager.Instance.PlaySFX(SoundManager.SoundType.People);
             SetState(FlowState.Playing);
             gameManager.StartGame();
 
@@ -142,6 +143,7 @@ public class GameFlowController : MonoBehaviour
 
     public void OnOptionsClicked()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.SoundType.People);
         eyeBlink.Blink(() =>
         {
             SetState(FlowState.Options);
@@ -150,6 +152,7 @@ public class GameFlowController : MonoBehaviour
 
     public void OnRulesClicked()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.SoundType.People);
         eyeBlink.Blink(() =>
         {
             SetState(FlowState.Rules);
@@ -166,6 +169,7 @@ public class GameFlowController : MonoBehaviour
 
     public void OnQuitClicked()
     {
+        SoundManager.Instance.PlaySFX(SoundManager.SoundType.People);
         eyeBlink.Blink(() =>
         {
 #if UNITY_EDITOR
