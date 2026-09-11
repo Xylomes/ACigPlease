@@ -67,7 +67,6 @@ public class RadioInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Pause the radio without resetting playback position.</summary>
     public void Pause()
     {
         if (audioSource != null && audioSource.isPlaying)
@@ -77,7 +76,6 @@ public class RadioInteractable : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>Resume the radio from where it was paused. Only resumes if the player had turned it on.</summary>
     public void Resume()
     {
         if (isPaused && isOn && audioSource != null)

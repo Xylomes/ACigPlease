@@ -4,8 +4,6 @@ using UnityEngine;
 
 public static class GameFlags
 {
-    #region Flags
-
     public const string MARAINTRO1INTERACTIOM = "mara_intro_1_interaction";
     public const string MARAINTRO2INTERACTIOM = "mara_intro_2_interaction";
     public const string MARAINTRO3INTERACTIOM = "mara_intro_3_interaction";
@@ -20,8 +18,6 @@ public static class GameFlags
     public const string CHOICE_PROMPT = "choice_prompt";
     public const string SMOKE_CHOSEN = "smoke_chosen";
     public const string THROW_AWAY_CHOSEN = "throw_away_chosen";
-
-    #endregion Flags
 
     private static Dictionary<string, bool> flagsBoard = new Dictionary<string, bool>();
 

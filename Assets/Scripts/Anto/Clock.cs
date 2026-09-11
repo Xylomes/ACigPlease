@@ -3,7 +3,6 @@ using System;
 
 public class ClockController : MonoBehaviour
 {
-    [Header("Aiguilles")]
     [SerializeField] private Transform hourHand;
     [SerializeField] private Transform minuteHand;
     [SerializeField] private Vector3 rotationAxis = Vector3.forward;

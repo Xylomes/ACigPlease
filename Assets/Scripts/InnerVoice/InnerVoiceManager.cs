@@ -197,8 +197,6 @@ public class InnerVoiceManager : MonoBehaviour
             voiceParent.SetActive(false);
     }
 
-    #region Shake Effect
-
     private string ParseAndStripShakeTags(string pRawText)
     {
         shakeRanges.Clear();
@@ -353,5 +351,4 @@ public class InnerVoiceManager : MonoBehaviour
         }
     }
 
-    #endregion
 }

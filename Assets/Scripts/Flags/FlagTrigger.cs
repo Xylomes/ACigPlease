@@ -51,11 +51,11 @@ public class FlagTrigger : MonoBehaviour, IInteractable
         }
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider pOther)
     {
         if (triggerType == FlagTriggerType.OnTriggerEnter)
         {
-            if(other.TryGetComponent<PlayerController>(out PlayerController lPlayer))
+            if(pOther.TryGetComponent<PlayerController>(out PlayerController lPlayer))
             {
                 Trigger();
             }

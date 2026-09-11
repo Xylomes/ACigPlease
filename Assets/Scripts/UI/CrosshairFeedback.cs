@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class CrosshairFeedback : MonoBehaviour
 {
-    [Header("Scale")]
     [SerializeField] private float minScale = 1f;
     [SerializeField] private float maxScale = 2.5f;
     [SerializeField] private float lerpSpeed = 15f;
 
-    [Header("Color")]
     [SerializeField] private Color idleColor = new Color(1f, 1f, 0f, 1f);
     [SerializeField] private Color activeColor = new Color(0f, 1f, 0.5f, 1f);
 
@@ -29,9 +27,9 @@ public class CrosshairFeedback : MonoBehaviour
 
     private void Update()
     {
-        bool isPressing = IsInteractPressed();
+        bool lIsPressing = IsInteractPressed();
 
-        if (isPressing)
+        if (lIsPressing)
         {
             holdTimer += Time.deltaTime;
         }
@@ -40,21 +38,21 @@ public class CrosshairFeedback : MonoBehaviour
             holdTimer = 0f;
         }
 
-        float progress = Mathf.Clamp01(holdTimer / HOLD_DURATION);
-        float targetScale = Mathf.Lerp(minScale, maxScale, progress);
-        currentScale = Mathf.Lerp(currentScale, targetScale, Time.deltaTime * lerpSpeed);
+        float lProgress = Mathf.Clamp01(holdTimer / HOLD_DURATION);
+        float lTargetScale = Mathf.Lerp(minScale, maxScale, lProgress);
+        currentScale = Mathf.Lerp(currentScale, lTargetScale, Time.deltaTime * lerpSpeed);
         ApplyScale(currentScale);
 
         if (cursorImage != null)
         {
-            cursorImage.color = Color.Lerp(idleColor, activeColor, progress);
+            cursorImage.color = Color.Lerp(idleColor, activeColor, lProgress);
         }
     }
 
     private bool IsInteractPressed()
     {
-        bool inDialogue = DialogueManager.Instance != null && DialogueManager.Instance.isInDialogue;
-        if (inDialogue)
+        bool lInDialogue = DialogueManager.Instance != null && DialogueManager.Instance.isInDialogue;
+        if (lInDialogue)
             return false;
 
         if (PlayerController.Instance != null && PlayerController.Instance.IsInteractHeld)
