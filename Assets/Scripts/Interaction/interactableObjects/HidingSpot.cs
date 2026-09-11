@@ -13,8 +13,6 @@ public class HidingSpot : MonoBehaviour, IInteractable
     [SerializeField] private drawer_slide drawerSlide;
 
     [SerializeField] private InnerVoiceData emptySpotVoice;
-
-
     [SerializeField] private AudioClip[] emptySpotSounds;
     [Range(0f, 1f)]
     [SerializeField] private float emptySpotSoundChance = 0.3f;
